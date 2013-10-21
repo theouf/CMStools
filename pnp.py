@@ -4,18 +4,61 @@
 source = 'testeur_UM.pnp'
 
 #~ Floppy disk
-#~ disk = '/dev/fd0'
-disk = 'biscotte'
+disk = '/dev/fd0'
+#~ disk = 'biscotte'
 
 #~ Use Bank
 bank = 'bank4'
 
+#~ Added lines
+addLines = 4
+
+#~ Precidot or Nova
+target = "precidot"
+
 #~ Bank address
 hexAddr = {}
-hexAddr['bank1'] = 0x04206
+hexAddr['bank1'] = 0x04000
 hexAddr['bank2'] = 0x16206
 hexAddr['bank3'] = 0x28206
-hexAddr['bank4'] = 0x3a206
+hexAddr['bank4'] = 0x3A000
+
+#~ =====================================================================
+def intoToHex(i):
+    ret = []
+    ret.append(format("%02X" % (int(i) & 0x00ff)))
+    ret.append(format("%02X" % ((int(i)/0xff) & 0xff)))
+    return ret
+#~ =====================================================================
+def writeToFloppy(data):
+
+    #~ Write to floppy
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x208,RELATIVE)
+    f.write("\x00\x00\x00\x00\x00\x00\x00\x00")
+    f.write("\x00\x00\x0A\x00\x00\x00\x00\x00")
+    f.write("\x00\x00\x01\x00\x01\x00\x00\x00")
+    for n in range(0,len(data)):
+        f.write("\x01\x00")
+        f.write("\xC8\x00")
+        f.write(data[n][1][0].decode("hex"))
+        f.write(data[n][1][1].decode("hex"))
+        f.write(data[n][1][2].decode("hex"))
+        f.write(data[n][1][3].decode("hex"))
+    f.write("\x00\x00\x02\x00\x00\x00\x00\x00")
+    
+    #~ Nb lignes
+    nb_lines = []
+    nb_lines.append(intoToHex(len(data)+addLines)[0])
+    nb_lines.append(intoToHex(len(data)+addLines)[1])
+    
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x32,RELATIVE)
+    f.write(nb_lines[0].decode("hex"))
+    f.write(nb_lines[1].decode("hex"))
+    f.write(nb_lines[0].decode("hex"))
+    f.write(nb_lines[1].decode("hex"))
+
 
 #~ =====================================================================
 
@@ -69,31 +112,26 @@ for composant in composants:
         
 #~ Parse Pins and create hex version
 for pinid in range(0,len(pins)):
-    pins[pinid][1].append(format("%02X" % (int(pins[pinid][0][0]) & 0x00ff)))
-    pins[pinid][1].append(format("%02X" % ((int(pins[pinid][0][0])/0xff) & 0xff)))
-    pins[pinid][1].append(format("%02X" % (int(pins[pinid][0][1]) & 0x00ff)))
-    pins[pinid][1].append(format("%02X" % ((int(pins[pinid][0][1])/0xff) & 0xff)))
+    pins[pinid][1].append(intoToHex(pins[pinid][0][0])[0])
+    pins[pinid][1].append(intoToHex(pins[pinid][0][0])[1])
+    pins[pinid][1].append(intoToHex(pins[pinid][0][1])[0])
+    pins[pinid][1].append(intoToHex(pins[pinid][0][1])[1])
 
 #~ Print Pins
 #~ pp.pprint(pins)
 
-#~ Write to floppy
-f.seek(hexAddr[bank],ABSOLUTE)
-f.seek(0x02,RELATIVE)
-f.write("\x00\x00\x00\x00\x00\x00\x00\x00")
-for pinid in range(0,len(pins)):
-    f.write("\x01\x00")
-    f.write("\xC8\x00")
-    f.write(pins[pinid][1][0].decode("hex"))
-    f.write(pins[pinid][1][1].decode("hex"))
-    f.write(pins[pinid][1][2].decode("hex"))
-    f.write(pins[pinid][1][3].decode("hex"))
-f.write("\x00\x00\x00\x00\x00\x00\x00\x00")
+#~ Write to Floppy
+if ( target == "precidot" ):
+    writeToFloppy(pins)
+else:
+    writeToFloppy(composants)
+
 
 #~ Read the floppy to check the result
 f.seek(hexAddr[bank],ABSOLUTE)
-f.seek(0x02,RELATIVE)
-for pinid in range(0,len(pins)+2):
+f.seek(0x208,RELATIVE)
+for pinid in range(0,len(pins)+addLines):
     print " - ".join("{0:02x}".format(ord(c)) for c in f.read(8))
 
 f.close()
+
