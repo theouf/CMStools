@@ -4,8 +4,8 @@
 source = 'testeur_UM.pnp'
 
 #~ Floppy disk
-disk = '/dev/fd0'
-#~ disk = 'biscotte'
+#~ disk = '/dev/fd0'
+disk = 'biscotte'
 
 #~ Use Bank
 bank = 'bank4'
@@ -17,7 +17,7 @@ loops = 1
 addLines = 3+loops
 
 #~ Precidot or Nova
-target = "precidot"
+target = "nova"
 
 #~ Bank address
 hexAddr = {}
@@ -25,6 +25,28 @@ hexAddr['bank1'] = 0x04000
 hexAddr['bank2'] = 0x16206
 hexAddr['bank3'] = 0x28206
 hexAddr['bank4'] = 0x3A000
+
+#~ package to magasin
+pack2Mag = {}
+pack2Mag['SO08'] = 1
+pack2Mag['SO12'] = 2
+pack2Mag['SO14'] = 3
+pack2Mag['SO16'] = 4
+pack2Mag['SO20'] = 5
+pack2Mag['SO24'] = 6
+pack2Mag['SO28'] = 7
+pack2Mag['SOT23'] = 8
+pack2Mag['SOT89'] = 9
+pack2Mag['SOT143'] = 10
+pack2Mag['SOT194'] = 11
+pack2Mag['SOT223'] = 12
+pack2Mag['SOD80'] = 13
+pack2Mag['SOD87'] = 14
+pack2Mag['0805'] = 15
+pack2Mag['1206'] = 16
+pack2Mag['1210'] = 17
+pack2Mag['1812'] = 18
+pack2Mag['2220'] = 19
 
 #~ =====================================================================
 def intToHex(i):
@@ -46,6 +68,23 @@ def writeToFloppy(t):
         f.write(h[1].decode("hex"))
 
 def pushDots(data):
+    #~ Write to floppy
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x208,RELATIVE)
+    for i in range(0,loops):
+        writeToFloppy([0,0,0,0])
+    writeToFloppy([0,10,0,0])
+    writeToFloppy([0,1,loops,0])
+    for n in range(0,len(data)):
+        writeToFloppy(data[n])
+    writeToFloppy([0,2,0,0])
+    
+    #~ Nb lignes
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x32,RELATIVE)
+    writeToFloppy([len(data)+addLines,len(data)+addLines])
+
+def pushComp(data):
     #~ Write to floppy
     f.seek(hexAddr[bank],ABSOLUTE)
     f.seek(0x208,RELATIVE)
@@ -97,7 +136,12 @@ for line in lines:
         m = p.match(line)
         if m:
             comp = m.group(1)
-            composants[comp]=list(m.group(2,3,4,5))
+            composants[comp]=list(m.group(2,5,3,4))
+            if ( composants[comp][0] in pack2Mag.keys() ):
+                composants[comp][0] = pack2Mag[composants[comp][0]]
+            else: 
+                print "no pack "+composants[comp][0]+" in bank, remove item "+comp
+                del(composants[comp])
         else:
             print "Ignored line: "+line
     if "-Pin-" in line:
@@ -108,24 +152,24 @@ for line in lines:
             print "Ignored line: "+line
             
 #~ Print Pins
-# pp.pprint(pins)
 
 #~ Write to Floppy
 if ( target == "precidot" ):
     pushDots(pins)
 else:
-    writeToFloppy(composants)
+    pp.pprint(composants)
+    pushComp(composants.values())
 
 
 #~ Read the floppy to check the result
-f.seek(hexAddr[bank],ABSOLUTE)
-f.seek(0x208,RELATIVE)
-for pinid in range(0,len(pins)+addLines):
-    sys.stdout.write("0x%04X = " % (pinid*4))
-    for i in range(0,4):
-        val = hexToInt(f.read(1),f.read(1))
-        sys.stdout.write(" - %6d [%02X,%02X]" % ( val[0], val[1], val[2]))
-    print ""
+#~ f.seek(hexAddr[bank],ABSOLUTE)
+#~ f.seek(0x208,RELATIVE)
+#~ for pinid in range(0,len(pins)+addLines):
+    #~ sys.stdout.write("0x%04X = " % (pinid*4))
+    #~ for i in range(0,4):
+        #~ val = hexToInt(f.read(1),f.read(1))
+        #~ sys.stdout.write(" - %6d [%02X,%02X]" % ( val[0], val[1], val[2]))
+    #~ print ""
         
 f.close()
 
