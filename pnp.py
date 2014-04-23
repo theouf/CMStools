@@ -10,6 +10,9 @@ disk = 'biscotte'
 #~ Use Bank
 bank = 'bank4'
 
+#~ Y axis direction
+yaxisdir = -1
+
 #~ Loops
 loops = 1
 
@@ -76,6 +79,8 @@ def pushDots(data):
     writeToFloppy([0,10,0,0])
     writeToFloppy([0,1,loops,0])
     for n in range(0,len(data)):
+        #~ Inverse Y axis if needed
+        data[n][1] = yaxisdir * data[n][1]
         writeToFloppy(data[n])
     writeToFloppy([0,2,0,0])
     
@@ -93,6 +98,8 @@ def pushComp(data):
     writeToFloppy([0,10,0,0])
     writeToFloppy([0,1,loops,0])
     for n in range(0,len(data)):
+        #~ Inverse Y axis if needed
+        data[n][1] = yaxisdir * data[n][1]
         writeToFloppy(data[n])
     writeToFloppy([0,2,0,0])
     
