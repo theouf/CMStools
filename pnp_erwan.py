@@ -1,5 +1,5 @@
 '''
-Created on 24 avr. 2014
+Created on 14 avr. 2014
 
 @author: L'Henoret Erwan
 
@@ -185,19 +185,19 @@ def pushComp(data):
         writeToFloppy([0,10,0,0])           # writting  Control to references of point.
         writeToFloppy([0,1,loops,0])        # writting one loop 
       
-        for k,v in data.items():            # k is key of componant 
-                                            # v is dx et dy
-                                            
+    for k,v in data.items():                # k is key of componant 
+            
+            
             v[3]= yaxisdir + v[3]           #~ Inverse Y axis if needed
             print(v)                        # look for data for saving 
             writeToFloppy(v)
             
-        writeToFloppy([0,2,0,0])            # Writting  End of Programme
+    writeToFloppy([0,2,0,0])                # Writting  End of Programme
         #~ Nb lignes
-        f.seek(hexAddr[bank],ABSOLUTE)
-        f.seek(0x32,RELATIVE)                                   # ecriture des donnee 
-        writeToFloppy([len(data)+addLines,len(data)+addLines])  # format d'ecriture
-        print ("finish of writting components" )        # ecriture des données 
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x32,RELATIVE)                                   # ecriture des donnee 
+    writeToFloppy([len(data)+addLines,len(data)+addLines])  # format d'ecriture
+    print ("finish of writting components" )        # ecriture des données 
 #~ =========================================================================
 
 #~ Pretty Print Construct PrettyPrinter objects explicitly 
@@ -317,6 +317,7 @@ def ecriture_disquette():
     pp.pprint(composants)                   #defined indentation of components
     print("after pp.pprint(components)")
     pushComp(composants)
+    
     return bank
    
 #~ =========================================================================   
@@ -360,4 +361,5 @@ f.close()
 
 
 #~ ===========================================================================
+
 
