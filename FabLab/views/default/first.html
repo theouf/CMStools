@@ -1,14 +1,18 @@
 {{extend 'layout.html'}}
 <h1>What is your Choose?</h1>
-<form action="second">
+
+<form enctype="multipart/form-data"
+      action="{{=URL('/FabLab/default/first')}}"method="post" >
   <h1>Source Eagle PartList</h1>
     <input type="file" name="fichier_name"/>
-  
-{{=request.vars.fichier_name}}
-    
-<br/>
-<br/>
-   
+    <input type="submit" />  
+</form>
+
+
+
+
+ <form enctype="multipart/form-data"
+      action="{{=URL('/FabLab/default/second')}}" method="post">  
 
 <TABLE align="center" BORDER="1"> 
   <CAPTION> Voici le titre du tableau </CAPTION> 
@@ -19,9 +23,11 @@
  <TH> Depot </TH> 
   </TR> 
   <TR> 
- <TD> <input align="center"type="text" name="Components_name" size=10> </TD> 
+ <TD><select name='composant'>
+     <option value='{{= composant (request.vars)}}' >{{= composant (request.vars)}}</option>
+     </select>  </TD> 
  <TD><select name="Rang_name">
-     <option value="rang 1"selected >Rang 1</option> 
+     <option value="rang 1" selected >Rang 1</option> 
           <option value="rang 2" >Rang 2</option>
           <option value="rang 3">Rang 3</option>
           <option value="rang 4">Rang 4</option> 
@@ -37,9 +43,9 @@
          <option value="rang 4">Rang 14</option> 
          <option value="rang 21" >Rang 21</option> 
          <option value="rang 22" >Rang 22</option>
-         <option value="rang 4">Rang 23</option> 
-         <option value="rang 4">Rang 24</option> 
-         <option value="rang 4">Rang 25</option> 
+         <option value="rang 23">Rang 23</option> 
+         <option value="rang 24">Rang 24</option> 
+         <option value="rang 25">Rang 25</option> 
          <option value="rang 4">Rang 26</option> 
          <option value="rang 4">Rang 27</option> 
          <option value="rang 4">Rang 28</option> 
@@ -79,17 +85,9 @@
   </TR> 
 </TABLE> 
 
+<input type="submit"/>
 
-
-<br/>
-<br/>
-
-
-
-
-        
-  <input type="submit" />
-</form>
-
+{{=BEAUTIFY(request.vars)}}
 
 <input type="button" name="Acceuil" value="Acceuil" onclick="self.location.href='/FabLab'" style="background-color:#3cb371" style="color:white; font-weight:bold"onclick>
+</form>
