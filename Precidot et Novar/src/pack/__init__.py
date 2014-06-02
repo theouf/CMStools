@@ -1,5 +1,5 @@
 '''
-Created on 25 avr. 2014
+Created on 02 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -60,14 +60,14 @@ hexAddr['bank1'] = 0x04000
 hexAddr['bank2'] = 0x16206
 hexAddr['bank3'] = 0x28206
 hexAddr['bank4'] = 0x3A000
-
+hexAddr['bank4P'] = 0x39000
 # ~ package to magasin en Stand By pour l'instant
 pack2Mag = {}
 
 
 
-# ~ We defined the dictionary pack2Mag with keys and 2 Value in list
-# ~ the first value is the LAB
+# ~ We defined the dictionary pack2Mag with keys and the Value 
+# ~ the value is the LAB
 # ~ the second value is the DOT
 # ~ the third value is Center Dx of component
 # ~ the fourth value is Center Dy of component
@@ -134,64 +134,59 @@ dictMag['R3216'] = 22
            
 
 # 3eme et 4eme colonne sont :
-# Coordonnée centre composant Machine : ((longueur /0,0508)/2)
+# Coordonnee centre composant Machine : ((longueur /0,0508)/2)
+
+# ~ We defined the dictionary Lab with keys and 4 Values 
+# ~ the value is the MT
+# ~ the second value is the LAB
+# ~ the third value is Center Dx of component
+# ~ the fourth value is Center Dy of component
+
+# ~ Unite Machine =0.0508mm
+
+
+
 
 Lab = {}
 
 Lab = {
-        '1':  [1, 2, 157  , 1793],
-        '2':  [1, 2, 157   , 2105],
-        '3':  [1, 2, 157  , 2418],
-        '4':  [1, 2, 157   , 2733],
-        '5':  [1, 2, 157  , 3048],
-        '6':  [1, 2, 157  , 3362],
-        '7':  [1, 2, 157  , 3676],
-        '8':  [1, 2, 157  , 3992],
-        '9':  [1, 2, 157  , 4305],
-        '10': [1, 2, 157 , 4620],
-        '11': [1, 2, 157 , 4969],
-        '12': [1, 2, 157 , 5362],
-        '13': [1, 2, 157 , 5804],
-        '14': [1, 2, 157 , 6278],
-        '21': [1, 2, 7700, 5569],
-        '22': [1, 2, 7700 , 5253],
-        '23': [1, 2, 7700  , 4940],
-        '24': [1, 2, 7700 , 4625],
-        '25': [1, 2, 7700 , 4311],
-        '26': [1, 2, 7700 , 4005],
-        '27': [1, 2, 7700  , 3686],
-        '28': [1, 2, 7700 , 3369],
-        '29': [1, 2, 7698 , 3055],
-        '30': [1, 2, 7700 , 2737],
-        '31': [1, 2, 7690 , 2480],
-        '32': [1, 2, 7690 , 2087],
-        '33': [1, 2, 7690 , 1652],
-        '34': [1, 2, 7690 , 1190]
+        '1':  [0, 2, 157  , 1793],
+        '2':  [0, 2, 157   , 2105],
+        '3':  [0, 2, 157  , 2418],
+        '4':  [0, 2, 157   , 2733],
+        '5':  [0, 2, 157  , 3048],
+        '6':  [0, 2, 157  , 3362],
+        '7':  [0, 2, 157  , 3676],
+        '8':  [0, 2, 157  , 3992],
+        '9':  [0, 2, 157  , 4305],
+        '10': [0, 2, 157 , 4620],
+        '11': [0, 2, 157 , 4969],
+        '12': [0, 2, 157 , 5362],
+        '13': [0, 2, 157 , 5804],
+        '14': [0, 2, 157 , 6278],
+        '21': [0, 2, 7700, 5569],
+        '22': [0, 2, 7700 , 5253],
+        '23': [0, 2, 7700  , 4940],
+        '24': [0, 2, 7700 , 4625],
+        '25': [0, 2, 7700 , 4311],
+        '26': [0, 2, 7700 , 4005],
+        '27': [0, 2, 7700  , 3686],
+        '28': [0, 2, 7700 , 3369],
+        '29': [0, 2, 7698 , 3055],
+        '30': [0, 2, 7700 , 2737],
+        '31': [0, 2, 7690 , 2480],
+        '32': [0, 2, 7690 , 2087],
+        '33': [0, 2, 7690 , 1652],
+        '34': [0, 2, 7690 , 1190]
       } 
        
        
+Tampon =[]    
        
-       
-       
-                                               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 #~ =====================================================================
-#~ ====================CONVERSION EN HEXADECIMAL ==================
-#~ ================= en Little Endian ===========================
+#~ ====================CONVERSION TO HEXADECIMAL ==================
+#~ ================= into Little Endian ===========================
 
 
 def intToHex(i):
@@ -210,10 +205,10 @@ import  codecs
 def writeToFloppy(t):
     for i in range(0, len(t)):
         h = intToHex(t[i])
-       # f.write( h[0].decode('hex'))            # fonction qui marche plus sur Python 3.4
-       # f.write( h[1].decode('hex'))
-        decode_hex = codecs.decode(h[0], "hex")  # convertir un string en hexa
-        f.write(decode_hex)  # ecriture sur la disquette 
+        #f.write( h[0].decode('hex'))            # the function don't work on Python 3.4
+        #f.write( h[1].decode('hex'))
+        decode_hex = codecs.decode(h[0], "hex")  # convert a string into hexa
+        f.write(decode_hex)  # write to an floppy 
        
         decode_hex1 = codecs.decode(h[1], "hex")
         f.write(decode_hex1)
@@ -260,7 +255,7 @@ def Dot(Depot):
     
     print("Start of depot")
     if m == pack2Mag['SO08']:
-        Depot = 100
+        Depot = 148
     elif m == pack2Mag['SO12']:
         Depot = 200
     elif m == pack2Mag['SO14']:
@@ -295,15 +290,15 @@ def Dot(Depot):
     elif m == pack2Mag['0805']:
         Depot = 200
     elif m == pack2Mag['1206']:
-        Depot = 200
+        Depot = 400
     elif m == pack2Mag['1210']:
-        Depot = 200
+        Depot = 400
     elif m == pack2Mag['1812']:
         Depot = 200
     elif m == pack2Mag['2220']:
         Depot = 200 
     elif m == pack2Mag['R3216']:
-        Depot = 100
+        Depot = 400
     else:
         Depot = 400
     return Depot
@@ -313,7 +308,7 @@ def Dot(Depot):
 #~ ================= PARTIE NOVAR : Placement du Composant ========
 def pushComp(data, NewMag):
     print ("start pushComp()")
-                                        # fileObject.seek (offset ,[où])
+                                        # fileObject.seek (offset ,[ou])
     bank = 'bank4'    
     # print(bank)                       # 1ere Etape
     f.seek(hexAddr[bank], ABSOLUTE)  # offset : example hexAddr['bank1'] = 0x04000
@@ -335,9 +330,10 @@ def pushComp(data, NewMag):
     writeToFloppy([0, 2, 0, 0])  # Writting  End of Programme
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x32, RELATIVE)  # ecriture des donnee 
+    f.seek(0x32, RELATIVE)  # write to data
     writeToFloppy([len(data) + addLines, len(data) + addLines])  # format d'ecriture
-    print ("finish of writting components")  # ecriture des données 
+    print ("finish of writting components")  # finish to write
+    print(data)
 #~ =========================================================================
 
 # ~ Pretty Print Construct PrettyPrinter objects explicitly 
@@ -346,29 +342,32 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # ~ Constants
 ABSOLUTE = 0  # ~le positionnement de fichier absolu prend la valeur 0
-RELATIVE = 1  # le positionnement de fichier~par rapport à la situation actuelle 
+RELATIVE = 1  # le positionnement de fichier~par rapport a la situation actuelle 
                 # ~ on prendra la valeur 1
  
-#~============================================================================== 
+#~=================================================================================== 
 #~ ==========================warehouse===============================================        
-        # for NewMag you could Entrer an adress Magasin for each component :")
-#~ =========================================================================        
+        # first  NewMag  could enter a warehouse address  for each component :")
+        # secondly searchLab() detects the Lab key  which equals NewMag and inserts the dictMag value in the
+        # dictionary (Lab)
+        # Lab is indentical to the position of the section 
+#~ ===================================================================================        
           
 def warehouse (composants):
     
         for k in composants:
-           print("Choose an adress for : " + k)
+           print("Choose an address for : " + k)
            NewMag = input('Entrer an adress of Section\'s Mag for:')
            if NewMag == '1' or NewMag == '2' or NewMag == '3' or NewMag == '4' or NewMag == '5' or NewMag == '6' or NewMag == '7'or NewMag == '8' or NewMag == '9' or NewMag == '10' or NewMag == '11' or NewMag == '12' or NewMag == '13' or NewMag == '14' or NewMag == '21' or NewMag == '22' or NewMag == '23' or NewMag == '24' or NewMag == '25' or NewMag == '26' or NewMag == '27'or NewMag == '28' or NewMag == '29' or NewMag == '30'or NewMag == '31' or NewMag == '32' or NewMag == '33' or NewMag == '34' or NewMag == '41' or NewMag == '42' or NewMag == '43' or NewMag == '44' or NewMag == '45' or NewMag == '46' :
                pack2Mag[k] = NewMag
-               searchLab(Lab, NewMag, dictMag, composants) 
+               searchLab(Lab, NewMag, dictMag, composants,Tampon) 
                print("Avant la fonction searchLab " + NewMag)
         return NewMag
  #~============================================================================== 
 #~ ==========================LAB===============================================        
 
 
-def searchLab(Lab, NewMag, dictMag, comp): 
+def searchLab(Lab, NewMag, dictMag, comp,Tampon): 
   
    print(comp[0])
    
@@ -378,7 +377,7 @@ def searchLab(Lab, NewMag, dictMag, comp):
    
    for o in keys:
        if o == NewMag: 
-               print ("la selection du rang :" + str(Lab[o]))
+               
                for i in dictMagK:
                    
                    if comp[0] == i:
@@ -386,16 +385,51 @@ def searchLab(Lab, NewMag, dictMag, comp):
                        for g in dictMag.items():
                            if i == g[0]:
                                
-                               print("la selection du Lab" + str(g[1]))
+                               print("the Lab\'s selection is " + str(g[1]))
                                
                                val = str(g[1])
-                               Lab[o][1] = val
-                               print(val)
-                               print("vous selectionné :" + str(Lab[o]) + " pour le rang")
-                               print("et vous placer lab :" + val)
+                               Lab[o][1] = int(val)
+                               print(str(val))
+                               print("you select :" + str(Lab[o]) + " for the section")
+                               print("et vous placer lab :" + str(val))
                                print(Lab[o])
-   return Lab, NewMag, dictMag, comp            
+                               print("before Lab")
+                               print(Tampon)
+                               Tampon.append(Lab[o])
+                               
+                               
+                               print("after Lab")
+                               
+   return Lab, NewMag, dictMag, comp ,Tampon           
               
+def pushLab(Tampon):
+    print ("start pushLab()")
+                                        # fileObject.seek (offset ,[ou])
+    bank = 'bank4P'    
+    print(Tampon)                       # 1ere Etape
+    f.seek(hexAddr[bank], ABSOLUTE)  # offset : example hexAddr['bank1'] = 0x04000
+    f.seek(0x608, RELATIVE) 
+                                        # where : 0 
+    for v in Tampon:  # k is key of componant 
+            print(v)                               # v is dx et dy
+            writeToFloppy(v)
+            
+            
+            
+            
+        # ~ Nb lignes
+    f.seek(hexAddr[bank], ABSOLUTE)
+    f.seek(0xFFF, RELATIVE)  # write to Lab
+    writeToFloppy([len(Tampon) + addLines, len(Tampon) + addLines])  # format d'ecriture
+    print ("finish of writting warehouse")  # finish to write
+#~ =========================================================================    
+     
+     
+     
+     
+     
+     
+     
    
    
    
@@ -523,11 +557,10 @@ def ecriture_disquette():
     print("change of bank")
     pp.pprint(composants)  # defined indentation of components
     print("after pp.pprint(components)")
-    pushComp(composants)
-    print("before Lab")
-   
-    print("after Lab")
-    # pushComp(Lab)
+    pushComp(composants,NewMag)
+    print("before pushLab(Tampon)")
+    pushLab(Tampon)
+    print("after pushLab(Tampon)") 
     return bank
     
 #~ =========================================================================   
