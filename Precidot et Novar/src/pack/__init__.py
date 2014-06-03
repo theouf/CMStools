@@ -1,5 +1,5 @@
 '''
-Created on 02 juin. 2014
+Created on 03 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -76,7 +76,7 @@ pack2Mag = {}
 
 
 pack2Mag = {}
-pack2Mag['3,17/1,2'] = 0
+#pack2Mag['3,17/1,2'] = 0
 pack2Mag['SO08'] = 1  # longueur 5,1     Largeur 2,5
 pack2Mag['SO12'] = 2
 pack2Mag['SO14'] = 3
@@ -103,7 +103,7 @@ pack2Mag['R3216'] = 22
             
            
 dictMag = {}           
-dictMag['3,17/1,2'] = 0 
+#dictMag['3,17/1,2'] = 0 
 dictMag['SO08'] = 1  # longueur 5,1     Largeur 2,5
 dictMag['SO12'] = 2
 dictMag['SO14'] = 3
@@ -361,7 +361,10 @@ def warehouse (composants):
            if NewMag == '1' or NewMag == '2' or NewMag == '3' or NewMag == '4' or NewMag == '5' or NewMag == '6' or NewMag == '7'or NewMag == '8' or NewMag == '9' or NewMag == '10' or NewMag == '11' or NewMag == '12' or NewMag == '13' or NewMag == '14' or NewMag == '21' or NewMag == '22' or NewMag == '23' or NewMag == '24' or NewMag == '25' or NewMag == '26' or NewMag == '27'or NewMag == '28' or NewMag == '29' or NewMag == '30'or NewMag == '31' or NewMag == '32' or NewMag == '33' or NewMag == '34' or NewMag == '41' or NewMag == '42' or NewMag == '43' or NewMag == '44' or NewMag == '45' or NewMag == '46' :
                pack2Mag[k] = NewMag
                searchLab(Lab, NewMag, dictMag, composants,Tampon) 
-               print("Avant la fonction searchLab " + NewMag)
+               #print("Avant la fonction searchLab " + NewMag)
+           elif NewMag == '15' or NewMag == '16' or NewMag == '17' or NewMag == '18' or NewMag == '19' or NewMag == '20' or NewMag == '35'or NewMag == '36' or NewMag == '37' or NewMag == '38'or NewMag == '39' or NewMag == '40': 
+                print("impossible de rentrer ce magasin")
+                warehouse (composants)
         return NewMag
  #~============================================================================== 
 #~ ==========================LAB===============================================        
@@ -385,18 +388,18 @@ def searchLab(Lab, NewMag, dictMag, comp,Tampon):
                        for g in dictMag.items():
                            if i == g[0]:
                                
-                               print("the Lab\'s selection is " + str(g[1]))
+                               #print("the Lab\'s selection is " + str(g[1]))
                                
                                val = str(g[1])
                                Lab[o][1] = int(val)
-                               print(str(val))
-                               print("you select :" + str(Lab[o]) + " for the section")
-                               print("et vous placer lab :" + str(val))
-                               print(Lab[o])
-                               print("before Lab")
-                               print(Tampon)
-                               Tampon.append(Lab[o])
+                               #print(str(val))
+                               #print("you select :" + str(Lab[o]) + " for the section")
+                               #print("et vous placer lab :" + str(val))
+                               #print(Lab[o])
+                               #print("before Lab")
                                
+                               Tampon.append(Lab[o])
+                               #print(Tampon)
                                
                                print("after Lab")
                                
@@ -559,6 +562,7 @@ def ecriture_disquette():
     print("after pp.pprint(components)")
     pushComp(composants,NewMag)
     print("before pushLab(Tampon)")
+    bank = 'bank4P' 
     pushLab(Tampon)
     print("after pushLab(Tampon)") 
     return bank
