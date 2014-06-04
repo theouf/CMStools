@@ -426,7 +426,7 @@ def pushLab(Tampon):
     f.seek(0x608, RELATIVE) 
                                         # where : 0 
     for v in Tampon:  # k is key of componant 
-                                           # v is dx et dy
+            print(v)                               # v is dx et dy
             writeToFloppy(v)
             
             
@@ -563,17 +563,17 @@ for line in lines:
 #~ ============================= WRITTING ON FLOPPY DISK ========================
 def ecriture_disquette(): 
        
-    bank = 'bank1'
-    print("before pushDots(pins)")
-    pushDots(pins)
-    print("after pushDots(pins)") 
+   # bank = 'bank1'
+    #print("before pushDots(pins)")
+ #   pushDots(pins)
+  #  print("after pushDots(pins)") 
       
-    bank = 'bank4'
-    print("change of bank")
-    pp.pprint(composants)  # defined indentation of components
-    print("after pp.pprint(components)")
-    pushComp(composants,NewMag)
-    print("before pushLab(Tampon)")
+   # bank = 'bank4'
+ #   print("change of bank")
+  #  pp.pprint(composants)  # defined indentation of components
+   # print("after pp.pprint(components)")
+ #   pushComp(composants,NewMag)
+  #  print("before pushLab(Tampon)")
     bank = 'bank4P' 
     pushLab(Tampon)
     print("after pushLab(Tampon)") 
