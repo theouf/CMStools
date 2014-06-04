@@ -50,7 +50,7 @@ yaxisdir = '-'
 
 # ~ Added lines
 addLines = 3 + loops
-
+addLinesK = loops
 # ~ target can be Precidot or Nova
 target = "Novar"
 
@@ -182,11 +182,11 @@ Lab = {
       } 
        
 #Tampon is fixed all magasin with there Mag address
-Tampon =[[0, 0, 157  , 1793],[0, 0, 157   , 2105],[0, 0, 157  , 2418],
-         [0, 0, 157   , 2733],[0, 0, 157  , 3048],[0, 0, 157  , 3362],
-         [0, 0, 157  , 3676],[0, 0, 157  , 3992],[0, 0, 157  , 4305],
-         [0, 0, 157 , 4620],[0, 0, 157 , 4969],[0, 0, 157 , 5362],
-         [0, 0, 157 , 5804],[0, 0, 157 , 6278],[0, 0, 7700, 5569],
+Tampon =[[0, 0, 153  , 1725],[0, 0, 153   , 2034],[0, 0, 153  , 2357],
+         [0, 0, 153   , 2671],[0, 0, 153  , 2986],[0, 0, 153  , 3299],
+         [0, 0, 153  , 3614],[0, 0, 153  , 3929],[0, 0, 153  , 4242],
+         [0, 0, 153 , 4557],[0, 0, 153 , 4969],[0, 0, 153 , 5362],
+         [0, 0, 153 , 5804],[0, 0, 153 , 6278],[0, 0, 7700, 5572],
          [0, 0, 7700 , 5253],[0, 0, 7700  , 4940],[0, 0, 7700 , 4625],
          [0, 0, 7700 , 4311],[0, 0, 7700 , 4005],[0, 0, 7700  , 3686],
          [0, 0, 7700 , 3369],[0, 0, 7698 , 3055],[0, 0, 7700 , 2737],
@@ -413,7 +413,7 @@ def searchLab(Lab, NewMag, dictMag, comp,Tampon):
                                #Tampon.append(Lab[o])
                                #print(Tampon)
                                
-                               print("after Lab")
+                               
                                
    return Lab, NewMag, dictMag, comp ,Tampon           
               
@@ -434,8 +434,8 @@ def pushLab(Tampon):
             
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0xFFF, RELATIVE)  # write to Lab
-    writeToFloppy([len(Tampon) + addLines, len(Tampon) + addLines])  # format d'ecriture
+    f.seek(0x6F4, RELATIVE)  # write to Lab
+    writeToFloppy([len(Tampon) + addLinesK, len(Tampon) + addLinesK])  # format d'ecriture
     print ("finish of writting warehouse")  # finish to write
 #~ =========================================================================    
      
@@ -563,17 +563,17 @@ for line in lines:
 #~ ============================= WRITTING ON FLOPPY DISK ========================
 def ecriture_disquette(): 
        
-   # bank = 'bank1'
-    #print("before pushDots(pins)")
- #   pushDots(pins)
-  #  print("after pushDots(pins)") 
+    bank = 'bank1'
+    print("before pushDots(pins)")
+    pushDots(pins)
+    print("after pushDots(pins)") 
       
-   # bank = 'bank4'
- #   print("change of bank")
-  #  pp.pprint(composants)  # defined indentation of components
-   # print("after pp.pprint(components)")
- #   pushComp(composants,NewMag)
-  #  print("before pushLab(Tampon)")
+    bank = 'bank4'
+    print("change of bank")
+    pp.pprint(composants)  # defined indentation of components
+    print("after pp.pprint(components)")
+    pushComp(composants,NewMag)
+    print("before pushLab(Tampon)")
     bank = 'bank4P' 
     pushLab(Tampon)
     print("after pushLab(Tampon)") 
