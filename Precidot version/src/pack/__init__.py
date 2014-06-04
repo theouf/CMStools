@@ -50,7 +50,7 @@ yaxisdir = '-'
 
 # ~ Added lines
 addLines = 3 + loops
-addLinesK = loops
+
 # ~ target can be Precidot or Nova
 target = "Novar"
 
@@ -425,9 +425,9 @@ def pushLab(Tampon):
     f.seek(hexAddr[bank], ABSOLUTE)  # offset : example hexAddr['bank1'] = 0x04000
     f.seek(0x608, RELATIVE) 
                                         # where : 0 
-    for v in Tampon:  # k is key of componant 
-            print(v)                               # v is dx et dy
-            writeToFloppy(v)
+    for n in range(0, len(Tampon)):  # k is key of componant 
+            print(Tampon[n])                               # v is dx et dy
+            writeToFloppy(Tampon[n])
             
             
             
@@ -435,7 +435,7 @@ def pushLab(Tampon):
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x6F4, RELATIVE)  # write to Lab
-    writeToFloppy([len(Tampon) + addLinesK, len(Tampon) + addLinesK])  # format d'ecriture
+    writeToFloppy([len(Tampon) + addLines, len(Tampon) + addLines])  # format d'ecriture
     print ("finish of writting warehouse")  # finish to write
 #~ =========================================================================    
      
