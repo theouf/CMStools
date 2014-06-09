@@ -1,5 +1,5 @@
 '''
-Created on 03 juin. 2014
+Created on 09 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -43,7 +43,7 @@ Depot = ''
 
 NewMag = ''
 
-
+ligne = []
 # ~ Y axis direction 
 yaxisdir = '-'
 
@@ -186,10 +186,10 @@ Tampon =[[0, 0, 153  , 1725],[0, 0, 153   , 2034],[0, 0, 153  , 2357],
          [0, 0, 153   , 2671],[0, 0, 153  , 2986],[0, 0, 153  , 3299],
          [0, 0, 153  , 3614],[0, 0, 153  , 3929],[0, 0, 153  , 4242],
          [0, 0, 153 , 4557],[0, 0, 153 , 4969],[0, 0, 153 , 5362],
-         [0, 0, 153 , 5804],[0, 0, 153 , 6278],[0, 0, 7700, 5572],
-         [0, 0, 7700 , 5253],[0, 0, 7700  , 4940],[0, 0, 7700 , 4625],
-         [0, 0, 7700 , 4311],[0, 0, 7700 , 4005],[0, 0, 7700  , 3686],
-         [0, 0, 7700 , 3369],[0, 0, 7698 , 3055],[0, 0, 7700 , 2737],
+         [0, 0, 153 , 5804],[0, 0, 153 , 6278],[0, 0, 7619, 5572],
+         [0, 0, 7619 , 5253],[0, 0, 7619  , 4940],[0, 0, 7619 , 4625],
+         [0, 0, 7619 , 4311],[0, 0, 7619 , 4005],[0, 0, 7619  , 3686],
+         [0, 0, 7619 , 3369],[0, 0, 7698 , 3055],[0, 0, 7619 , 2737],
          [0, 0, 7690 , 2480],[0, 0, 7690 , 2087],[0, 0, 7690 , 1652],
          [0, 0, 7690 , 1190],[0, 0, 366 , 6855]]    
        
@@ -258,11 +258,13 @@ def pushDots(data):
     f.seek(0x32, RELATIVE)
     writeToFloppy([len(data) + addLines, len(data) + addLines])
     print ("Finish Points !! ")
+    print("Data for Precidot")
+    print(data)
     return data
 #~ =================================================================================
 #~ =================== DOT ========================
 
-def Dot(Depot):
+def Dot(Depot,m):
     
     print("Start of depot")
     if m == pack2Mag['SO08']:
@@ -329,6 +331,8 @@ def pushComp(data, NewMag):
         writeToFloppy([0, 0, 0, 0])  # offset : hexAddr['bank1'] = 0x208
         print ("start to write component")  # where : 1  
         writeToFloppy([0, 10, 0, 0])  # writting  Control to references of point.
+        for c in data.keys():
+            outil(ligne,composants)                    #change tools
         writeToFloppy([0, 1, loops, 0])  # writting one loop 
       
     for k, v in data.items():  # k is key of componant 
@@ -344,7 +348,7 @@ def pushComp(data, NewMag):
     f.seek(0x32, RELATIVE)  # write to data
     writeToFloppy([len(data) + addLines, len(data) + addLines])  # format d'ecriture
     print ("finish of writting components")  # finish to write
-    
+    print(data)
 #~ =========================================================================
 
 # ~ Pretty Print Construct PrettyPrinter objects explicitly 
@@ -355,6 +359,26 @@ pp = pprint.PrettyPrinter(indent=4)
 ABSOLUTE = 0  # ~le positionnement de fichier absolu prend la valeur 0
 RELATIVE = 1  # le positionnement de fichier~par rapport a la situation actuelle 
                 # ~ on prendra la valeur 1
+ 
+def outil(ligne,composants):
+     
+     for c in composants.keys() :   
+         outil=input("is change tool?"+str(c)+" Enter 1 for yes or 2 for no : ")
+         if outil == '1':
+             print("changement outil"+str(c))
+             numero=input("quel numero?")
+             ligne = writeToFloppy([0, 3, numero, 0])
+             print(ligne)
+             return ligne
+         elif outil == '2': 
+             return -1
+           
+   
+ 
+ 
+ 
+ 
+ 
  
 #~=================================================================================== 
 #~ ==========================warehouse===============================================        
@@ -423,7 +447,7 @@ def pushLab(Tampon):
     bank = 'bank4P'    
                          # 1ere Etape
     f.seek(hexAddr[bank], ABSOLUTE)  # offset : example hexAddr['bank1'] = 0x04000
-    f.seek(0x608, RELATIVE) 
+    f.seek(0x60C, RELATIVE) 
                                         # where : 0 
     for n in range(0, len(Tampon)):  # k is key of componant 
             print(Tampon[n])                               # v is dx et dy
@@ -434,7 +458,7 @@ def pushLab(Tampon):
             
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x6F4, RELATIVE)  # write to Lab
+    f.seek(0x77F, RELATIVE)  # write to Lab
     writeToFloppy([len(Tampon) + addLines, len(Tampon) + addLines])  # format d'ecriture
     print ("finish of writting warehouse")  # finish to write
 #~ =========================================================================    
@@ -535,9 +559,9 @@ for line in lines:
     if "-Pin-" in line:
        
         m = p2.match(line)
-             
+    
         if m:
-            pins.append(list((1, Dot(Depot)) + m.group(1, 2)))
+            pins.append(list((1, Dot(Depot,m)) + m.group(1, 2)))
         else:
             print ("Ignored line: " + line)
  
