@@ -1,3 +1,5 @@
+#!/usr/bin/python3.4
+# coding=utf-8
 '''
 Created on 11 juin. 2014
 
@@ -6,8 +8,6 @@ Created on 11 juin. 2014
 version Python 3.4
 
 '''
-#!/usr/bin/python
-# coding=utf-8
 #~ ========================== IMPORT  =================================
 import datetime, time
 import pprint
@@ -18,8 +18,8 @@ import struct
 #~================================ VARIABLES =========================
 
 # ~ Source file for testing
-source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp'  # Windows
-# source = '/home/fabmanager/Desktop/testeur_UM.pnp'     # Linux
+#~ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp'  # Windows
+source = '../../../testeur_UM.pnp'     # Linux
 
 #~ ================================================================
 
@@ -30,7 +30,7 @@ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp'  # Windows
 # ~ afin de permettre les essais ce support est virtuel
 # ~ disk ='/dev/fd0' permet de cible la disquette
 
-disk = 'biscotte'
+disk = '../../../biscotte'
 # disk ='/dev/fd0'
 #~====================================================================
 bank = 'bank4'
@@ -366,25 +366,19 @@ RELATIVE = 1  # le positionnement de fichier~par rapport a la situation actuelle
  
 def outil(DataOutil,composants):
      
-    chang=input("is change tool during this program ? Please Enter 1 for yes or 2 for no : ")
-    if chang =='1':
-        
+    chang=input("is change tool during this program ? [y/N] : ") or 'N'
+    if chang =='y':
          for c in composants.keys() : 
-               
-             outil=input("is change tool?"+str(c)+" Enter 1 for yes or 2 for no : ")
-             if outil == '1':
-                 print("changement outil"+str(c))
+             outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+             if outil == 'y':
+                 print("changement outil "+str(c)+": ")
                  numero=input("quel numero?")
                  DataOutil[2]=numero
                  #ligne = writeToFloppy([0, 3, numero, 0])
                  print(DataOutil)
-                 return DataOutil 
-             elif outil == '2': 
-                 pass
-   
-    elif chang == '2' : break  
-        
+                 return DataOutil
     return DataOutil
+    
 #~=================================================================================== 
 #~ ==========================warehouse===============================================        
         # first  NewMag  could enter a warehouse address  for each component :")
@@ -394,19 +388,16 @@ def outil(DataOutil,composants):
 #~ ===================================================================================        
           
 def warehouse (comp,composants):
-        
-        
-           print("Choose an address for : " + comp)
-           NewMag = input('Entrer an adress of Section\'s Mag for:')
-           for k in composants:
-               if NewMag == '1' or NewMag == '2' or NewMag == '3' or NewMag == '4' or NewMag == '5' or NewMag == '6' or NewMag == '7'or NewMag == '8' or NewMag == '9' or NewMag == '10' or NewMag == '11' or NewMag == '12' or NewMag == '13' or NewMag == '14' or NewMag == '21' or NewMag == '22' or NewMag == '23' or NewMag == '24' or NewMag == '25' or NewMag == '26' or NewMag == '27'or NewMag == '28' or NewMag == '29' or NewMag == '30'or NewMag == '31' or NewMag == '32' or NewMag == '33' or NewMag == '34' or NewMag == '41' or NewMag == '42' or NewMag == '43' or NewMag == '44' or NewMag == '45' or NewMag == '46' :
-                  pack2Mag[k] = NewMag
-                  searchLab(Lab, NewMag, dictMag, composants,Tampon) 
-               #print("Avant la fonction searchLab " + NewMag)
-               elif NewMag == '15' or NewMag == '16' or NewMag == '17' or NewMag == '18' or NewMag == '19' or NewMag == '20' or NewMag == '35'or NewMag == '36' or NewMag == '37' or NewMag == '38'or NewMag == '39' or NewMag == '40': 
-                    print("impossible de rentrer ce magasin")
-                    warehouse (composants,comp)
-           return NewMag
+    print("Choose an address for : " + comp)
+    NewMag = int(input('Entrer an adress of Section\'s Mag for:') or 0)
+    for k in composants:
+        if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
+            pack2Mag[k] = NewMag
+            searchLab(Lab, NewMag, dictMag, composants,Tampon) 
+        elif NewMag in range(15,20) or NewMag in range(35,40):
+            print("impossible de rentrer ce magasin")
+            warehouse (composants,comp)
+    return NewMag
  #~============================================================================== 
 #~ ==========================LAB===============================================        
 
@@ -493,11 +484,10 @@ def pushLab(Tampon):
 #~============================================================================
 try: 
     print ('it\'s possible to writting data on a floppy disk')       
-    f = open(disk, 'rb+')         
-    
+    f = open(disk, 'rb+')
 except IOError:
+    print ('impossible to writting data')
 
-                print ('impossible to writting data')
 #~ =========================================================================
 #~ ==================== FORMAT pour EAGLE ==================================
 #~ ==================== FORMAT FOR EAGLE ===================================
