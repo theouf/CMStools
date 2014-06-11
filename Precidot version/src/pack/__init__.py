@@ -1,5 +1,5 @@
 '''
-Created on 09 juin. 2014
+Created on 11 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -46,6 +46,11 @@ NewMag = ''
 ligne = []
 # ~ Y axis direction 
 yaxisdir = '-'
+
+#~ DataOutil is for change Tool during the program
+
+DataOutil = [0,3,0,0]
+
 
 
 # ~ Added lines
@@ -279,7 +284,6 @@ def Dot(Depot,m):
         Depot = 200
     elif m == pack2Mag['SO24']:
         Depot = 200
-        
     elif m == pack2Mag['SO28']:
         Depot = 200
     elif m == pack2Mag['SOT23']:
@@ -332,7 +336,7 @@ def pushComp(data, NewMag):
         print ("start to write component")  # where : 1  
         writeToFloppy([0, 10, 0, 0])  # writting  Control to references of point.
         for c in data.keys():
-            outil(ligne,composants)                    #change tools
+            outil(DataOutil,composants)                    #change tools
         writeToFloppy([0, 1, loops, 0])  # writting one loop 
       
     for k, v in data.items():  # k is key of componant 
@@ -360,26 +364,27 @@ ABSOLUTE = 0  # ~le positionnement de fichier absolu prend la valeur 0
 RELATIVE = 1  # le positionnement de fichier~par rapport a la situation actuelle 
                 # ~ on prendra la valeur 1
  
-def outil(ligne,composants):
+def outil(DataOutil,composants):
      
-     for c in composants.keys() :   
-         outil=input("is change tool?"+str(c)+" Enter 1 for yes or 2 for no : ")
-         if outil == '1':
-             print("changement outil"+str(c))
-             numero=input("quel numero?")
-             ligne = writeToFloppy([0, 3, numero, 0])
-             print(ligne)
-             return ligne
-         elif outil == '2': 
-             return -1
-           
+    chang=input("is change tool during this program ? Please Enter 1 for yes or 2 for no : ")
+    if chang =='1':
+        
+         for c in composants.keys() : 
+               
+             outil=input("is change tool?"+str(c)+" Enter 1 for yes or 2 for no : ")
+             if outil == '1':
+                 print("changement outil"+str(c))
+                 numero=input("quel numero?")
+                 DataOutil[2]=numero
+                 #ligne = writeToFloppy([0, 3, numero, 0])
+                 print(DataOutil)
+                 return DataOutil 
+             elif outil == '2': 
+                 pass
    
- 
- 
- 
- 
- 
- 
+    elif chang == '2' : break  
+        
+    return DataOutil
 #~=================================================================================== 
 #~ ==========================warehouse===============================================        
         # first  NewMag  could enter a warehouse address  for each component :")
@@ -436,8 +441,8 @@ def searchLab(Lab, NewMag, dictMag, comp,Tampon):
                                
                                #Tampon.append(Lab[o])
                                #print(Tampon)
-                               
-                               
+    
+                        
                                
    return Lab, NewMag, dictMag, comp ,Tampon           
               
@@ -445,17 +450,14 @@ def pushLab(Tampon):
     print ("start pushLab()")
                                         # fileObject.seek (offset ,[ou])
     bank = 'bank4P'    
-                         # 1ere Etape
+                                     # 1ere Etape
     f.seek(hexAddr[bank], ABSOLUTE)  # offset : example hexAddr['bank1'] = 0x04000
     f.seek(0x60C, RELATIVE) 
-                                        # where : 0 
+                                     # where : 0 
     for n in range(0, len(Tampon)):  # k is key of componant 
             print(Tampon[n])                               # v is dx et dy
             writeToFloppy(Tampon[n])
-            
-            
-            
-            
+                
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x77F, RELATIVE)  # write to Lab
