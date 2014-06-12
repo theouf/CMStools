@@ -368,12 +368,21 @@ def outil(DataOutil,composants):
      
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
-         for c in composants.keys() : 
+        
+         DataOutilTemp[3]= 1
+         DataOutil.append(DataOutilTemp)
+         print(DataOutil)
+         for c in composants.keys() :
              outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
              if outil == 'y':
-                 print("changement outil "+str(c)+": ")
+                 DataOutilTemp[3]= 0
+                 print("vous etres sur l'outil"+str(DataOutilTemp[2]))
+                 print("changement outil pour "+str(c)+": ")
+                
                  numero=input("quel numero?")
-                 DataOutil[2]=numero
+                 DataOutilTemp[2]=int(numero)
+                 DataOutil.append(DataOutilTemp)
+                
                  #ligne = writeToFloppy([0, 3, numero, 0])
                  print(DataOutil)
                  return DataOutil
