@@ -271,55 +271,79 @@ def pushDots(data):
 #~ =================================================================================
 #~ =================== DOT ========================
 
-def Dot(Depot,m):
-    
-    print("Start of depot")
-    if m == pack2Mag['SO08']:
+def Dot(Depot,boitier):
+    print(boitier[0])
+   
+    if boitier[0] == 'SO08':
+        print('le boitier est bien trouvé SO08')
         Depot = 148
-    elif m == pack2Mag['SO12']:
+    elif boitier[0] =='SO12':
+        print('le boitier est bien trouvé SO12')
         Depot = 200
-    elif m == pack2Mag['SO14']:
+    elif boitier[0] == 'SO14':
+        print('le boitier est bien trouvé SO14')
         Depot = 200
-    elif m == pack2Mag['SO16']:
+    elif boitier[0] == 'SO16':
+        print('le boitier est bien trouvé SO16')
         Depot = 200
-    elif m == pack2Mag['SO20']:
+    elif boitier[0] == 'SO20':
+        print('le boitier est bien trouvé SO20')
         Depot = 200
-    elif m == pack2Mag['SO24']:
+    elif boitier[0] == 'SO24':
+        print('le boitier est bien trouvé SO24')
         Depot = 200
-    elif m == pack2Mag['SO28']:
+    elif boitier[0] == 'SO28':
+        print('le boitier est bien trouvé SO28')
         Depot = 200
-    elif m == pack2Mag['SOT23']:
+    elif boitier[0] == 'SOT23':
+        print('le boitier est bien trouvé SOT23')
         Depot = 200
-    elif m == pack2Mag['SOT89']:
+    elif boitier[0] == 'SOT89':
+        print('le boitier est bien trouvé SOT89')
         Depot = 200
-    elif m == pack2Mag['SOT143']:
+    elif boitier[0] == 'SOT143':
+        print('le boitier est bien trouvé SOT143')
         Depot = 200
-    elif m == pack2Mag['SOT194']:
+    elif boitier[0] == 'SOT194':
+        print('le boitier est bien trouvé SOT194')
         Depot = 200
-    elif m == pack2Mag['SOT223']:
+    elif boitier[0] == 'SOT223':
+        print('le boitier est bien trouvé SOT223')
         Depot = 200
-    elif m == pack2Mag['SOD80']:
+    elif boitier[0] == 'SOD80':
+        print('le boitier est bien trouvé SOD80')
         Depot = 200
-    elif m == pack2Mag['SOD87']:
+    elif boitier[0] == 'SOD87':
+        print('le boitier est bien trouvé SOD87')
         Depot = 200
-    elif m == pack2Mag['0402']:
+    elif boitier[0] == '0402':
+        print('le boitier est bien trouvé 0402')
         Depot = 200
-    elif m == pack2Mag['0603']:
+    elif boitier[0] == '0603':
+        print('le boitier est bien trouvé 0603')
         Depot = 200
-    elif m == pack2Mag['0805']:
+    elif boitier[0] == '0805':
+        print('le boitier est bien trouvé 0805')
         Depot = 200
-    elif m == pack2Mag['1206']:
+    elif boitier[0] == '1206':
+        print('le boitier est bien trouvé 1206')
         Depot = 400
-    elif m == pack2Mag['1210']:
+    elif boitier[0] == '1210':
+        print('le boitier est bien trouvé 1210')
         Depot = 400
-    elif m == pack2Mag['1812']:
+    elif boitier[0] == '1812':
+        print('le boitier est bien trouvé 1812')
         Depot = 200
-    elif m == pack2Mag['2220']:
+    elif boitier[0] == '2220':
+        print('le boitier est bien trouvé 2220')
         Depot = 200
-    elif m == pack2Mag['R3216']:
+    elif boitier[0] == 'R3216':
+        print('le boitier est bien trouvé R3216')
         Depot = 400
     else:
+        print('le boitier par défaut')
         Depot = 400
+        print(Depot)
     return Depot
 
 
@@ -355,11 +379,11 @@ def pushComp(data, NewMag):
     for k, v in data.items(): # k is key of componant
                                     # v is dx et dy
             v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
-            writeToFloppy(v)
-    for c in DataOutil:                       # look for data
+           
+            for c in DataOutil:                       # look for data
                 print(c)                              # for saving Tool
                 writeToFloppy(c)
-            
+            writeToFloppy(v)
     writeToFloppy([0, 2, 0, 0]) # Writting End of Programme
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
@@ -398,8 +422,8 @@ def outil(DataOutil,composants):
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
         
-         DataOutilDrop
-         DataOutil.append(DataOutilDrop)
+         
+         DataOutil.append(DataOutilDrop) #drop off tool
          print(DataOutil)
          for c in composants.keys() :
              outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
@@ -410,7 +434,7 @@ def outil(DataOutil,composants):
                 
                  numero=input("quel numero?")
                  DataOutilTake[2]=int(numero)
-                 DataOutil.append(DataOutilTake)
+                 DataOutil.append(DataOutilTake)  # change tools
                 
                  
                  print(DataOutil)
@@ -570,13 +594,13 @@ for line in lines:
     
     if "-composant-" in line:
         m = p.match(line)
-       
+        
         if m:
             comp = m.group(1)
            
             composants[comp] = list(m.group(2, 5, 3, 4))
             warehouse (comp,composants[comp])
-            
+            Dot(Depot,composants[comp])
             
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
@@ -601,7 +625,7 @@ for line in lines:
         m = p2.match(line)
     
         if m:
-            pins.append(list((1, Dot(Depot,m)) + m.group(1, 2)))
+            pins.append(list((1,str(Depot )) + m.group(1, 2)))
         else:
             print ("Ignored line: " + line)
  
@@ -684,6 +708,5 @@ f.close()
 
 
 #~ ===========================================================================
-
 
 
