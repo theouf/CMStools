@@ -18,8 +18,8 @@ import struct
 #~================================ VARIABLES =========================
 
 # ~ Source file for testing
-#~ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
-source = '../../../testeur_UM.pnp' # Linux
+source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
+#source = '../../../testeur_UM.pnp' # Linux
 
 #~ ================================================================
 
@@ -30,7 +30,8 @@ source = '../../../testeur_UM.pnp' # Linux
 # ~ afin de permettre les essais ce support est virtuel
 # ~ disk ='/dev/fd0' permet de cible la disquette
 
-disk = '../../../biscotte'
+#disk = '../../../biscotte'
+disk = 'biscotte'
 # disk ='/dev/fd0'
 #~====================================================================
 bank = 'bank4'
@@ -51,7 +52,8 @@ yaxisdir = '-'
 
 DataOutil = []
 
-DataOutilTemp =[0,3,1,0]
+DataOutilTake =[0,3,1,0]
+DataOutilDrop =[0,3,1,1]
 
 # ~ Added lines
 addLines = 3 + loops
@@ -322,7 +324,16 @@ def Dot(Depot,m):
 
 
 #~ ===============================================================
-#~ ================= PARTIE NOVAR : Placement du Composant ========
+#~ ================= PART NOVAR : Allocation of Components ========
+
+# PushComp determines the change of Tools for each components if we need
+# by the function outil()
+# and we execute the same thing from PushDot ( found the position of componant
+# and convert the Datas to Hexa with the function writeToFloppy()
+
+#~ ===============================================================
+
+
 def pushComp(data, NewMag):
     print ("start pushComp()")
                                        # fileObject.seek (offset ,[ou])
@@ -344,16 +355,19 @@ def pushComp(data, NewMag):
     for k, v in data.items(): # k is key of componant
                                     # v is dx et dy
             v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
-            for o in DataOutil:      # look for data for saving
-             writeToFloppy(o)
-    writeToFloppy(v)
+            writeToFloppy(v)
+    for c in DataOutil:                       # look for data
+                print(c)                              # for saving Tool
+                writeToFloppy(c)
+            
     writeToFloppy([0, 2, 0, 0]) # Writting End of Programme
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE) # write to data
     writeToFloppy([len(data) + addLines, len(data) + addLines]) # format d'ecriture
-    print ("finish of writting components") # finish to write
     print(data)
+    print ("finish of writting components") # finish to write
+    
 #~ =========================================================================
 
 # ~ Pretty Print Construct PrettyPrinter objects explicitly
@@ -365,26 +379,40 @@ ABSOLUTE = 0 # ~le positionnement de fichier absolu prend la valeur 0
 RELATIVE = 1 # le positionnement de fichier~par rapport a la situation actuelle
                 # ~ on prendra la valeur 1
  
+#~ ============================Tools ===================================
+
+# We chose the change of tools during the program 
+# first DataOutil copy the DataOutilTemp and modified the current Tool
+# to drop off 
+# secondly we chose the new tool (chose the number 1,2,3) and DataOutil 
+# modified  for taken the new tool.
+
+#~ =================================================================== 
+ 
+ 
+ 
+ 
+ 
 def outil(DataOutil,composants):
      
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
         
-         DataOutilTemp[3]= 1
-         DataOutil.append(DataOutilTemp)
+         DataOutilDrop
+         DataOutil.append(DataOutilDrop)
          print(DataOutil)
          for c in composants.keys() :
              outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
              if outil == 'y':
-                 DataOutilTemp[3]= 0
-                 print("vous etres sur l'outil"+str(DataOutilTemp[2]))
+                 
+                 print("vous etres sur l'outil"+str(DataOutilTake[2]))
                  print("changement outil pour "+str(c)+": ")
                 
                  numero=input("quel numero?")
-                 DataOutilTemp[2]=int(numero)
-                 DataOutil.append(DataOutilTemp)
+                 DataOutilTake[2]=int(numero)
+                 DataOutil.append(DataOutilTake)
                 
-                 #ligne = writeToFloppy([0, 3, numero, 0])
+                 
                  print(DataOutil)
                  return DataOutil
     return DataOutil
@@ -656,5 +684,6 @@ f.close()
 
 
 #~ ===========================================================================
+
 
 
