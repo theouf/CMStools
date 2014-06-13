@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 12 juin. 2014
+Created on 13 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -281,80 +281,79 @@ def pushDots(data):
 
 def Dot(Depot,boitier):
     
-    for p in pack2Mag.keys():
-       print(type(p))
-       if boitier[0] == p:
+   
+       if boitier[0] == 'SO08':
             print('le boitier est bien trouvé SO08')
             Depot = 148
-       elif boitier[0] ==p:
+       elif boitier[0] =='SO12':
             print('le boitier est bien trouvé SO12')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SO14':
             print('le boitier est bien trouvé SO14')
             Depot = 200
-       elif boitier[0] ==p :
+       elif boitier[0] =='SO16' :
             print('le boitier est bien trouvé SO16')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SO20':
             print('le boitier est bien trouvé SO20')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SO24':
             print('le boitier est bien trouvé SO24')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SO28':
             print('le boitier est bien trouvé SO28')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOT23':
             print('le boitier est bien trouvé SOT23')
             Depot = 225
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOT89':
             print('le boitier est bien trouvé SOT89')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOT143':
             print('le boitier est bien trouvé SOT143')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOT194':
             print('le boitier est bien trouvé SOT194')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOT223':
             print('le boitier est bien trouvé SOT223')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOD80':
             print('le boitier est bien trouvé SOD80')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'SOD87':
             print('le boitier est bien trouvé SOD87')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == '0402':
             print('le boitier est bien trouvé 0402')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == '0603':
             print('le boitier est bien trouvé 0603')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == '0805':
             print('le boitier est bien trouvé 0805')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == '1206':
             print('le boitier est bien trouvé 1206')
             Depot = 400
-       elif boitier[0] == p:
+       elif boitier[0] == '1210':
             print('le boitier est bien trouvé 1210')
             Depot = 400
-       elif boitier[0] == p:
+       elif boitier[0] == '1812':
             print('le boitier est bien trouvé 1812')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == '2220':
             print('le boitier est bien trouvé 2220')
             Depot = 200
-       elif boitier[0] == p:
+       elif boitier[0] == 'R3216':
             print('le boitier est bien trouvé R3216')
             Depot = 400
        else:
             print('le boitier par défaut')
             Depot = 400
-    print(Depot)
+       print(Depot)
     
-    return Depot
+       return Depot
 
 
 #~ ===============================================================
@@ -390,10 +389,10 @@ def pushComp(data, NewMag):
                                     # v is dx et dy
             v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
            
-            for c in DataOutil:                       # look for data
+    for c in DataOutil:                       # look for data
                 print(c)                              # for saving Tool
                 writeToFloppy(c)
-            writeToFloppy(v)
+    writeToFloppy(v)
     writeToFloppy([0, 2, 0, 0]) # Writting End of Programme
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
@@ -433,7 +432,7 @@ def outil(DataOutil,composants):
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
         
-         
+         DataOutil.append([0,2,0,0]) #end  boucle
          DataOutil.append(DataOutilDrop) #drop off tool
          print(DataOutil)
          for c in composants.keys() :
@@ -447,7 +446,7 @@ def outil(DataOutil,composants):
                  numero=input("quel numero?")
                  DataOutilTake[2]=int(numero)
                  DataOutil.append(DataOutilTake)  # change tools
-                
+                 DataOutil.append([0,1,loops,0])  #start new boucle with new tool
                  
                  print(DataOutil)
                  return DataOutil
@@ -722,4 +721,3 @@ f.close()
 
 
 #~ ===========================================================================
-
