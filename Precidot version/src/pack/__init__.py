@@ -5,7 +5,15 @@ Created on 12 juin. 2014
 
 @author: L'Henoret Erwan
 
-version Python 3.4
+version Python  2.7 et 3.4 
+
+Attention certaine fonction doit être modifier suivant le Python
+
+notament la fonction intput
+
+j'ai prévu à cette effet la fonction pour les deux sorte de Python
+enlever le # pour activer la fonction devant celui qui vous convient
+et désactivé l'autre
 
 '''
 #~ ========================== IMPORT =================================
@@ -40,8 +48,8 @@ bank = 'bank4'
 loops = 1
 
 # ~ time of point to drop
-Depot = ''
-
+Depot = 0
+boitier=[]
 NewMag = ''
 
 
@@ -272,78 +280,80 @@ def pushDots(data):
 #~ =================== DOT ========================
 
 def Dot(Depot,boitier):
-    print(boitier[0])
-   
-    if boitier[0] == 'SO08':
-        print('le boitier est bien trouvé SO08')
-        Depot = 148
-    elif boitier[0] =='SO12':
-        print('le boitier est bien trouvé SO12')
-        Depot = 200
-    elif boitier[0] == 'SO14':
-        print('le boitier est bien trouvé SO14')
-        Depot = 200
-    elif boitier[0] == 'SO16':
-        print('le boitier est bien trouvé SO16')
-        Depot = 200
-    elif boitier[0] == 'SO20':
-        print('le boitier est bien trouvé SO20')
-        Depot = 200
-    elif boitier[0] == 'SO24':
-        print('le boitier est bien trouvé SO24')
-        Depot = 200
-    elif boitier[0] == 'SO28':
-        print('le boitier est bien trouvé SO28')
-        Depot = 200
-    elif boitier[0] == 'SOT23':
-        print('le boitier est bien trouvé SOT23')
-        Depot = 200
-    elif boitier[0] == 'SOT89':
-        print('le boitier est bien trouvé SOT89')
-        Depot = 200
-    elif boitier[0] == 'SOT143':
-        print('le boitier est bien trouvé SOT143')
-        Depot = 200
-    elif boitier[0] == 'SOT194':
-        print('le boitier est bien trouvé SOT194')
-        Depot = 200
-    elif boitier[0] == 'SOT223':
-        print('le boitier est bien trouvé SOT223')
-        Depot = 200
-    elif boitier[0] == 'SOD80':
-        print('le boitier est bien trouvé SOD80')
-        Depot = 200
-    elif boitier[0] == 'SOD87':
-        print('le boitier est bien trouvé SOD87')
-        Depot = 200
-    elif boitier[0] == '0402':
-        print('le boitier est bien trouvé 0402')
-        Depot = 200
-    elif boitier[0] == '0603':
-        print('le boitier est bien trouvé 0603')
-        Depot = 200
-    elif boitier[0] == '0805':
-        print('le boitier est bien trouvé 0805')
-        Depot = 200
-    elif boitier[0] == '1206':
-        print('le boitier est bien trouvé 1206')
-        Depot = 400
-    elif boitier[0] == '1210':
-        print('le boitier est bien trouvé 1210')
-        Depot = 400
-    elif boitier[0] == '1812':
-        print('le boitier est bien trouvé 1812')
-        Depot = 200
-    elif boitier[0] == '2220':
-        print('le boitier est bien trouvé 2220')
-        Depot = 200
-    elif boitier[0] == 'R3216':
-        print('le boitier est bien trouvé R3216')
-        Depot = 400
-    else:
-        print('le boitier par défaut')
-        Depot = 400
-        print(Depot)
+    
+    for p in pack2Mag.keys():
+       print(type(p))
+       if boitier[0] == p:
+            print('le boitier est bien trouvé SO08')
+            Depot = 148
+       elif boitier[0] ==p:
+            print('le boitier est bien trouvé SO12')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SO14')
+            Depot = 200
+       elif boitier[0] ==p :
+            print('le boitier est bien trouvé SO16')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SO20')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SO24')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SO28')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOT23')
+            Depot = 225
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOT89')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOT143')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOT194')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOT223')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOD80')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé SOD87')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 0402')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 0603')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 0805')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 1206')
+            Depot = 400
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 1210')
+            Depot = 400
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 1812')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé 2220')
+            Depot = 200
+       elif boitier[0] == p:
+            print('le boitier est bien trouvé R3216')
+            Depot = 400
+       else:
+            print('le boitier par défaut')
+            Depot = 400
+    print(Depot)
+    
     return Depot
 
 
@@ -418,7 +428,8 @@ RELATIVE = 1 # le positionnement de fichier~par rapport a la situation actuelle
  
  
 def outil(DataOutil,composants):
-     
+    
+    #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N' 
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
         
@@ -426,12 +437,13 @@ def outil(DataOutil,composants):
          DataOutil.append(DataOutilDrop) #drop off tool
          print(DataOutil)
          for c in composants.keys() :
+             #outil= raw_input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
              outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
              if outil == 'y':
                  
                  print("vous etres sur l'outil"+str(DataOutilTake[2]))
                  print("changement outil pour "+str(c)+": ")
-                
+                 #numero=raw_input("quel numero?")
                  numero=input("quel numero?")
                  DataOutilTake[2]=int(numero)
                  DataOutil.append(DataOutilTake)  # change tools
@@ -461,6 +473,7 @@ def outil(DataOutil,composants):
           
 def warehouse (comp,composants):
     print("Choose an address for : " + comp)
+    #NewMag = int(raw_input('Entrer an adress of Section\'s Mag for:') or 0)
     NewMag = int(input('Entrer an adress of Section\'s Mag for:') or 0)
     for k in composants:
         if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
@@ -599,8 +612,9 @@ for line in lines:
             comp = m.group(1)
            
             composants[comp] = list(m.group(2, 5, 3, 4))
+            boitier=composants[comp]
             warehouse (comp,composants[comp])
-            Dot(Depot,composants[comp])
+            
             
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
@@ -625,7 +639,7 @@ for line in lines:
         m = p2.match(line)
     
         if m:
-            pins.append(list((1,str(Depot )) + m.group(1, 2)))
+            pins.append(list((1,Dot(Depot,boitier)) + m.group(1, 2)))
         else:
             print ("Ignored line: " + line)
  
@@ -708,5 +722,4 @@ f.close()
 
 
 #~ ===========================================================================
-
 
