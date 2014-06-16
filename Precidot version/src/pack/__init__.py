@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 12 juin. 2014
+Created on 16 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -382,7 +382,7 @@ def pushComp(data, NewMag,DataOutil):
     print ("start pushComp()")
                                        # fileObject.seek (offset ,[ou])
     bank = 'bank4'
-    outil(DataOutil,composants)
+
     # print(bank) # 1ere Etape
     f.seek(hexAddr[bank], ABSOLUTE) # offset : example hexAddr['bank1'] = 0x04000
     f.seek(0x208, RELATIVE)
@@ -394,29 +394,46 @@ def pushComp(data, NewMag,DataOutil):
         
     # préparation pour démarre le programme avec le bon outil    
         
-        outil=int(input("enter your tool to start your program"))
+        outil=int(input("enter your tool to start your program "))
         DataOutilTake[2]=outil
+        DataOutilDrop[2]=outil
+        print(DataOutilTake)
         writeToFloppy(DataOutilTake)
-        
-        
-        
-        
-    for k, v in data.items(): # k is key of componant
+        writeToFloppy([0, 1, loops, 0]) # writting one loop
+        chang=input("is change tool during this program ? [y/N] : ") or 'N'
+        if chang =='y':
+            for k, v in data.items(): # k is key of componant
                                     # v is dx et dy   
+                print('boucle data')
         
          # start with the first Tool
-         for n in range(0, len(DataOutil)):
-             writeToFloppy(DataOutil[n])
-             writeToFloppy([0, 1, loops, 0]) # writting one loop
         
         
-        
-   
-    v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
-            
-    writeToFloppy(v)                                           # look for data
+         #DataOutil.append([0,2,0,0]) #end  boucle
+         #DataOutil.append(DataOutilDrop) #drop off tool
+         
+         
+             #outil= raw_input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+         #outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+                outil= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
+                if outil == 'y':
+                   
+                    DataOutil.append([0, 2, 0, 0])  #end loop
+                    DataOutil.append(DataOutilDrop) #drop off
+                    print("vous etres sur l'outil"+str(DataOutilTake[2]))
+                    print("changement outil pour "+str(k)+": ")
+                    #numero=raw_input("quel numero?")
+                    numero=input("quel numero?")
+                    DataOutilTake[2]=int(numero)
+                    DataOutil.append(DataOutilTake)  # change tools
+                    DataOutil.append([0,1,loops,0])  #start new boucle with new tool
+                    for d in DataOutil :
+                        print(d)           
+                        v.append(d)     
+            v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
+            writeToFloppy(v)                                           # look for data
                                                        # for saving Tool
-               
+            print(v)   
            
     writeToFloppy([0, 2, 0, 0]) # Writting End of Programme
         # ~ Nb lignes
@@ -449,21 +466,22 @@ RELATIVE = 1 # le positionnement de fichier~par rapport a la situation actuelle
  
  
  
+'''
  
- 
-def outil(DataOutil,composants):
-   
+#def outil(DataOutil,composants):
+    print('boucle changement')
     #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N' 
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
         
-         DataOutil.append([0,2,0,0]) #end  boucle
-         DataOutil.append(DataOutilDrop) #drop off tool
-         print(DataOutil)
+         #DataOutil.append([0,2,0,0]) #end  boucle
+         #DataOutil.append(DataOutilDrop) #drop off tool
+         
          for c in composants.keys() :
              #outil= raw_input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
-             outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
-             if outil == 'y':
+         #outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+            outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+         if outil == 'y':
                  
                  print("vous etres sur l'outil"+str(DataOutilTake[2]))
                  print("changement outil pour "+str(c)+": ")
@@ -476,9 +494,9 @@ def outil(DataOutil,composants):
                  
                  print(DataOutil)
                  return DataOutil
-    return DataOutil
+    return str(DataOutil)
 
-
+'''
 
 
 
@@ -662,7 +680,7 @@ for line in lines:
             
             boitier=m.group(2)
             warehouse (comp,composants[comp])
-           
+            #outil(DataOutil,composants)
             
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
@@ -722,6 +740,7 @@ def ecriture_disquette():
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
+   
     pushComp(composants,NewMag,DataOutil)
     print("before pushLab(Tampon)")
     bank = 'bank4P'
