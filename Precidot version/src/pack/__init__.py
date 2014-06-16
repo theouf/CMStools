@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 13 juin. 2014
+Created on 12 juin. 2014
 
 @author: L'Henoret Erwan
 
@@ -52,6 +52,10 @@ Depot = 0
 boitier=[]
 NewMag = ''
 
+# include the rotation
+Rot=[]
+
+
 
 # ~ Y axis direction
 yaxisdir = '-'
@@ -60,8 +64,8 @@ yaxisdir = '-'
 
 DataOutil = []
 
-DataOutilTake =[0,3,1,0]
-DataOutilDrop =[0,3,1,1]
+DataOutilTake =[0,12,0,0]
+DataOutilDrop =[0,12,0,1]
 
 # ~ Added lines
 addLines = 3 + loops
@@ -281,79 +285,86 @@ def pushDots(data):
 
 def Dot(Depot,boitier):
     
-   
-       if boitier[0] == 'SO08':
-            print('le boitier est bien trouvé SO08')
+       if boitier =='3,17/1,2':
+           Depot=0
+       elif boitier == 'SO08':
             Depot = 148
-       elif boitier[0] =='SO12':
-            print('le boitier est bien trouvé SO12')
+       elif boitier =='SO12':
             Depot = 200
-       elif boitier[0] == 'SO14':
-            print('le boitier est bien trouvé SO14')
+       elif boitier == 'SO14':
             Depot = 200
-       elif boitier[0] =='SO16' :
-            print('le boitier est bien trouvé SO16')
+       elif boitier =='SO16' :
             Depot = 200
-       elif boitier[0] == 'SO20':
-            print('le boitier est bien trouvé SO20')
+       elif boitier == 'SO20':
             Depot = 200
-       elif boitier[0] == 'SO24':
-            print('le boitier est bien trouvé SO24')
+       elif boitier == 'SO24':
             Depot = 200
-       elif boitier[0] == 'SO28':
-            print('le boitier est bien trouvé SO28')
+       elif boitier == 'SO28':
             Depot = 200
-       elif boitier[0] == 'SOT23':
-            print('le boitier est bien trouvé SOT23')
+       elif boitier == 'SOT23':
             Depot = 225
-       elif boitier[0] == 'SOT89':
-            print('le boitier est bien trouvé SOT89')
+       elif boitier == 'SOT89':
             Depot = 200
-       elif boitier[0] == 'SOT143':
-            print('le boitier est bien trouvé SOT143')
+       elif boitier == 'SOT143':
             Depot = 200
-       elif boitier[0] == 'SOT194':
-            print('le boitier est bien trouvé SOT194')
+       elif boitier == 'SOT194':
             Depot = 200
-       elif boitier[0] == 'SOT223':
-            print('le boitier est bien trouvé SOT223')
+       elif boitier == 'SOT223':
             Depot = 200
-       elif boitier[0] == 'SOD80':
-            print('le boitier est bien trouvé SOD80')
+       elif boitier == 'SOD80':
             Depot = 200
-       elif boitier[0] == 'SOD87':
-            print('le boitier est bien trouvé SOD87')
+       elif boitier == 'SOD87':
             Depot = 200
-       elif boitier[0] == '0402':
-            print('le boitier est bien trouvé 0402')
+       elif boitier == '0402':
             Depot = 200
-       elif boitier[0] == '0603':
-            print('le boitier est bien trouvé 0603')
+       elif boitier == '0603':
             Depot = 200
-       elif boitier[0] == '0805':
-            print('le boitier est bien trouvé 0805')
+       elif boitier == '0805':
             Depot = 200
-       elif boitier[0] == '1206':
-            print('le boitier est bien trouvé 1206')
+       elif boitier == '1206':
             Depot = 400
-       elif boitier[0] == '1210':
-            print('le boitier est bien trouvé 1210')
+       elif boitier == '1210':
             Depot = 400
-       elif boitier[0] == '1812':
-            print('le boitier est bien trouvé 1812')
+       elif boitier == '1812':
             Depot = 200
-       elif boitier[0] == '2220':
-            print('le boitier est bien trouvé 2220')
+       elif boitier == '2220':
             Depot = 200
-       elif boitier[0] == 'R3216':
-            print('le boitier est bien trouvé R3216')
+       elif boitier == 'R3216':
             Depot = 400
        else:
-            print('le boitier par défaut')
-            Depot = 400
-       print(Depot)
+            print('le boitier don\'t known ')
+            
+            Depot = input('Enter the Dot for '+ boitier)
+       
     
-       return Depot
+       return str(Depot)
+
+
+
+ #~==============================================================================
+#~ ==========================Rotation===============================================
+
+def Rotation(comp,composants,Rot):
+    
+    
+        #Rot = int(raw_input('Entrer an adress of Section\'s Mag for:') or 0)
+    Rot = input('Entrer a Rotation for component '+comp) or 0
+    composants [1]= Rot
+    
+    
+    return Rot
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #~ ===============================================================
@@ -367,7 +378,7 @@ def Dot(Depot,boitier):
 #~ ===============================================================
 
 
-def pushComp(data, NewMag):
+def pushComp(data, NewMag,DataOutil):
     print ("start pushComp()")
                                        # fileObject.seek (offset ,[ou])
     bank = 'bank4'
@@ -380,19 +391,33 @@ def pushComp(data, NewMag):
         writeToFloppy([0, 0, 0, 0]) # offset : hexAddr['bank1'] = 0x208
         print ("start to write component") # where : 1
         writeToFloppy([0, 10, 0, 0]) # writting Control to references of point.
-        writeToFloppy ([0, 3, 1, 0]) # start with the first Tool
-        writeToFloppy([0, 1, loops, 0]) # writting one loop
+        
+    # préparation pour démarre le programme avec le bon outil    
+        
+        outil=int(input("enter your tool to start your program"))
+        DataOutilTake[2]=outil
+        writeToFloppy(DataOutilTake)
+        
         
         
         
     for k, v in data.items(): # k is key of componant
-                                    # v is dx et dy
-            v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
+                                    # v is dx et dy   
+        
+         # start with the first Tool
+         for n in range(0, len(DataOutil)):
+             writeToFloppy(DataOutil[n])
+             writeToFloppy([0, 1, loops, 0]) # writting one loop
+        
+        
+        
+   
+    v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
+            
+    writeToFloppy(v)                                           # look for data
+                                                       # for saving Tool
+               
            
-    for c in DataOutil:                       # look for data
-                print(c)                              # for saving Tool
-                writeToFloppy(c)
-    writeToFloppy(v)
     writeToFloppy([0, 2, 0, 0]) # Writting End of Programme
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
@@ -427,7 +452,7 @@ RELATIVE = 1 # le positionnement de fichier~par rapport a la situation actuelle
  
  
 def outil(DataOutil,composants):
-    
+   
     #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N' 
     chang=input("is change tool during this program ? [y/N] : ") or 'N'
     if chang =='y':
@@ -446,6 +471,7 @@ def outil(DataOutil,composants):
                  numero=input("quel numero?")
                  DataOutilTake[2]=int(numero)
                  DataOutil.append(DataOutilTake)  # change tools
+                 
                  DataOutil.append([0,1,loops,0])  #start new boucle with new tool
                  
                  print(DataOutil)
@@ -482,6 +508,26 @@ def warehouse (comp,composants):
             print("impossible de rentrer ce magasin")
             warehouse (composants,comp)
     return NewMag
+
+
+ #~==============================================================================
+#~ ==========================Rotation===============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  #~==============================================================================
 #~ ==========================LAB===============================================
 
@@ -611,9 +657,12 @@ for line in lines:
             comp = m.group(1)
            
             composants[comp] = list(m.group(2, 5, 3, 4))
-            boitier=composants[comp]
-            warehouse (comp,composants[comp])
+            Rotation(comp,composants[comp],Rot)
             
+            
+            boitier=m.group(2)
+            warehouse (comp,composants[comp])
+           
             
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
@@ -673,7 +722,7 @@ def ecriture_disquette():
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
-    pushComp(composants,NewMag)
+    pushComp(composants,NewMag,DataOutil)
     print("before pushLab(Tampon)")
     bank = 'bank4P'
     pushLab(Tampon)
@@ -721,3 +770,5 @@ f.close()
 
 
 #~ ===========================================================================
+
+
