@@ -7,13 +7,13 @@ Created on 16 juin. 2014
 
 version Python  2.7 et 3.4 
 
-Attention certaine fonction doit être modifier suivant le Python
+Attention certaine fonction doit Ãªtre modifier suivant le Python
 
 notament la fonction intput
 
-j'ai prévu à cette effet la fonction pour les deux sorte de Python
+j'ai prÃ©vu Ã  cette effet la fonction pour les deux sorte de Python
 enlever le # pour activer la fonction devant celui qui vous convient
-et désactivé l'autre
+et dÃ©sactivÃ© l'autre
 
 '''
 #~ ========================== IMPORT =================================
@@ -26,8 +26,8 @@ import struct
 #~================================ VARIABLES =========================
 
 # ~ Source file for testing
-source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
-#source = '../../../testeur_UM.pnp' # Linux
+#~ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
+source = '../../../testeur_UM.pnp' # Linux
 
 #~ ================================================================
 
@@ -38,8 +38,8 @@ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
 # ~ afin de permettre les essais ce support est virtuel
 # ~ disk ='/dev/fd0' permet de cible la disquette
 
-#disk = '../../../biscotte'
-disk = 'biscotte'
+disk = '../../../biscotte'
+#~ disk = 'biscotte'
 # disk ='/dev/fd0'
 #~====================================================================
 bank = 'bank4'
@@ -80,9 +80,6 @@ hexAddr['bank2'] = 0x16206
 hexAddr['bank3'] = 0x28206
 hexAddr['bank4'] = 0x3A000
 hexAddr['bank4P'] = 0x39000
-# ~ package to magasin en Stand By pour l'instant
-pack2Mag = {}
-
 
 
 # ~ We defined the dictionary pack2Mag with keys and the Value
@@ -92,7 +89,6 @@ pack2Mag = {}
 # ~ the fourth value is Center Dy of component
 # ~ the fifth value is Rang by Input
 # ~ Unite Machine =0.0508mm
-
 
 pack2Mag = {}
 #pack2Mag['3,17/1,2'] = 0
@@ -148,7 +144,30 @@ dictMag['R3216'] = 22
                
            
            
-           
+pack2Depot = {}
+pack2Depot['3,17/1,2'] = 0
+pack2Depot['SO08'] = 148
+pack2Depot['SO12'] = 200
+pack2Depot['SO14'] = 200
+pack2Depot['SO16'] = 200
+pack2Depot['SO20'] = 200
+pack2Depot['SO24'] = 200
+pack2Depot['SO28'] = 200
+pack2Depot['SOT23'] = 223
+pack2Depot['SOT89'] = 200
+pack2Depot['SOT143'] = 200
+pack2Depot['SOT194'] = 200
+pack2Depot['SOT223'] = 200
+pack2Depot['SOD80'] = 200
+pack2Depot['SOD87'] = 200
+pack2Depot['0402'] = 200
+pack2Depot['0603'] = 200
+pack2Depot['0805'] = 200
+pack2Depot['1206'] = 400
+pack2Depot['1210'] = 200
+pack2Depot['1812'] = 200
+pack2Depot['2220'] = 200
+pack2Depot['R3216'] = 400
            
            
 
@@ -284,70 +303,17 @@ def pushDots(data):
 #~ =================== DOT ========================
 
 def Dot(Depot,boitier):
-    
-       if boitier =='3,17/1,2':
-           Depot=0
-       elif boitier == 'SO08':
-            Depot = 148
-       elif boitier =='SO12':
-            Depot = 200
-       elif boitier == 'SO14':
-            Depot = 200
-       elif boitier =='SO16' :
-            Depot = 200
-       elif boitier == 'SO20':
-            Depot = 200
-       elif boitier == 'SO24':
-            Depot = 200
-       elif boitier == 'SO28':
-            Depot = 200
-       elif boitier == 'SOT23':
-            Depot = 225
-       elif boitier == 'SOT89':
-            Depot = 200
-       elif boitier == 'SOT143':
-            Depot = 200
-       elif boitier == 'SOT194':
-            Depot = 200
-       elif boitier == 'SOT223':
-            Depot = 200
-       elif boitier == 'SOD80':
-            Depot = 200
-       elif boitier == 'SOD87':
-            Depot = 200
-       elif boitier == '0402':
-            Depot = 200
-       elif boitier == '0603':
-            Depot = 200
-       elif boitier == '0805':
-            Depot = 200
-       elif boitier == '1206':
-            Depot = 400
-       elif boitier == '1210':
-            Depot = 400
-       elif boitier == '1812':
-            Depot = 200
-       elif boitier == '2220':
-            Depot = 200
-       elif boitier == 'R3216':
-            Depot = 400
-       else:
-            print('le boitier don\'t known ')
-            
-            Depot = input('Enter the Dot for '+ boitier)
-       
-    
-       return str(Depot)
-
-
+    if boitier is in pack2Depot.keys():
+        return pack2Depot[boitier]
+    else:
+        print('Unknown package')
+        return int(input('Enter the Dot for '+ boitier) or '200')
 
  #~==============================================================================
 #~ ==========================Rotation===============================================
 
 def Rotation(comp,composants,Rot):
-    
-    
-        #Rot = int(raw_input('Entrer an adress of Section\'s Mag for:') or 0)
+    #Rot = int(raw_input('Entrer an adress of Section\'s Mag for:') or 0)
     Rot = input('Entrer a Rotation for component '+comp) or 0
     composants [1]= Rot
     
@@ -392,7 +358,7 @@ def pushComp(data, NewMag,DataOutil):
         print ("start to write component") # where : 1
         writeToFloppy([0, 10, 0, 0]) # writting Control to references of point.
         
-    # préparation pour démarre le programme avec le bon outil    
+    # prÃ©paration pour dÃ©marre le programme avec le bon outil    
         
         outil=int(input("enter your tool to start your program "))
         DataOutilTake[2]=outil
@@ -414,17 +380,18 @@ def pushComp(data, NewMag,DataOutil):
          
          
              #outil= raw_input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
-         #outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
-                outil= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
-                if outil == 'y':
+            #outil= input("Change tool for "+str(c)+" ? [y/N]: ") or 'N'
+                response= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
+                if response == 'y':
                    
                     DataOutil.append([0, 2, 0, 0])  #end loop
+                    DataOutilDrop[2]=outil
                     DataOutil.append(DataOutilDrop) #drop off
                     print("vous etres sur l'outil"+str(DataOutilTake[2]))
                     print("changement outil pour "+str(k)+": ")
                     #numero=raw_input("quel numero?")
-                    numero=input("quel numero?")
-                    DataOutilTake[2]=int(numero)
+                    outil=int(input("quel numero?"))
+                    DataOutilTake[2]=outil
                     DataOutil.append(DataOutilTake)  # change tools
                     DataOutil.append([0,1,loops,0])  #start new boucle with new tool
                     for d in DataOutil :
@@ -696,9 +663,6 @@ for line in lines:
 # ~ On rajout la valeur du Depot de colle a la ligne de compilation
 # ~ '^-Pin--X-(.+)-Y-(.*)$' sur la colonne 1
 # ~ ainsi le temps de depot sera en fonction du composant
-            
-    
-   
             
     if "-Pin-" in line:
        
