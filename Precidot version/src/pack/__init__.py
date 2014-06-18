@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 17 juin. 2014
+Created on 18 juin. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -318,9 +318,10 @@ def Dot(submission,box):
 #~====================================================================
 
 def Rotation(comp,composants,Rot):
-    #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0
-    Rot = input('Enter a Rotation for component '+comp+ ' : ') or 0
-    composants [1]= Rot
+    #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0)
+    Rot = int(input('Enter a Rotation for component '+comp+ ' : ') or 0)
+    composants[1]= Rot
+       
     return Rot
 
 #~=====================================================================
@@ -379,7 +380,8 @@ def pushComp(data, NewMag,DataTools):
                    
                     DataTools.append([0, 2, 0, 0]) 
                     DataToolsDrop[2]=tools
-                    DataTools.append(DataToolsDrop) 
+                    DataTools.append(DataToolsDrop)
+                                      
                     print("the tool is : "+str(DataToolsTake[2]))
                     print("change tool for "+str(k)+": ")
                     #numero=raw_input("what is the number?")
@@ -389,7 +391,7 @@ def pushComp(data, NewMag,DataTools):
                     DataTools.append([0,1,loops,0]) 
                     for d in DataTools :
                         print(d)
-                        v.append(d)
+                        d.append(v)
             v[3] = yaxisdir + v[3] 
             writeToFloppy(v) 
                                                        
@@ -666,5 +668,3 @@ f.close()
 
 
 #~ ===========================================================================
-
-
