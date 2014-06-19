@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 18 juin. 2014
+Created on 19 juin. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -332,9 +332,9 @@ def Rotation(comp,composants,Rot):
 #~ ============================Tools ===================================
 
 # We chose the change of tools during the program
-# first DataTools copy the DataToolsTemp and modified the current Tool
-# to drop off
-# secondly we chose the new tool (chose the number 1,2,3) and DataTools
+# first the user specifed DataToolsTake and modified the current Tool 
+#for to take an other coponent also you drop off the tool(DataToolsDrop)
+# secondly we chose the new tool (chose the number 1,2,3) and DataToolsTake
 # modified for taken the new tool.
 ##~ [0, 1, loop, 0]) #start the loop with the new tool
 #~ [0, 2, 0, 0]) #end loop
@@ -370,41 +370,42 @@ def pushComp(data, NewMag,DataTools):
         print(DataToolsTake)
         writeToFloppy(DataToolsTake)
         writeToFloppy([0, 1, loops, 0]) 
+        
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
+            
             for k, v in data.items(): 
-                                    
+                print(v)                    
                 #response= raw_input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
                 response= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
                 if response == 'y':
-                   
-                    DataTools.append([0, 2, 0, 0]) 
+                    
+                    writeToFloppy([0, 2, 0, 0]) 
                     DataToolsDrop[2]=tools
-                    DataTools.append(DataToolsDrop)
+                    writeToFloppy(DataToolsDrop)
                                       
                     print("the tool is : "+str(DataToolsTake[2]))
                     print("change tool for "+str(k)+": ")
                     #numero=raw_input("what is the number?")
                     tools=int(input("chose the number 2,3,4"))
                     DataToolsTake[2]=tools
-                    DataTools.append(DataToolsTake) 
-                    DataTools.append([0,1,loops,0]) 
-                    for d in DataTools :
-                        print(d)
-                        d.append(v)
-            v[3] = yaxisdir + v[3] 
-            writeToFloppy(v) 
-                                                       
-           
-           
+                    writeToFloppy(DataToolsTake) 
+                    writeToFloppy([0,1,loops,0]) 
+                    v[3] = yaxisdir + v[3] 
+                    writeToFloppy(v) 
+                    print(v) 
+                else:    
+                    v[3] = yaxisdir + v[3] 
+                    writeToFloppy(v) 
+                    print(v)                                 
+             
     writeToFloppy([0, 2, 0, 0]) 
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE) 
     writeToFloppy([len(data) + addLines, len(data) + addLines]) 
-    print(data)
     print ("finish of writting components") 
-    
+    print (data)
 #~ =========================================================================
 
 # ~ Pretty Print Construct PrettyPrinter objects explicitly
@@ -415,15 +416,6 @@ pp = pprint.PrettyPrinter(indent=4)
 ABSOLUTE = 0 
 RELATIVE = 1 
  
-
-
-
-
-
-
-
-
-
     
 #~===================================================================================
 #~ ==========================warehouse===============================================
@@ -446,7 +438,7 @@ def warehouse (comp,composants):
             warehouse (composants,comp)
     return NewMag
 
- #~==============================================================================
+#~ ==============================================================================
 #~ ==========================LAB===============================================
 
 
@@ -499,8 +491,8 @@ def pushLab(Buffer):
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x60C, RELATIVE)
                                      
-    for n in range(0, len(Buffer)): 
-            print(Buffer[n]) 
+    for n in range(0,len(Buffer)): 
+            
             writeToFloppy(Buffer[n])
                 
         # ~ Nb lignes
@@ -668,3 +660,6 @@ f.close()
 
 
 #~ ===========================================================================
+
+
+
