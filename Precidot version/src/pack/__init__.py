@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 19 juin. 2014
+Created on 20 juin. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -173,6 +173,45 @@ pack2Depot['R3216'] = 400
            
            
 
+LabInfo={}
+
+LabInfo= {
+         '3,17/1,2':{'Lab':'0','submission':0,'tool':0},
+         'SO08':{'Lab':'1','submission':148,'tool':3},
+         'SO12':{'Lab':'2','submission':148,'tool':3},
+         'SO14':{'Lab':'3','submission':148,'tool':4},
+         'SO16':{'Lab':'4','submission':148,'tool':4},
+         'SO20':{'Lab':'5','submission':148,'tool':4},
+         'SO24':{'Lab':'6','submission':148,'tool':4},
+         'SO28':{'Lab':'7','submission':148,'tool':4},
+         'SOT23':{'Lab':'8','submission':223,'tool':3},
+         'SOT89':{'Lab':'9','submission':223,'tool':3},
+         'SOT143':{'Lab':'10','submission':148,'tool':3},
+         'SOT194':{'Lab':'11','submission':148,'tool':3},
+         'SOT223':{'Lab':'12','submission':148,'tool':3},
+         'SOD80':{'Lab':'13','submission':148,'tool':3},
+         'SOD87':{'Lab':'14','submission':148,'tool':3},
+         '0402':{'Lab':'15','submission':400,'tool':2},
+         '0603':{'Lab':'16','submission':400,'tool':2},
+         '0805':{'Lab':'17','submission':400,'tool':2},
+         '1206':{'Lab':'18','submission':400,'tool':2},
+         '1210':{'Lab':'19','submission':400,'tool':2},
+         '1812':{'Lab':'20','submission':400,'tool':2},
+         '2220':{'Lab':'21','submission':400,'tool':2},
+         'R3216':{'Lab':'22','submission':400,'tool':2}
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ~ We defined the dictionary Lab with keys and 4 Values
@@ -190,49 +229,74 @@ pack2Depot['R3216'] = 400
 Lab = {}
 
 Lab = {
-        '1': [0, 2, 157 , 1793],
-        '2': [0, 2, 157 , 2105],
-        '3': [0, 2, 157 , 2418],
-        '4': [0, 2, 157 , 2733],
-        '5': [0, 2, 157 , 3048],
-        '6': [0, 2, 157 , 3362],
-        '7': [0, 2, 157 , 3676],
-        '8': [0, 2, 157 , 3992],
-        '9': [0, 2, 157 , 4305],
-        '10': [0, 2, 157 , 4620],
-        '11': [0, 2, 157 , 4969],
+        '0':[0,2,0,0],
+        '1': [0, 0, 153 , 1725],
+        '2': [0, 0, 153 , 2034],
+        '3': [0, 0, 153 , 2357],
+        '4': [0, 0, 153 , 2671],
+        '5': [0, 0, 153 , 2986],
+        '6': [0, 0, 153 , 3299],
+        '7': [0, 0, 153 , 3614],
+        '8': [0, 0, 153 , 3929],
+        '9': [0, 0, 153 , 4242],
+        '10': [0, 0, 153 , 4557],
+        '11': [0, 0, 153 , 4969],
         '12': [0, 2, 157 , 5362],
         '13': [0, 2, 157 , 5804],
         '14': [0, 2, 157 , 6278],
-        '21': [0, 2, 7700, 5569],
-        '22': [0, 2, 7700 , 5253],
-        '23': [0, 2, 7700 , 4940],
-        '24': [0, 2, 7700 , 4625],
-        '25': [0, 2, 7700 , 4311],
-        '26': [0, 2, 7700 , 4005],
-        '27': [0, 2, 7700 , 3686],
+        '21': [0, 0, 7619, 5572],
+        '22': [0, 0, 7619 , 5253],
+        '23': [0, 0, 7619 , 4940],
+        '24': [0, 0, 7619 , 4625],
+        '25': [0, 0, 7619 , 4311],
+        '26': [0, 0, 7619 , 4005],
+        '27': [0, 0, 7619 , 3686],
         '28': [0, 2, 7700 , 3369],
-        '29': [0, 2, 7698 , 3055],
-        '30': [0, 2, 7700 , 2737],
-        '31': [0, 2, 7690 , 2480],
+        '29': [0, 0, 7698 , 3055],
+        '30': [0, 0, 7619 , 2737],
+        '31': [0, 0, 7690 , 2480],
         '32': [0, 2, 7690 , 2087],
-        '33': [0, 2, 7690 , 1652],
-        '34': [0, 2, 7690 , 1190],
-        '41': [0, 2, 366 , 6855]
+        '33': [0, 0, 7690 , 1652],
+        '34': [0, 0, 7690 , 1190],
+        '41': [0, 0, 366 , 6855]
       }
        
 #Buffer is fixed all magasin with there Mag address
-Buffer =[[0, 0, 153 , 1725],[0, 0, 153 , 2034],[0, 0, 153 , 2357],
-         [0, 0, 153 , 2671],[0, 0, 153 , 2986],[0, 0, 153 , 3299],
-         [0, 0, 153 , 3614],[0, 0, 153 , 3929],[0, 0, 153 , 4242],
-         [0, 0, 153 , 4557],[0, 0, 153 , 4969],[0, 0, 153 , 5362],
-         [0, 0, 153 , 5804],[0, 0, 153 , 6278],[0, 0, 7619, 5572],
-         [0, 0, 7619 , 5253],[0, 0, 7619 , 4940],[0, 0, 7619 , 4625],
-         [0, 0, 7619 , 4311],[0, 0, 7619 , 4005],[0, 0, 7619 , 3686],
-         [0, 0, 7619 , 3369],[0, 0, 7698 , 3055],[0, 0, 7619 , 2737],
-         [0, 0, 7690 , 2480],[0, 0, 7690 , 2087],[0, 0, 7690 , 1652],
-         [0, 0, 7690 , 1190],[0, 0, 366 , 6855]]
-       
+Buffer = []
+
+
+'''
+Buffer =[[0,0,0,0],
+         [0, 0, 153 , 1725],
+         [0, 0, 153 , 2034],
+         [0, 0, 153 , 2357],
+         [0, 0, 153 , 2671],
+         [0, 0, 153 , 2986],
+         [0, 0, 153 , 3299],
+         [0, 0, 153 , 3614],
+         [0, 0, 153 , 3929],
+         [0, 0, 153 , 4242],
+         [0, 0, 153 , 4557],
+         [0, 0, 153 , 4969],
+         [0, 0, 153 , 5362],
+         [0, 0, 153 , 5804],
+         [0, 0, 153 , 6278],
+         [0, 0, 7619, 5572],
+         [0, 0, 7619 , 5253],
+         [0, 0, 7619 , 4940],
+         [0, 0, 7619 , 4625],
+         [0, 0, 7619 , 4311],
+         [0, 0, 7619 , 4005],
+         [0, 0, 7619 , 3686],
+         [0, 0, 7619 , 3369],
+         [0, 0, 7698 , 3055],
+         [0, 0, 7619 , 2737],
+         [0, 0, 7690 , 2480],
+         [0, 0, 7690 , 2087],
+         [0, 0, 7690 , 1652],
+         [0, 0, 7690 , 1190],
+         [0, 0, 366 , 6855]]
+'''       
  
 #~ =====================================================================
 #~ ====================CONVERSION TO HEXADECIMAL ==================
@@ -303,8 +367,9 @@ def pushDots(data):
 #~ the function dot() give the value of DOT for each componant
 def Dot(submission,box):
     
-    if box in pack2Depot:
-        submission=pack2Depot[box]
+    if box in LabInfo:
+        submission=LabInfo[box]['submission']
+        print(submission)
         return submission
     else:
         print('Unknown package')
@@ -351,9 +416,9 @@ def Rotation(comp,composants,Rot):
 #~ ===============================================================
 
 
-def pushComp(data, NewMag,DataTools):
+def pushComp(data, NewMag,Buffer,LabInfo):
     print ("start pushComp()")
-                                       
+    print(Buffer)                                   
     bank = 'bank4'
 
     
@@ -364,40 +429,72 @@ def pushComp(data, NewMag,DataTools):
         writeToFloppy([0, 0, 0, 0]) 
         print ("start to write component") 
         writeToFloppy([0, 10, 0, 0]) 
-        tools=int(input("enter your tool to start your program "))
-        DataToolsTake[2]=tools
-        DataToolsDrop[2]=tools
-        print(DataToolsTake)
-        writeToFloppy(DataToolsTake)
-        writeToFloppy([0, 1, loops, 0]) 
+        #tools=int(input("enter your tool to start your program "))
+        #DataToolsTake[2]=tools
+        #DataToolsDrop[2]=tools
+        #print(DataToolsTake)
+        #writeToFloppy(DataToolsTake)
+        #writeToFloppy([0, 1, loops, 0]) 
         
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
             
-            for k, v in data.items(): 
-                print(v)                    
+            for k, v in data.items():
+                
+               
+                for g in Buffer:
+                                  
+                    if g[1]==0:pass
+                    else:
+                        
+                        for l,b in LabInfo.items():
+                           
+                       
+                            
+                            if str(g[1]) in b['Lab']:
+                                
+                                
+                                tools = b['tool']
+                                
+                                
+                            if DataToolsTake[2]==0:
+                                   print('1er fois')
+                                   DataToolsTake[2]=tools
+                                   DataToolsDrop[2]=tools
+                                   print(DataToolsTake)
+                                   writeToFloppy(DataToolsTake)
+                                   writeToFloppy([0,1,1,0])
+                                   v[3] = yaxisdir + v[3] 
+                                   writeToFloppy(v)
+                                   print('conversion ok')
+                                   print(v) 
+                            elif DataToolsTake[2] != tools:
+                                    print('comparaison ok')
+                                    writeToFloppy([0,2,0,0])
+                                    print('[0,2,0,0]')
+                                    writeToFloppy(DataToolsDrop)
+                                    print(DataToolsDrop)
+                                    DataToolsTake[2]=b['tool']
+                                    print(DataToolsTake)
+                                    writeToFloppy(DataToolsTake)
+                                    writeToFloppy([0,1,1,0])
+                                    print('[0,1,1,0]')
+                                    v[3] = yaxisdir + v[3] 
+                                    print('invertion accepter')
+                                    print(v)
+                                    writeToFloppy(v) 
+                                    print(v)
+                            elif DataToolsTake[2] == tools:
+                                    print('tool egal')
+                                    v[3] = yaxisdir + v[3] 
+                                    writeToFloppy(v) 
+                                               
                 #response= raw_input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
-                response= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
-                if response == 'y':
-                    
-                    writeToFloppy([0, 2, 0, 0]) 
-                    DataToolsDrop[2]=tools
-                    writeToFloppy(DataToolsDrop)
-                                      
-                    print("the tool is : "+str(DataToolsTake[2]))
-                    print("change tool for "+str(k)+": ")
-                    #numero=raw_input("what is the number?")
-                    tools=int(input("chose the number 2,3,4"))
-                    DataToolsTake[2]=tools
-                    writeToFloppy(DataToolsTake) 
-                    writeToFloppy([0,1,loops,0]) 
-                    v[3] = yaxisdir + v[3] 
-                    writeToFloppy(v) 
-                    print(v) 
-                else:    
-                    v[3] = yaxisdir + v[3] 
-                    writeToFloppy(v) 
-                    print(v)                                 
+                #response= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
+                #if response == 'y':
+                    #v[3] = yaxisdir + v[3] 
+                    #writeToFloppy(v) 
+    print(v)                                 
              
     writeToFloppy([0, 2, 0, 0]) 
         # ~ Nb lignes
@@ -443,14 +540,14 @@ def warehouse (comp,composants):
 
 
 def searchLab(Lab, NewMag, dictMag, comp,Buffer):
-  
+   print('start search')
    keys = tuple(Lab.keys())
    dictMagK = tuple(dictMag.keys())
    dictMagI = tuple(dictMag.items())
-   
+   print(type(NewMag))
    for o in keys:
-       if o == NewMag:
-               
+       if int(o) == NewMag:
+               print('boucle 1')
                for i in dictMagK:
                    
                    if comp[0] == i:
@@ -458,21 +555,23 @@ def searchLab(Lab, NewMag, dictMag, comp,Buffer):
                        for g in dictMag.items():
                            if i == g[0]:
                                
-                               #print("the Lab\'s selection is " + str(g[1]))
+                               print("the Lab\'s selection is " + str(g[1]))
                                
                                val = str(g[1])
                                Lab[o][1] = int(val)
-                               #print(str(val))
-                               #print("you select :" + str(Lab[o]) + " for the section")
-                               #print("et vous placer lab :" + str(val))
-                               #print(Lab[o])
-                               #print("before Lab")
+                               print(str(val))
+                               print("you select :" + str(Lab[o]) + " for the section")
+                               print("et vous placer lab :" + str(val))
+                               print(Lab[o])
+                               print("before Lab")
                                
-                               #Buffer.append(Lab[o])
-                               #print(Buffer)
+                               Buffer.append(Lab[o])
+                               print(Buffer)
+                               pushLab(Buffer,composants)
+                               print(Buffer)
     
                         
-                               
+                          
    return Lab, NewMag, dictMag, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
@@ -483,7 +582,7 @@ def searchLab(Lab, NewMag, dictMag, comp,Buffer):
 #~finally f.seek() go in hexAddress = 3977F
 #~ ===================================================================================
 
-def pushLab(Buffer):
+def pushLab(Buffer,composants):
     print ("start pushLab()")
                                         
     bank = 'bank4P'
@@ -498,7 +597,8 @@ def pushLab(Buffer):
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x77F, RELATIVE) 
-    writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines]) 
+    writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines])
+    print(Buffer) 
     print ("finish of writting warehouse") 
 #~ =========================================================================
 #~ ==========================================================================
@@ -606,17 +706,16 @@ def ecriture_disquette():
     print("before pushDots(pins)")
     pushDots(pins)
     print("after pushDots(pins)")
-      
+    bank = 'bank4P'
+    pushLab(Buffer,composants)
+    print("after pushLab(Buffer)")  
     bank = 'bank4'
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
    
-    pushComp(composants,NewMag,DataTools)
-    print("before pushLab(Buffer)")
-    bank = 'bank4P'
-    pushLab(Buffer)
-    print("after pushLab(Buffer)")
+    pushComp(composants,NewMag,Buffer,LabInfo)
+    
     return bank
     
 #~ =========================================================================
@@ -660,6 +759,4 @@ f.close()
 
 
 #~ ===========================================================================
-
-
 
