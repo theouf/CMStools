@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 20 juin. 2014
+Created on 23 juin. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -116,63 +116,7 @@ pack2Mag['1210'] = 19
 pack2Mag['1812'] = 20
 pack2Mag['2220'] = 21
 pack2Mag['R3216'] = 22
-    
-            
-           
-dictMag = {}
-#dictMag['3,17/1,2'] = 0
-dictMag['SO08'] = 1 
-dictMag['SO12'] = 2
-dictMag['SO14'] = 3
-dictMag['SO16'] = 4
-dictMag['SO20'] = 5
-dictMag['SO24'] = 6
-dictMag['SO28'] = 7
-dictMag['SOT23'] = 8
-dictMag['SOT89'] = 9
-dictMag['SOT143'] = 10
-dictMag['SOT194'] = 11
-dictMag['SOT223'] = 12
-dictMag['SOD80'] = 13
-dictMag['SOD87'] = 14
-dictMag['0402'] = 15
-dictMag['0603'] = 16
-dictMag['0805'] = 17
-dictMag['1206'] = 18
-dictMag['1210'] = 19
-dictMag['1812'] = 20
-dictMag['2220'] = 21
-dictMag['R3216'] = 22
-               
-           
-           
-pack2Depot = {}
-pack2Depot['3,17/1,2'] = 0
-pack2Depot['SO08'] = 148
-pack2Depot['SO12'] = 200
-pack2Depot['SO14'] = 200
-pack2Depot['SO16'] = 200
-pack2Depot['SO20'] = 200
-pack2Depot['SO24'] = 200
-pack2Depot['SO28'] = 200
-pack2Depot['SOT23'] = 223
-pack2Depot['SOT89'] = 200
-pack2Depot['SOT143'] = 200
-pack2Depot['SOT194'] = 200
-pack2Depot['SOT223'] = 200
-pack2Depot['SOD80'] = 200
-pack2Depot['SOD87'] = 200
-pack2Depot['0402'] = 200
-pack2Depot['0603'] = 200
-pack2Depot['0805'] = 200
-pack2Depot['1206'] = 400
-pack2Depot['1210'] = 200
-pack2Depot['1812'] = 200
-pack2Depot['2220'] = 200
-pack2Depot['R3216'] = 400
-           
-           
-
+ 
 LabInfo={}
 
 LabInfo= {
@@ -201,6 +145,19 @@ LabInfo= {
          'R3216':{'Lab':'22','submission':400,'tool':2}
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ~ We defined the dictionary Lab with keys and 4 Values
 # ~ the value is the MT
 # ~ the second value is the LAB
@@ -212,7 +169,7 @@ LabInfo= {
 # Coordinate centrer of component Machine : ((longueur /0,0508)/2)
 
 
-       
+   
 #Buffer is fixed all magasin with there Mag address
 Buffer = {}
 
@@ -289,7 +246,6 @@ def writeToFloppy(t):
         #f.write( h[1].decode('hex'))
         decode_hex = codecs.decode(h[0], "hex") 
         f.write(decode_hex) 
-       
         decode_hex1 = codecs.decode(h[1], "hex")
         f.write(decode_hex1)
         
@@ -309,7 +265,6 @@ def writeToFloppy(t):
 def pushDots(data):
     
     bank = 'bank1'
-    
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x208 , RELATIVE)     
     for i in range(0 , loops): 
@@ -319,9 +274,7 @@ def pushDots(data):
     for n in range(0, len(data)): 
          data[n][3] = yaxisdir + data[n][3] 
          writeToFloppy(data[n])
-                                              
     writeToFloppy([0, 2, 0, 0]) 
-    
     # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE)
@@ -564,10 +517,8 @@ def warehouse (comp,composants):
     NewMag = int(input('Entrer an adress of Section\'s Mag for:') or 0)
     for k in composants:
         if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
-            
             pack2Mag[k] = NewMag
-            
-            searchLab(NewMag, dictMag, composants,Buffer)
+            searchLab(NewMag, LabInfo, composants,Buffer)
         elif NewMag in range(15,20) or NewMag in range(35,40):
             print("impossible de rentrer ce magasin")
             warehouse (composants,comp)
@@ -577,31 +528,19 @@ def warehouse (comp,composants):
 #~ ==========================LAB===============================================
 
 
-def searchLab(NewMag, dictMag, comp,Buffer):
+def searchLab(NewMag, LabInfo, comp,Buffer):
    
    keys = tuple(Buffer.keys())
-   dictMagK = tuple(dictMag.keys())
-   dictMagI = tuple(dictMag.items())
-   
+   LabInfoK = tuple(LabInfo.keys())
+   LabInfoI = tuple(LabInfo.items())
    for o in keys:
        if int(o) == NewMag:
-              
-               for i in dictMagK:
-                   
-                   if comp[0] == i:
-                       
-                       for g in dictMag.items():
-                           if i == g[0]:
-                               
-                               val = str(g[1])
-                               Buffer[o][1] = int(val)
-                               
-                               pushLab(Buffer,composants)
-                                      #  print(Buffer)
-    
-                        
-                          
-   return  NewMag, dictMag, comp ,Buffer
+          for i in LabInfoK:
+              if comp[0] == i:
+                val = LabInfo[i]['Lab'] 
+                Buffer[o][1] = int(val)
+                pushLab(Buffer,composants)
+   return  NewMag, LabInfo, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
 #~ pushLab is the function who can take all position of the section and give the Lab of component
@@ -613,21 +552,15 @@ def searchLab(NewMag, dictMag, comp,Buffer):
 
 def pushLab(Buffer,composants):
     print ("start pushLab()")
-                                        
     bank = 'bank4P'
-                                     
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x60C, RELATIVE)
-                                     
     for k,v in Buffer.items(): 
-            
-            writeToFloppy(v)
-                
-        # ~ Nb lignes
+        writeToFloppy(v)
+    # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x77F, RELATIVE) 
     writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines])
-    
     print ("finish of writting warehouse") 
     
 #~ =========================================================================
@@ -686,21 +619,14 @@ for line in lines:
             Rotation(comp,composants[comp],Rot)
             box=m.group(2)
             warehouse (comp,composants[comp])
-           
-            
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
-               
             else:
                 print ("no pack " + composants[comp][0] + " in bank, remove item " + comp)
-                
-                
                 del(composants[comp])
         else:
             print ("Ignored line: " + line)
              
-
-            
     if "-Pin-" in line:
        
         m = p2.match(line)
@@ -710,9 +636,7 @@ for line in lines:
         else:
             print ("Ignored line: " + line)
  
-   
- 
-#~===========================================================================
+#~ ===========================================================================
 # ~ Write to Floppy : for Precidot, data will be recorded on bank1 and the coordinates
 # ~ of points will be defined with
 # ~ call to function pushDots(pins)
@@ -744,7 +668,6 @@ def ecriture_disquette():
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
-   
     pushComp(composants,NewMag,Buffer,LabInfo,tools,composants)
     
     return bank
