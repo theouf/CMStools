@@ -64,8 +64,8 @@ yaxisdir = '-'
 #~ DataTools is for change Tool during the program
 #~ DataToolsTake is temporary variable for taking the tool selected
 #~ DataToolsDrop is temporary variable for drop the tool
-DataTools = []
-
+CompByTools = []
+tools=0
 DataToolsTake =[0,12,0,0]
 DataToolsDrop =[0,12,0,1]
 
@@ -184,8 +184,8 @@ LabInfo= {
          'SO20':{'Lab':'5','submission':148,'tool':4},
          'SO24':{'Lab':'6','submission':148,'tool':4},
          'SO28':{'Lab':'7','submission':148,'tool':4},
-         'SOT23':{'Lab':'8','submission':223,'tool':3},
-         'SOT89':{'Lab':'9','submission':223,'tool':3},
+         'SOT23':{'Lab':'8','submission':223,'tool':2},
+         'SOT89':{'Lab':'9','submission':223,'tool':2},
          'SOT143':{'Lab':'10','submission':148,'tool':3},
          'SOT194':{'Lab':'11','submission':148,'tool':3},
          'SOT223':{'Lab':'12','submission':148,'tool':3},
@@ -201,19 +201,6 @@ LabInfo= {
          'R3216':{'Lab':'22','submission':400,'tool':2}
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ~ We defined the dictionary Lab with keys and 4 Values
 # ~ the value is the MT
 # ~ the second value is the LAB
@@ -225,11 +212,15 @@ LabInfo= {
 # Coordinate centrer of component Machine : ((longueur /0,0508)/2)
 
 
+       
+#Buffer is fixed all magasin with there Mag address
+Buffer = {}
 
-Lab = {}
 
-Lab = {
-        '0':[0,2,0,0],
+
+Buffer ={
+         
+        '0': [0,0,0,0],
         '1': [0, 0, 153 , 1725],
         '2': [0, 0, 153 , 2034],
         '3': [0, 0, 153 , 2357],
@@ -241,62 +232,37 @@ Lab = {
         '9': [0, 0, 153 , 4242],
         '10': [0, 0, 153 , 4557],
         '11': [0, 0, 153 , 4969],
-        '12': [0, 2, 157 , 5362],
-        '13': [0, 2, 157 , 5804],
-        '14': [0, 2, 157 , 6278],
-        '21': [0, 0, 7619, 5572],
+        '12': [0, 0, 153 , 5362],
+        '13': [0, 0, 153 , 5804],
+        '14': [0, 0, 153 , 6278],   #14
+        '15': [0, 0, 153 , 6278],
+        '16': [0, 0, 153 , 6278],
+        '17': [0, 0, 153 , 6278],
+        '18': [0, 0, 153 , 6278],
+        '19': [0, 0, 153 , 6278],
+        '20': [0, 0, 7619, 5572],
+        '21': [0, 0, 7619, 5572],   #21
         '22': [0, 0, 7619 , 5253],
         '23': [0, 0, 7619 , 4940],
         '24': [0, 0, 7619 , 4625],
         '25': [0, 0, 7619 , 4311],
         '26': [0, 0, 7619 , 4005],
         '27': [0, 0, 7619 , 3686],
-        '28': [0, 2, 7700 , 3369],
+        '28': [0, 0, 7619 , 3369],
         '29': [0, 0, 7698 , 3055],
         '30': [0, 0, 7619 , 2737],
         '31': [0, 0, 7690 , 2480],
-        '32': [0, 2, 7690 , 2087],
+        '32': [0, 0, 7690 , 2087],
         '33': [0, 0, 7690 , 1652],
-        '34': [0, 0, 7690 , 1190],
-        '41': [0, 0, 366 , 6855]
+        '34': [0, 0, 7690 , 1190],  #34
+        '35': [0, 0, 7690 , 1190],
+        '36': [0, 0, 7690 , 1190],
+        '37': [0, 0, 7690 , 1190],
+        '38': [0, 0, 7690 , 1190],
+        '39': [0, 0, 7690 , 1190],
+        '40': [0, 0, 7690 , 1190],
+        '41': [0, 0, 366 , 6855]   #41
       }
-       
-#Buffer is fixed all magasin with there Mag address
-Buffer = []
-
-
-'''
-Buffer =[[0,0,0,0],
-         [0, 0, 153 , 1725],
-         [0, 0, 153 , 2034],
-         [0, 0, 153 , 2357],
-         [0, 0, 153 , 2671],
-         [0, 0, 153 , 2986],
-         [0, 0, 153 , 3299],
-         [0, 0, 153 , 3614],
-         [0, 0, 153 , 3929],
-         [0, 0, 153 , 4242],
-         [0, 0, 153 , 4557],
-         [0, 0, 153 , 4969],
-         [0, 0, 153 , 5362],
-         [0, 0, 153 , 5804],
-         [0, 0, 153 , 6278],
-         [0, 0, 7619, 5572],
-         [0, 0, 7619 , 5253],
-         [0, 0, 7619 , 4940],
-         [0, 0, 7619 , 4625],
-         [0, 0, 7619 , 4311],
-         [0, 0, 7619 , 4005],
-         [0, 0, 7619 , 3686],
-         [0, 0, 7619 , 3369],
-         [0, 0, 7698 , 3055],
-         [0, 0, 7619 , 2737],
-         [0, 0, 7690 , 2480],
-         [0, 0, 7690 , 2087],
-         [0, 0, 7690 , 1652],
-         [0, 0, 7690 , 1190],
-         [0, 0, 366 , 6855]]
-'''       
  
 #~ =====================================================================
 #~ ====================CONVERSION TO HEXADECIMAL ==================
@@ -413,15 +379,34 @@ def Rotation(comp,composants,Rot):
 
 #~ [0, 2, 0, 0]) #end loop
 #v[3] = yaxisdir + v[3] # ~ Inverse Y axis if needed
+
+#                                Partie Novar
+# outil
+
+ # on parcourt le Buffer
+   # si la colone 1 de Buffer correspond à Lab dans le dictionnaire
+   # on récupère cette valeur pour la placer dans la variable tools
+   # on constitue une list CompByTools  
+
+#~ ou parcourt les outils 
+  #~ on regarde si c'est un début de boucle
+  #~ si c'est le cas on prend la valeur de tools
+  # si au contraire on est en milieu de boucle 
+  # on regarde si n est différente ou pas de l'outil courrant 
+  #~ pour placer le composant
+  #si oui alors dépose, prise d'un nouvelle outil  et fin de boucle
+  # sinon on parcourt avec le mêm outil
+
 #~ ===============================================================
 
 
-def pushComp(data, NewMag,Buffer,LabInfo):
+def pushComp(data, NewMag,Buffer,LabInfo,tools,composants):
+    print(composants)
     print ("start pushComp()")
-    print(Buffer)                                   
+    #print(Buffer)                                   
     bank = 'bank4'
-
-    
+    boucle=0
+    #print(data)
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x208, RELATIVE)
                                        
@@ -429,80 +414,131 @@ def pushComp(data, NewMag,Buffer,LabInfo):
         writeToFloppy([0, 0, 0, 0]) 
         print ("start to write component") 
         writeToFloppy([0, 10, 0, 0]) 
-        #tools=int(input("enter your tool to start your program "))
-        #DataToolsTake[2]=tools
-        #DataToolsDrop[2]=tools
-        #print(DataToolsTake)
-        #writeToFloppy(DataToolsTake)
-        #writeToFloppy([0, 1, loops, 0]) 
-        
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
             
-            for k, v in data.items():
-                
-               
-                for g in Buffer:
-                                  
-                    if g[1]==0:pass
-                    else:
-                        
-                        for l,b in LabInfo.items():
-                           
-                       
-                            
-                            if str(g[1]) in b['Lab']:
-                                
-                                
-                                tools = b['tool']
-                                
-                                
-                            if DataToolsTake[2]==0:
-                                   print('1er fois')
-                                   DataToolsTake[2]=tools
-                                   DataToolsDrop[2]=tools
-                                   print(DataToolsTake)
-                                   writeToFloppy(DataToolsTake)
-                                   writeToFloppy([0,1,1,0])
-                                   v[3] = yaxisdir + v[3] 
-                                   writeToFloppy(v)
-                                   print('conversion ok')
-                                   print(v) 
-                            elif DataToolsTake[2] != tools:
-                                    print('comparaison ok')
-                                    writeToFloppy([0,2,0,0])
-                                    print('[0,2,0,0]')
-                                    writeToFloppy(DataToolsDrop)
-                                    print(DataToolsDrop)
-                                    DataToolsTake[2]=b['tool']
-                                    print(DataToolsTake)
-                                    writeToFloppy(DataToolsTake)
-                                    writeToFloppy([0,1,1,0])
-                                    print('[0,1,1,0]')
-                                    v[3] = yaxisdir + v[3] 
-                                    print('invertion accepter')
-                                    print(v)
-                                    writeToFloppy(v) 
-                                    print(v)
-                            elif DataToolsTake[2] == tools:
-                                    print('tool egal')
-                                    v[3] = yaxisdir + v[3] 
-                                    writeToFloppy(v) 
-                                               
-                #response= raw_input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
-                #response= input("Change tool for "+str(k)+" ? [y/N]: ") or 'N'
-                #if response == 'y':
-                    #v[3] = yaxisdir + v[3] 
-                    #writeToFloppy(v) 
-    print(v)                                 
              
-    writeToFloppy([0, 2, 0, 0]) 
+           for k,v in data.items(): 
+               for r in Buffer.keys():
+                    if str(v[0])!=r: pass
+                    if str(v[0])==r:        #find coordinate
+                        print(Buffer[r])    #search tool by Lab
+                        for l,m in LabInfo.items():
+                            if str(Buffer[r][1]) in m['Lab']:
+                                Lab = m['Lab']
+                                if str(Buffer[r][1])== Lab:
+                                    tools=m['tool']
+                                    if tools not in CompByTools:
+                                        CompByTools.append(tools)
+                                        print(CompByTools)    
+  
+  
+       
+           for n in CompByTools :
+                if n== tools:                    
+                    if boucle==0:
+                        if v[3]=='--'+v[3]:pass
+                        else:
+                                           print("première boucle")
+                                           print(v)
+                                           boucle=+1
+                                           print(tools)
+                                           print(n)
+                                           if n==tools:
+                                               DataToolsDrop[2]=n
+                                               DataToolsTake[2]=n
+                                               writeToFloppy(DataToolsTake)
+                                               print(DataToolsTake)
+                                               writeToFloppy([0, 1, loops, 0])
+                                               print([0, 1, loops, 0])
+                                               v[3] = yaxisdir + v[3]
+                                               writeToFloppy(v)
+                                               print(v)
+                elif n!=m['tool']: 
+                     if boucle==0:
+                         if v[3]=='-'+v[3]:pass
+                         else:
+                                                print("n and tool are diffrents")
+                                                print(n)
+                                                print(tools)
+                                                
+                                                for l,m in LabInfo.items():
+                                                    if str(Buffer[r][1]) in m['Lab']:
+                                                        Lab = m['Lab']
+                                                        if str(Buffer[r][1])== Lab:
+                                                            tools=m['tool']
+                                                            n=tools
+                                                            DataToolsDrop[2]=n
+                                                            DataToolsTake[2]=n
+                                                            writeToFloppy(DataToolsTake)
+                                                            print(DataToolsTake)
+                                                            writeToFloppy([0, 1, loops, 0])
+                                                            print([0, 1, loops, 0])
+                                                            v[3] = yaxisdir + v[3]
+                                                            writeToFloppy(v)
+                                                            print(v)
+                elif n==0:
+                     if boucle==0:
+                         if v[3]=='--'+v[3]:pass
+                         else: 
+                                                            tools=int(input("Enter tool for starting !"))
+                                      
+                
+                
+                
+                if n != 0:
+                    if boucle !=0:
+                        if v[3]=='--'+v[3]:pass
+                        else:
+                                                
+                                                
+                                                    print("pas la première boucle")
+                                                    if str(Buffer[r][1])== Lab:
+                                                        tools=m['tool']
+                                                    
+                                                    print(v)
+                                                    boucle=+1
+                                                    writeToFloppy([0, 2, 0, 0])
+                                                    print('[0, 2, 0, 0]')
+                                                    writeToFloppy(DataToolsDrop)
+                                                    print(DataToolsDrop)
+                                                    DataToolsTake[2]=m['tool']
+                                                    DataToolsDrop[2]=m['tool']
+                                                    writeToFloppy(DataToolsTake)
+                                                    print(DataToolsTake)
+                                                    writeToFloppy([0, 1, loops, 0]) 
+                                                    print('[0, 1, loops, 0]')
+                                                    v[3] = yaxisdir + v[3]
+                                                    writeToFloppy(v)
+                                                    print(v)
+                    if m['tool']==n: 
+                        if boucle != 0 :
+                            if v[3]=='--'+v[3]:pass
+                            else:
+                                                    v[3] = yaxisdir + v[3]
+                                                    writeToFloppy(v)
+                                                    print(v)
+                                                
+                    elif n==0 :
+                                           tools=int(input("Enter tool for starting !"))
+                                                  
+                writeToFloppy(DataToolsDrop)  
+                print(DataToolsDrop)       
+                writeToFloppy([0, 2, 0, 0])
+                print('[0, 2, 0, 0]')
+    
+        else:   
+            
+            v[3] = yaxisdir + v[3]
+            writeToFloppy(v)
+            writeToFloppy([0, 2, 0, 0])
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE) 
     writeToFloppy([len(data) + addLines, len(data) + addLines]) 
     print ("finish of writting components") 
     print (data)
+
 #~ =========================================================================
 
 # ~ Pretty Print Construct PrettyPrinter objects explicitly
@@ -528,8 +564,10 @@ def warehouse (comp,composants):
     NewMag = int(input('Entrer an adress of Section\'s Mag for:') or 0)
     for k in composants:
         if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
+            
             pack2Mag[k] = NewMag
-            searchLab(Lab, NewMag, dictMag, composants,Buffer)
+            
+            searchLab(NewMag, dictMag, composants,Buffer)
         elif NewMag in range(15,20) or NewMag in range(35,40):
             print("impossible de rentrer ce magasin")
             warehouse (composants,comp)
@@ -539,15 +577,15 @@ def warehouse (comp,composants):
 #~ ==========================LAB===============================================
 
 
-def searchLab(Lab, NewMag, dictMag, comp,Buffer):
-   print('start search')
-   keys = tuple(Lab.keys())
+def searchLab(NewMag, dictMag, comp,Buffer):
+   
+   keys = tuple(Buffer.keys())
    dictMagK = tuple(dictMag.keys())
    dictMagI = tuple(dictMag.items())
-   print(type(NewMag))
+   
    for o in keys:
        if int(o) == NewMag:
-               print('boucle 1')
+              
                for i in dictMagK:
                    
                    if comp[0] == i:
@@ -555,24 +593,15 @@ def searchLab(Lab, NewMag, dictMag, comp,Buffer):
                        for g in dictMag.items():
                            if i == g[0]:
                                
-                               print("the Lab\'s selection is " + str(g[1]))
-                               
                                val = str(g[1])
-                               Lab[o][1] = int(val)
-                               print(str(val))
-                               print("you select :" + str(Lab[o]) + " for the section")
-                               print("et vous placer lab :" + str(val))
-                               print(Lab[o])
-                               print("before Lab")
+                               Buffer[o][1] = int(val)
                                
-                               Buffer.append(Lab[o])
-                               print(Buffer)
                                pushLab(Buffer,composants)
-                               print(Buffer)
+                                      #  print(Buffer)
     
                         
                           
-   return Lab, NewMag, dictMag, comp ,Buffer
+   return  NewMag, dictMag, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
 #~ pushLab is the function who can take all position of the section and give the Lab of component
@@ -590,16 +619,17 @@ def pushLab(Buffer,composants):
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x60C, RELATIVE)
                                      
-    for n in range(0,len(Buffer)): 
+    for k,v in Buffer.items(): 
             
-            writeToFloppy(Buffer[n])
+            writeToFloppy(v)
                 
         # ~ Nb lignes
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x77F, RELATIVE) 
     writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines])
-    print(Buffer) 
+    
     print ("finish of writting warehouse") 
+    
 #~ =========================================================================
 #~ ==========================================================================
 #~ ============================ SUPPORT DISQUETTE ===========================
@@ -708,13 +738,14 @@ def ecriture_disquette():
     print("after pushDots(pins)")
     bank = 'bank4P'
     pushLab(Buffer,composants)
-    print("after pushLab(Buffer)")  
+    print("after pushLab(Buffer)") 
+    print(Buffer) 
     bank = 'bank4'
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
    
-    pushComp(composants,NewMag,Buffer,LabInfo)
+    pushComp(composants,NewMag,Buffer,LabInfo,tools,composants)
     
     return bank
     
