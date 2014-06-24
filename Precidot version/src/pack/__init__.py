@@ -265,15 +265,17 @@ def writeToFloppy(t):
 #~ data[n][3] = yaxisdir + data[n][3] datas are reverse on Dy
 #~================================================================
 def pushDots(data,loops):
-    
+    print(loops)
     bank = 'bank1'
     f.seek(hexAddr[bank], ABSOLUTE) 
     print(loops)
-    f.seek(0x208 , RELATIVE)     
-    for i in range(0 , loops): 
+    f.seek(0x208 , RELATIVE)
+    for i in range(0 , 1):     
+    #for i in range(0 , loops): 
         writeToFloppy([0, 0, 0, 0]) 
         writeToFloppy([0, 10, 0, 0]) 
         writeToFloppy([0, 1, loops, 0]) 
+        print([0, 1, loops, 0])
     for n in range(0, len(data)): 
          data[n][3] = yaxisdir + data[n][3] 
          writeToFloppy(data[n])
@@ -384,6 +386,7 @@ def Tools(data,tool):
 
 
 def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
+    print(loops)
     boucle=0
     print ("start pushComp()")
     Tools(data,CompByTools)
@@ -395,8 +398,8 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x208, RELATIVE)
     
-                                                  
-    for i in range(0, loops): 
+    for i in range(0,1):                                               
+    #for i in range(0, loops): 
         writeToFloppy([0, 0, 0, 0]) 
         print ("start to write component") 
         
@@ -419,20 +422,20 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                Lab = m['Lab']
                                if str(Buffer[r][1])== Lab:
                                     tools=m['tool']
-                                    print("tools entré:"+str(tools))
+                                    #print("tools entré:"+str(tools))
                                     
 
-              for n in CompByTools:
+              #for n in CompByTools:
                   #print("n:"+str(n))
-                   print("tool n entrée possible: "+str(n))                     
+               #    print("tool n entrée possible: "+str(n))                     
 
               if boucle==0:
                     n=tools
-                    print(boucle)
+                    #print(boucle)
                     boucle=boucle+1
                     print("strat loop")
                     if n == tools:
-                        print ("égal")
+                        #print ("égal")
                         DataToolsDrop[2]=n
                         DataToolsTake[2]=n
                         writeToFloppy(DataToolsTake)
@@ -443,12 +446,12 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         writeToFloppy(v)
                         ValAncien=tools
                         print(v)
-                        print(str(ValAncien))
+                        #print(str(ValAncien))
                         
                         
                         
                     else:
-                        print("différent")
+                        #print("différent")
                         
                         
                         DataToolsDrop[2]=ValAncien
@@ -461,30 +464,30 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         writeToFloppy(v)
                         print(v)
                         n=tools
-                        print("fin de boucle n : "+ str(n))
-                        print("fin de boucle tools : "+ str(tools))
+                        #print("fin de boucle n : "+ str(n))
+                        #print("fin de boucle tools : "+ str(tools))
                     
                     
                     
                     
                     
               else: 
-                    print(boucle)   
-                    print("middel of loop boucle")
-                    print("middel n:"+str(n))
-                    print("middel tools" +str(tools))
+                    #print(boucle)   
+                    #print("middel of loop boucle")
+                    #print("middel n:"+str(n))
+                    #print("middel tools" +str(tools))
                     
                     if  ValAncien == tools:
-                        print ("égal")
+                        #print ("égal")
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
                         print(v)
-                        print("middel fin n:"+str(n))
-                        print("middel fin tools" +str(tools))
+                        #print("middel fin n:"+str(n))
+                       # print("middel fin tools" +str(tools))
                     else:
-                        print("different")
-                        print("middel n:"+str(ValAncien))
-                        print("middel tools" +str(tools))
+                        #print("different")
+                        #print("middel n:"+str(ValAncien))
+                        #print("middel tools" +str(tools))
                         writeToFloppy([0, 2, 0, 0])
                         print('[0, 2, 0, 0]')
                         DataToolsDrop[2]=ValAncien
@@ -502,8 +505,8 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         writeToFloppy(v)
                         print(v)
                         ValAncien=tools
-                        print("middel fin n:"+str(ValAncien))
-                        print("middel fin tools" +str(tools))
+                        #print("middel fin n:"+str(ValAncien))
+                        #print("middel fin tools" +str(tools))
                 
         
         else:
@@ -513,7 +516,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                 DataToolsDrop[2]=tools
                                 DataToolsTake[2]=tools
                                 writeToFloppy(DataToolsTake)
-                                writeToFloppy([0, 1, 1, 0])
+                                writeToFloppy([0, 1, loops, 0])
                                 for k,v in data.items():
                                     v[3] = yaxisdir + v[3]
                                     writeToFloppy(v)
@@ -521,11 +524,12 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                 writeToFloppy([0, 2, 0, 0])
         # ~ Nb lignes
     writeToFloppy([0, 2, 0, 0])
+    print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE) 
     writeToFloppy([len(data) + addLines, len(data) + addLines]) 
     print ("finish of writting components") 
-    print (data)
+
 
 #~ =========================================================================
 
@@ -753,3 +757,4 @@ f.close()
 
 
 #~ ===========================================================================
+
