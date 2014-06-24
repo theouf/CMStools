@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 23 juin. 2014
+Created on 24 juin. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -46,7 +46,9 @@ disk = 'biscotte'
 bank = 'bank4'
 # ~ Loops repeat X times in the same loop
 # ~ Loops premet quand a lui de repeter X fois la meme boucle
-loops = 1
+
+loops=0
+
 
 # ~ time of point to drop
 submission = 0
@@ -262,10 +264,11 @@ def writeToFloppy(t):
 
 #~ data[n][3] = yaxisdir + data[n][3] datas are reverse on Dy
 #~================================================================
-def pushDots(data):
+def pushDots(data,loops):
     
     bank = 'bank1'
     f.seek(hexAddr[bank], ABSOLUTE) 
+    print(loops)
     f.seek(0x208 , RELATIVE)     
     for i in range(0 , loops): 
         writeToFloppy([0, 0, 0, 0]) 
@@ -307,6 +310,33 @@ def Rotation(comp,composants,Rot):
     composants[1]= Rot
        
     return Rot
+
+def Tools(data,tool):
+    print(data)
+    for n in range(0, len(data)):
+        for k,v in data.items(): 
+               
+               for r in Buffer.keys():
+                    if str(v[0])!=r: pass
+                    if str(v[0])==r:        #find coordinate
+                                            #search tool by Lab
+                        for l,m in LabInfo.items():
+                            if str(Buffer[r][1])  in m['Lab']:
+                               Lab = m['Lab']
+                               if str(Buffer[r][1])== Lab:
+                                    tools=m['tool']
+                                    if tools not in CompByTools:
+                                        CompByTools.append(tools)
+                                        
+                                                
+                           
+                            
+    return CompByTools
+
+
+
+
+
 
 #~=====================================================================
 #~ ===============================================================
@@ -353,139 +383,144 @@ def Rotation(comp,composants,Rot):
 #~ ===============================================================
 
 
-def pushComp(data, NewMag,Buffer,LabInfo,tools,composants):
-    print(composants)
+def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
+    boucle=0
     print ("start pushComp()")
+    Tools(data,CompByTools)
+   
     #print(Buffer)                                   
     bank = 'bank4'
-    boucle=0
+   
     #print(data)
     f.seek(hexAddr[bank], ABSOLUTE) 
     f.seek(0x208, RELATIVE)
-                                       
+    
+                                                  
     for i in range(0, loops): 
         writeToFloppy([0, 0, 0, 0]) 
         print ("start to write component") 
+        
         writeToFloppy([0, 10, 0, 0]) 
+        
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
             
-             
-           for k,v in data.items(): 
-               for r in Buffer.keys():
+
+          print (data)
+          for k,v in data.items():
+              
+                                   
+              for r in Buffer.keys():
                     if str(v[0])!=r: pass
                     if str(v[0])==r:        #find coordinate
-                        print(Buffer[r])    #search tool by Lab
+                        #print(Buffer[r])    #search tool by Lab
                         for l,m in LabInfo.items():
-                            if str(Buffer[r][1]) in m['Lab']:
-                                Lab = m['Lab']
-                                if str(Buffer[r][1])== Lab:
+                            if str(Buffer[r][1])  in m['Lab']:
+                               Lab = m['Lab']
+                               if str(Buffer[r][1])== Lab:
                                     tools=m['tool']
-                                    if tools not in CompByTools:
-                                        CompByTools.append(tools)
-                                        print(CompByTools)    
-  
-  
-       
-           for n in CompByTools :
-                if n== tools:                    
-                    if boucle==0:
-                        if v[3]=='--'+v[3]:pass
-                        else:
-                                           print("première boucle")
-                                           print(v)
-                                           boucle=+1
-                                           print(tools)
-                                           print(n)
-                                           if n==tools:
-                                               DataToolsDrop[2]=n
-                                               DataToolsTake[2]=n
-                                               writeToFloppy(DataToolsTake)
-                                               print(DataToolsTake)
-                                               writeToFloppy([0, 1, loops, 0])
-                                               print([0, 1, loops, 0])
-                                               v[3] = yaxisdir + v[3]
-                                               writeToFloppy(v)
-                                               print(v)
-                elif n!=m['tool']: 
-                     if boucle==0:
-                         if v[3]=='-'+v[3]:pass
-                         else:
-                                                print("n and tool are diffrents")
-                                                print(n)
-                                                print(tools)
-                                                
-                                                for l,m in LabInfo.items():
-                                                    if str(Buffer[r][1]) in m['Lab']:
-                                                        Lab = m['Lab']
-                                                        if str(Buffer[r][1])== Lab:
-                                                            tools=m['tool']
-                                                            n=tools
-                                                            DataToolsDrop[2]=n
-                                                            DataToolsTake[2]=n
-                                                            writeToFloppy(DataToolsTake)
-                                                            print(DataToolsTake)
-                                                            writeToFloppy([0, 1, loops, 0])
-                                                            print([0, 1, loops, 0])
-                                                            v[3] = yaxisdir + v[3]
-                                                            writeToFloppy(v)
-                                                            print(v)
-                elif n==0:
-                     if boucle==0:
-                         if v[3]=='--'+v[3]:pass
-                         else: 
-                                                            tools=int(input("Enter tool for starting !"))
-                                      
+                                    print("tools entré:"+str(tools))
+                                    
+
+              for n in CompByTools:
+                  #print("n:"+str(n))
+                   print("tool n entrée possible: "+str(n))                     
+
+              if boucle==0:
+                    n=tools
+                    print(boucle)
+                    boucle=boucle+1
+                    print("strat loop")
+                    if n == tools:
+                        print ("égal")
+                        DataToolsDrop[2]=n
+                        DataToolsTake[2]=n
+                        writeToFloppy(DataToolsTake)
+                        print(DataToolsTake)
+                        writeToFloppy([0, 1, loops, 0])
+                        print([0, 1, loops, 0])
+                        v[3] = yaxisdir + v[3]
+                        writeToFloppy(v)
+                        ValAncien=tools
+                        print(v)
+                        print(str(ValAncien))
+                        
+                        
+                        
+                    else:
+                        print("différent")
+                        
+                        
+                        DataToolsDrop[2]=ValAncien
+                        DataToolsTake[2]=tools
+                        writeToFloppy(DataToolsTake)
+                        print(DataToolsTake)
+                        writeToFloppy([0, 1, loops, 0])
+                        print([0, 1, loops, 0])
+                        v[3] = yaxisdir + v[3]
+                        writeToFloppy(v)
+                        print(v)
+                        n=tools
+                        print("fin de boucle n : "+ str(n))
+                        print("fin de boucle tools : "+ str(tools))
+                    
+                    
+                    
+                    
+                    
+              else: 
+                    print(boucle)   
+                    print("middel of loop boucle")
+                    print("middel n:"+str(n))
+                    print("middel tools" +str(tools))
+                    
+                    if  ValAncien == tools:
+                        print ("égal")
+                        v[3] = yaxisdir + v[3]
+                        writeToFloppy(v)
+                        print(v)
+                        print("middel fin n:"+str(n))
+                        print("middel fin tools" +str(tools))
+                    else:
+                        print("different")
+                        print("middel n:"+str(ValAncien))
+                        print("middel tools" +str(tools))
+                        writeToFloppy([0, 2, 0, 0])
+                        print('[0, 2, 0, 0]')
+                        DataToolsDrop[2]=ValAncien
+                        writeToFloppy(DataToolsDrop)
+                        print(DataToolsDrop)
+                        DataToolsDrop[2]=tools
+                        DataToolsTake[2]=tools
+                        n=tools
+                        
+                        writeToFloppy(DataToolsTake)
+                        print(DataToolsTake)
+                        writeToFloppy([0, 1, loops, 0])
+                        print([0, 1, loops, 0])
+                        v[3] = yaxisdir + v[3]
+                        writeToFloppy(v)
+                        print(v)
+                        ValAncien=tools
+                        print("middel fin n:"+str(ValAncien))
+                        print("middel fin tools" +str(tools))
                 
-                
-                
-                if n != 0:
-                    if boucle !=0:
-                        if v[3]=='--'+v[3]:pass
-                        else:
-                                                
-                                                
-                                                    print("pas la première boucle")
-                                                    if str(Buffer[r][1])== Lab:
-                                                        tools=m['tool']
-                                                    
-                                                    print(v)
-                                                    boucle=+1
-                                                    writeToFloppy([0, 2, 0, 0])
-                                                    print('[0, 2, 0, 0]')
-                                                    writeToFloppy(DataToolsDrop)
-                                                    print(DataToolsDrop)
-                                                    DataToolsTake[2]=m['tool']
-                                                    DataToolsDrop[2]=m['tool']
-                                                    writeToFloppy(DataToolsTake)
-                                                    print(DataToolsTake)
-                                                    writeToFloppy([0, 1, loops, 0]) 
-                                                    print('[0, 1, loops, 0]')
-                                                    v[3] = yaxisdir + v[3]
-                                                    writeToFloppy(v)
-                                                    print(v)
-                    if m['tool']==n: 
-                        if boucle != 0 :
-                            if v[3]=='--'+v[3]:pass
-                            else:
-                                                    v[3] = yaxisdir + v[3]
-                                                    writeToFloppy(v)
-                                                    print(v)
-                                                
-                    elif n==0 :
-                                           tools=int(input("Enter tool for starting !"))
-                                                  
-                writeToFloppy(DataToolsDrop)  
-                print(DataToolsDrop)       
-                writeToFloppy([0, 2, 0, 0])
-                print('[0, 2, 0, 0]')
-    
-        else:   
-            
-            v[3] = yaxisdir + v[3]
-            writeToFloppy(v)
-            writeToFloppy([0, 2, 0, 0])
+        
+        else:
+                        
+        
+                                tools=input("Enter tools for this programme")
+                                DataToolsDrop[2]=tools
+                                DataToolsTake[2]=tools
+                                writeToFloppy(DataToolsTake)
+                                writeToFloppy([0, 1, 1, 0])
+                                for k,v in data.items():
+                                    v[3] = yaxisdir + v[3]
+                                    writeToFloppy(v)
+                                writeToFloppy(DataToolsDrop)
+                                writeToFloppy([0, 2, 0, 0])
         # ~ Nb lignes
+    writeToFloppy([0, 2, 0, 0])
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE) 
     writeToFloppy([len(data) + addLines, len(data) + addLines]) 
@@ -658,7 +693,12 @@ def ecriture_disquette():
        
     bank = 'bank1'
     print("before pushDots(pins)")
-    pushDots(pins)
+    Mod=input("is change loop during this program ? [y/N] : ") or 'N'
+    if Mod =='y':
+            loops= int(input("Enter the new loop : "))
+    else:
+            loops=1
+    pushDots(pins,loops)
     print("after pushDots(pins)")
     bank = 'bank4P'
     pushLab(Buffer,composants)
@@ -668,7 +708,7 @@ def ecriture_disquette():
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
-    pushComp(composants,NewMag,Buffer,LabInfo,tools,composants)
+    pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools)
     
     return bank
     
@@ -713,4 +753,3 @@ f.close()
 
 
 #~ ===========================================================================
-
