@@ -122,29 +122,29 @@ pack2Mag['R3216'] = 22
 LabInfo={}
 
 LabInfo= {
-         '3,17/1,2':{'Lab':'0','submission':0,'tool':0},
-         'SO08':{'Lab':'1','submission':148,'tool':3},
-         'SO12':{'Lab':'2','submission':148,'tool':3},
-         'SO14':{'Lab':'3','submission':148,'tool':4},
-         'SO16':{'Lab':'4','submission':148,'tool':4},
-         'SO20':{'Lab':'5','submission':148,'tool':4},
-         'SO24':{'Lab':'6','submission':148,'tool':4},
-         'SO28':{'Lab':'7','submission':148,'tool':4},
-         'SOT23':{'Lab':'8','submission':223,'tool':2},
-         'SOT89':{'Lab':'9','submission':223,'tool':2},
-         'SOT143':{'Lab':'10','submission':148,'tool':3},
-         'SOT194':{'Lab':'11','submission':148,'tool':3},
-         'SOT223':{'Lab':'12','submission':148,'tool':3},
-         'SOD80':{'Lab':'13','submission':148,'tool':3},
-         'SOD87':{'Lab':'14','submission':148,'tool':3},
-         '0402':{'Lab':'15','submission':400,'tool':2},
-         '0603':{'Lab':'16','submission':400,'tool':2},
-         '0805':{'Lab':'17','submission':400,'tool':2},
-         '1206':{'Lab':'18','submission':400,'tool':2},
-         '1210':{'Lab':'19','submission':400,'tool':2},
-         '1812':{'Lab':'20','submission':400,'tool':2},
-         '2220':{'Lab':'21','submission':400,'tool':2},
-         'R3216':{'Lab':'22','submission':400,'tool':2}
+         '3,17/1,2':{'Lab':'0','submission':0,'tool':0,'speed':[0,0,4,0]},
+         'SO08':{'Lab':'1','submission':148,'tool':3,'speed':[0,0,5,0]},
+         'SO12':{'Lab':'2','submission':148,'tool':3,'speed':[0,0,5,0]},
+         'SO14':{'Lab':'3','submission':148,'tool':4,'speed':[0,0,5,0]},
+         'SO16':{'Lab':'4','submission':148,'tool':4,'speed':[0,0,5,0]},
+         'SO20':{'Lab':'5','submission':148,'tool':4,'speed':[0,0,5,0]},
+         'SO24':{'Lab':'6','submission':148,'tool':4,'speed':[0,0,5,0]},
+         'SO28':{'Lab':'7','submission':148,'tool':4,'speed':[0,0,5,0]},
+         'SOT23':{'Lab':'8','submission':223,'tool':2,'speed':[0,0,4,0]},
+         'SOT89':{'Lab':'9','submission':223,'tool':2,'speed':[0,0,4,0]},
+         'SOT143':{'Lab':'10','submission':148,'tool':3,'speed':[0,0,4,0]},
+         'SOT194':{'Lab':'11','submission':148,'tool':3,'speed':[0,0,4,0]},
+         'SOT223':{'Lab':'12','submission':148,'tool':3,'speed':[0,0,4,0]},
+         'SOD80':{'Lab':'13','submission':148,'tool':3,'speed':[0,0,4,0]},
+         'SOD87':{'Lab':'14','submission':148,'tool':3,'speed':[0,0,4,0]},
+         '0402':{'Lab':'15','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '0603':{'Lab':'16','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '0805':{'Lab':'17','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '1206':{'Lab':'18','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '1210':{'Lab':'19','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '1812':{'Lab':'20','submission':400,'tool':2,'speed':[0,0,4,0]},
+         '2220':{'Lab':'21','submission':400,'tool':2,'speed':[0,0,4,0]},
+         'R3216':{'Lab':'22','submission':400,'tool':2,'speed':[0,0,4,0]}
         }
 
 
@@ -422,6 +422,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                Lab = m['Lab']
                                if str(Buffer[r][1])== Lab:
                                     tools=m['tool']
+                                    speed=m['speed']
                                     #print("tools entré:"+str(tools))
                                     
 
@@ -499,6 +500,12 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         
                         writeToFloppy(DataToolsTake)
                         print(DataToolsTake)
+                        if DataToolsTake[2] != ValAncien:
+                           # print( "chose 4 for low")
+                           # print("chose 5 for fast")
+                           # speed=input("Enter speed for taking :  "+ str(k))
+                           writeToFloppy(speed)
+                           print(speed)
                         writeToFloppy([0, 1, loops, 0])
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
