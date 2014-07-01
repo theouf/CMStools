@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 30 juin. 2014
+Created on 01 juillet. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -467,6 +467,8 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         DataToolsTake[2]=n
                         writeToFloppy(DataToolsTake)
                         print(DataToolsTake)
+                        writeToFloppy(speed)
+                        print(speed)
                         writeToFloppy([0, 1, loops, 0])
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
@@ -560,7 +562,8 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
     print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x32, RELATIVE)
-    writeToFloppy([len(data) + addLines, len(data) + addLines])
+   # writeToFloppy([len(data) + addLines, len(data) + addLines])
+    writeToFloppy([len(data),len(data)])
     print ("finish of writting components")
 
 
