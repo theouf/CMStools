@@ -641,6 +641,7 @@ def ecriture_disquette():
        
     bank = 'bank1'
     print("before pushDots(pins)")
+    #Mod=raw_input("is change loop during this program ? [y/N] : ") or 'N'
     Mod=input("is change loop during this program ? [y/N] : ") or 'N'
     if Mod =='y':
             loops= int(input("Enter the new loop : "))
