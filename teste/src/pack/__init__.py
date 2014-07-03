@@ -523,13 +523,15 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                 for k,v in data.items():
                                     v[3] = yaxisdir + v[3]
                                     writeToFloppy(v)
-                                writeToFloppy(DataToolsDrop)
+                               
                                 
         # ~ Nb lignes
+    
+    writeToFloppy(DataToolsDrop)
     writeToFloppy([0, 2, 0, 0])
     print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x32, RELATIVE)
+    f.seek(0x032, RELATIVE)
     writeToFloppy([len(data) + addLines, len(data) + addLines])
     print ("finish of writting components")
     return nbrLines(len(data)+addLines)
