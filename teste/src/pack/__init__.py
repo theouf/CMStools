@@ -389,7 +389,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
     boucle=0
     print ("start pushComp()")
     bank = 'bank4'
-   
+    lineCounter=0
     
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x208, RELATIVE)
@@ -399,10 +399,10 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
         for n in range(0, start):
             writeToFloppy([0, 0, 0, 0])
             print([0, 0, 0, 0])
-        
+            lineCounter=lineCounter+1
         writeToFloppy([0, 10, 0, 0])
         print([0, 10, 0, 0])
-        
+        lineCounter=lineCounter+1
        
         print ("start to write component")
         
@@ -456,13 +456,17 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         DataToolsDrop[2]=n
                         DataToolsTake[2]=n
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         writeToFloppy(speed)
+                        lineCounter=lineCounter+1
                         print(speed)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         ValAncien=tools
                         print(v)
                         
@@ -474,11 +478,14 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         DataToolsDrop[2]=ValAncien
                         DataToolsTake[2]=tools
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         n=tools
                         
@@ -488,27 +495,34 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                     if ValAncien == tools:
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         
                     else:
                         
                         writeToFloppy([0, 2, 0, 0])
+                        lineCounter=lineCounter+1
                         print('[0, 2, 0, 0]')
                         DataToolsDrop[2]=ValAncien
                         writeToFloppy(DataToolsDrop)
+                        lineCounter=lineCounter+1
                         print(DataToolsDrop)
                         DataToolsDrop[2]=tools
                         DataToolsTake[2]=tools
                         n=tools
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         if DataToolsTake[2] != ValAncien:
                            writeToFloppy(speed)
+                           lineCounter=lineCounter+1
                            print(speed)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         ValAncien=tools
                                 
@@ -519,22 +533,27 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                 DataToolsDrop[2]=tools
                                 DataToolsTake[2]=tools
                                 writeToFloppy(DataToolsTake)
+                                lineCounter=lineCounter+1
                                 writeToFloppy([0, 1, loops, 0])
+                                lineCounter=lineCounter+1
                                 for k,v in data.items():
                                     v[3] = yaxisdir + v[3]
                                     writeToFloppy(v)
-                               
-                                
+                                    lineCounter=lineCounter+1                           
         # ~ Nb lignes
     
     writeToFloppy(DataToolsDrop)
+    lineCounter=lineCounter+1
     writeToFloppy([0, 2, 0, 0])
+    lineCounter=lineCounter+1
     print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x032, RELATIVE)
-    writeToFloppy([len(data) + addLines, len(data) + addLines])
+    #writeToFloppy([len(data) + addLines, len(data) + addLines])
+    print(lineCounter)
     print ("finish of writting components")
-    return nbrLines(len(data)+addLines)
+    nbrLines(lineCounter)
+   
 
 #~ =========================================================================
 #~ Use this function when the value tool and speed aren't found
@@ -564,12 +583,10 @@ def nbrLines(nbrLine):
        f.seek(hexAddr[bank], ABSOLUTE)
        f.seek(0x032, RELATIVE)
        print(nbrLine)
-       nbrLines=nbrLine*2
-       writeToFloppy(str(nbrLines))
-       print(nbrLines)
+       writeToFloppy([nbrLine])
        f.seek(hexAddr[bank], ABSOLUTE)
-       f.seek(0x035, RELATIVE)
-
+       f.seek(0x034, RELATIVE)
+       writeToFloppy([nbrLine+1])
 
 
 
