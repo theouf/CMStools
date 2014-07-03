@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 02 juillet. 2014
+Created on 03 juillet. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -35,9 +35,7 @@ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
 # ~ Biscotte is the virtual support for the test
 # ~ disk ='/dev/fd0' is the way of floppy disk
 
-# ~ biscotte est le nom donne
-# ~ afin de permettre les essais ce support est virtuel
-# ~ disk ='/dev/fd0' permet de cible la disquette
+
 
 #~disk = '../../../biscotte'
 disk = 'biscotte'
@@ -47,7 +45,7 @@ bank = 'bank4'
 # ~ Loops repeat X times in the same loop
 # ~ Loops premet quand a lui de repeter X fois la meme boucle
 
-loops=0
+loops=1
 
 
 # ~ time of point to drop
@@ -93,10 +91,6 @@ hexAddr['bank4P'] = 0x39000
 
 # ~ We defined the dictionary pack2Mag with keys and the Value
 # ~ the value is the LAB
-# ~ the second value is the DOT
-# ~ the third value is Center Dx of component
-# ~ the fourth value is Center Dy of component
-# ~ the fifth value is Rang by Input
 # ~ Unite Machine =0.0508mm
 
 pack2Mag = {}
@@ -127,33 +121,33 @@ pack2Mag['R3216'] = 22
 LabInfo={}
 
 LabInfo= {
-         '3,17/1,2':{'Lab':'0','submission':0,'tool':0,'speed':[0,0,4,0]},
-         'SO08':{'Lab':'1','submission':148,'tool':3,'speed':[0,0,5,0]},
-         'SO12':{'Lab':'2','submission':148,'tool':3,'speed':[0,0,5,0]},
-         'SO14':{'Lab':'3','submission':148,'tool':4,'speed':[0,0,5,0]},
-         'SO16':{'Lab':'4','submission':148,'tool':4,'speed':[0,0,5,0]},
-         'SO20':{'Lab':'5','submission':148,'tool':4,'speed':[0,0,5,0]},
-         'SO24':{'Lab':'6','submission':148,'tool':4,'speed':[0,0,5,0]},
-         'SO28':{'Lab':'7','submission':148,'tool':4,'speed':[0,0,5,0]},
-         'SOT23':{'Lab':'8','submission':223,'tool':2,'speed':[0,0,4,0]},
-         'SOT89':{'Lab':'9','submission':223,'tool':2,'speed':[0,0,4,0]},
-         'SOT143':{'Lab':'10','submission':148,'tool':3,'speed':[0,0,4,0]},
-         'SOT194':{'Lab':'11','submission':148,'tool':3,'speed':[0,0,4,0]},
-         'SOT223':{'Lab':'12','submission':148,'tool':3,'speed':[0,0,4,0]},
-         'SOD80':{'Lab':'13','submission':148,'tool':3,'speed':[0,0,4,0]},
-         'SOD87':{'Lab':'14','submission':148,'tool':3,'speed':[0,0,4,0]},
-         '0402':{'Lab':'15','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '0603':{'Lab':'16','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '0805':{'Lab':'17','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '1206':{'Lab':'18','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '1210':{'Lab':'19','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '1812':{'Lab':'20','submission':400,'tool':2,'speed':[0,0,4,0]},
-         '2220':{'Lab':'21','submission':400,'tool':2,'speed':[0,0,4,0]},
-         'R3216':{'Lab':'22','submission':400,'tool':2,'speed':[0,0,4,0]}
+         '3,17/1,2':{'Lab':'0','submission':0,'tool':0,'speed':[0,4,0,0]},
+         'SO08':{'Lab':'1','submission':148,'tool':3,'speed':[0,5,0,0]},
+         'SO12':{'Lab':'2','submission':148,'tool':3,'speed':[0,5,0,0]},
+         'SO14':{'Lab':'3','submission':148,'tool':4,'speed':[0,5,0,0]},
+         'SO16':{'Lab':'4','submission':148,'tool':4,'speed':[0,5,0,0]},
+         'SO20':{'Lab':'5','submission':148,'tool':4,'speed':[0,5,0,0]},
+         'SO24':{'Lab':'6','submission':148,'tool':4,'speed':[0,5,0,0]},
+         'SO28':{'Lab':'7','submission':148,'tool':4,'speed':[0,5,0,0]},
+         'SOT23':{'Lab':'8','submission':223,'tool':2,'speed':[0,4,0,0]},
+         'SOT89':{'Lab':'9','submission':223,'tool':2,'speed':[0,4,0,0]},
+         'SOT143':{'Lab':'10','submission':148,'tool':3,'speed':[0,4,0,0]},
+         'SOT194':{'Lab':'11','submission':148,'tool':3,'speed':[0,4,0,0]},
+         'SOT223':{'Lab':'12','submission':148,'tool':3,'speed':[0,4,0,0]},
+         'SOD80':{'Lab':'13','submission':148,'tool':3,'speed':[0,4,0,0]},
+         'SOD87':{'Lab':'14','submission':148,'tool':3,'speed':[0,4,0,0]},
+         '0402':{'Lab':'15','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '0603':{'Lab':'16','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '0805':{'Lab':'17','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '1206':{'Lab':'18','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '1210':{'Lab':'19','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '1812':{'Lab':'20','submission':400,'tool':2,'speed':[0,4,0,0]},
+         '2220':{'Lab':'21','submission':400,'tool':2,'speed':[0,4,0,0]},
+         'R3216':{'Lab':'22','submission':400,'tool':2,'speed':[0,4,0,0]}
         }
 
 
-# ~ We defined the dictionary Lab with keys and 4 Values
+# ~ We defined the dictionary Buffer with keys and 4 Values
 # ~ the value is the MT
 # ~ the second value is the LAB
 # ~ the third value is Center Dx of component
@@ -215,7 +209,53 @@ Buffer ={
         '40': [0, 0, 7690 , 1190],
         '41': [0, 0, 366 , 6855] #41
       }
- 
+ListBuffer=[
+             [0,0,0,0],
+             [0, 0, 153 , 1725],
+             [0, 0, 153 , 2034],
+             [0, 0, 153 , 2357],
+             [0, 0, 153 , 2671],
+             [0, 0, 153 , 2986],
+             [0, 0, 153 , 3299],
+             [0, 0, 153 , 3614],
+             [0, 0, 153 , 3929],
+             [0, 0, 153 , 4242],
+             [0, 0, 153 , 4557],
+             [0, 0, 153 , 4969],
+             [0, 0, 153 , 5362],
+             [0, 0, 153 , 5804],
+             [0, 0, 153 , 6278], #14
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 7619, 5572],
+             [0, 0, 7619, 5572], #21
+             [0, 0, 7619 , 5253],
+             [0, 0, 7619 , 4940],
+             [0, 0, 7619 , 4625],
+             [0, 0, 7619 , 4311],
+             [0, 0, 7619 , 4005],
+             [0, 0, 7619 , 3686],
+             [0, 0, 7619 , 3369],
+             [0, 0, 7698 , 3055],
+             [0, 0, 7619 , 2737],
+             [0, 0, 7690 , 2480],
+             [0, 0, 7690 , 2087],
+             [0, 0, 7690 , 1652],
+             [0, 0, 7690 , 1190], #34
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 366 , 6855] #41
+             
+             
+             
+             ]
 #~ =====================================================================
 #~ ====================CONVERSION TO HEXADECIMAL ==================
 #~ ================= into Little Endian ===========================
@@ -297,8 +337,8 @@ def pushDots(data,loops):
 #~===================================================================================
 #~ ==========================warehouse===============================================
         # first NewMag could enter a warehouse address for each component :")
-        # secondly searchLab() detects the Lab key which equals NewMag and inserts the dictMag value in the
-        # dictionary (Lab)
+        # secondly searchLab() detects the Buffer key which equals NewMag and inserts the dictMag value in the
+        # dictionary (Buffer)
         # Lab is indentical to the position of the section
 #~ ===================================================================================
           
@@ -330,7 +370,14 @@ def searchLab(NewMag, LabInfo, comp,Buffer):
               if comp[0] == i:
                 val = LabInfo[i]['Lab']
                 Buffer[o][1] = int(val)
-                pushLab(Buffer,composants)
+                
+                if int(Buffer[o][3])==int(ListBuffer[int(o)][3]):
+                    
+                   
+                    ListBuffer[int(o)][1]=int(val)
+                    
+                
+                #pushLab(Buffer,composants)
    return NewMag, LabInfo, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
@@ -341,18 +388,20 @@ def searchLab(NewMag, LabInfo, comp,Buffer):
 #~finally f.seek() go in hexAddress = 3977F
 #~ ===================================================================================
 
-def pushLab(Buffer,composants):
+def pushLab(ListBuffer):
     #print ("start pushLab()")
     bank = 'bank4P'
+    
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x60C, RELATIVE)
-    for k,v in Buffer.items():
-        writeToFloppy(v)
+    f.seek(0x61C, RELATIVE)
+    for n in range(0,len(ListBuffer)):
+                  writeToFloppy( ListBuffer[n])
     # ~ Nb lignes
+    
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x77F, RELATIVE)
-    writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines])
-    #print ("finish of writting warehouse")
+    f.seek(0x750, RELATIVE)
+    writeToFloppy([len(ListBuffer) + addLines, len(ListBuffer) + addLines])
+    print ("finish of writting warehouse")
     
 
 #~=====================================================================
@@ -383,21 +432,30 @@ def pushLab(Buffer,composants):
 
 
 def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
-    print(loops)
+    
+    start=loops
+    
     boucle=0
     print ("start pushComp()")
     bank = 'bank4'
-   
+    lineCounter=0
     
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x208, RELATIVE)
     
     for i in range(0,1):
     #for i in range(0, loops):
-        writeToFloppy([0, 0, 0, 0])
+        for n in range(0, start):
+            writeToFloppy([0, 0, 0, 0])
+            print([0, 0, 0, 0])
+            lineCounter=lineCounter+1
+        writeToFloppy([0, 10, 0, 0])
+        print([0, 10, 0, 0])
+        lineCounter=lineCounter+1
+       
         print ("start to write component")
         
-        writeToFloppy([0, 10, 0, 0])
+        #writeToFloppy([0, 10, 0, 0])
         
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
@@ -447,13 +505,17 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         DataToolsDrop[2]=n
                         DataToolsTake[2]=n
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         writeToFloppy(speed)
+                        lineCounter=lineCounter+1
                         print(speed)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         ValAncien=tools
                         print(v)
                         
@@ -465,11 +527,14 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                         DataToolsDrop[2]=ValAncien
                         DataToolsTake[2]=tools
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         n=tools
                         
@@ -479,27 +544,34 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                     if ValAncien == tools:
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         
                     else:
                         
                         writeToFloppy([0, 2, 0, 0])
+                        lineCounter=lineCounter+1
                         print('[0, 2, 0, 0]')
                         DataToolsDrop[2]=ValAncien
                         writeToFloppy(DataToolsDrop)
+                        lineCounter=lineCounter+1
                         print(DataToolsDrop)
                         DataToolsDrop[2]=tools
                         DataToolsTake[2]=tools
                         n=tools
                         writeToFloppy(DataToolsTake)
+                        lineCounter=lineCounter+1
                         print(DataToolsTake)
                         if DataToolsTake[2] != ValAncien:
                            writeToFloppy(speed)
+                           lineCounter=lineCounter+1
                            print(speed)
                         writeToFloppy([0, 1, loops, 0])
+                        lineCounter=lineCounter+1
                         print([0, 1, loops, 0])
                         v[3] = yaxisdir + v[3]
                         writeToFloppy(v)
+                        lineCounter=lineCounter+1
                         print(v)
                         ValAncien=tools
                                 
@@ -510,21 +582,26 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                 DataToolsDrop[2]=tools
                                 DataToolsTake[2]=tools
                                 writeToFloppy(DataToolsTake)
+                                lineCounter=lineCounter+1
                                 writeToFloppy([0, 1, loops, 0])
+                                lineCounter=lineCounter+1
                                 for k,v in data.items():
                                     v[3] = yaxisdir + v[3]
                                     writeToFloppy(v)
-                                writeToFloppy(DataToolsDrop)
-                                writeToFloppy([0, 2, 0, 0])
+                                    lineCounter=lineCounter+1                           
         # ~ Nb lignes
+    
+    writeToFloppy(DataToolsDrop)
+    lineCounter=lineCounter+1
     writeToFloppy([0, 2, 0, 0])
+    lineCounter=lineCounter+1
     print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x32, RELATIVE)
-   # writeToFloppy([len(data) + addLines, len(data) + addLines])
-    writeToFloppy([len(data),len(data)])
+    f.seek(0x032, RELATIVE)
+    print(lineCounter)
     print ("finish of writting components")
-
+    nbrLines(lineCounter)
+   
 
 #~ =========================================================================
 #~ Use this function when the value tool and speed aren't found
@@ -547,6 +624,22 @@ def Read_Creating(k,dico):
             dico[nom]=(toolsimport,speedimport,boximport)
                 
         return dico[nom],k
+
+def nbrLines(nbrLine):
+       
+       bank='bank4'
+       f.seek(hexAddr[bank], ABSOLUTE)
+       f.seek(0x032, RELATIVE)
+       writeToFloppy([nbrLine])
+       f.seek(hexAddr[bank], ABSOLUTE)
+       f.seek(0x034, RELATIVE)
+       writeToFloppy([nbrLine+1])
+
+
+
+
+
+
 
 #~====================================================================
 
@@ -641,7 +734,7 @@ def ecriture_disquette():
        
     bank = 'bank1'
     print("before pushDots(pins)")
-    #Mod=raw_input("is change loop during this program ? [y/N] : ") or 'N'
+    #Mod=input("is change loop during this program ? [y/N] : ") or 'N'
     Mod=input("is change loop during this program ? [y/N] : ") or 'N'
     if Mod =='y':
             loops= int(input("Enter the new loop : "))
@@ -658,7 +751,8 @@ def ecriture_disquette():
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
     pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools)
-    
+    pushLab(ListBuffer)
+    print(ListBuffer)
     return bank
     
 #~ =========================================================================
