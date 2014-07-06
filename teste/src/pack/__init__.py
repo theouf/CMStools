@@ -35,9 +35,7 @@ source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
 # ~ Biscotte is the virtual support for the test
 # ~ disk ='/dev/fd0' is the way of floppy disk
 
-# ~ biscotte est le nom donne
-# ~ afin de permettre les essais ce support est virtuel
-# ~ disk ='/dev/fd0' permet de cible la disquette
+
 
 #~disk = '../../../biscotte'
 disk = 'biscotte'
@@ -93,10 +91,6 @@ hexAddr['bank4P'] = 0x39000
 
 # ~ We defined the dictionary pack2Mag with keys and the Value
 # ~ the value is the LAB
-# ~ the second value is the DOT
-# ~ the third value is Center Dx of component
-# ~ the fourth value is Center Dy of component
-# ~ the fifth value is Rang by Input
 # ~ Unite Machine =0.0508mm
 
 pack2Mag = {}
@@ -153,7 +147,7 @@ LabInfo= {
         }
 
 
-# ~ We defined the dictionary Lab with keys and 4 Values
+# ~ We defined the dictionary Buffer with keys and 4 Values
 # ~ the value is the MT
 # ~ the second value is the LAB
 # ~ the third value is Center Dx of component
@@ -215,7 +209,53 @@ Buffer ={
         '40': [0, 0, 7690 , 1190],
         '41': [0, 0, 366 , 6855] #41
       }
- 
+ListBuffer=[
+             [0,0,0,0],
+             [0, 0, 153 , 1725],
+             [0, 0, 153 , 2034],
+             [0, 0, 153 , 2357],
+             [0, 0, 153 , 2671],
+             [0, 0, 153 , 2986],
+             [0, 0, 153 , 3299],
+             [0, 0, 153 , 3614],
+             [0, 0, 153 , 3929],
+             [0, 0, 153 , 4242],
+             [0, 0, 153 , 4557],
+             [0, 0, 153 , 4969],
+             [0, 0, 153 , 5362],
+             [0, 0, 153 , 5804],
+             [0, 0, 153 , 6278], #14
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 153 , 6278],
+             [0, 0, 7619, 5572],
+             [0, 0, 7619, 5572], #21
+             [0, 0, 7619 , 5253],
+             [0, 0, 7619 , 4940],
+             [0, 0, 7619 , 4625],
+             [0, 0, 7619 , 4311],
+             [0, 0, 7619 , 4005],
+             [0, 0, 7619 , 3686],
+             [0, 0, 7619 , 3369],
+             [0, 0, 7698 , 3055],
+             [0, 0, 7619 , 2737],
+             [0, 0, 7690 , 2480],
+             [0, 0, 7690 , 2087],
+             [0, 0, 7690 , 1652],
+             [0, 0, 7690 , 1190], #34
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 7690 , 1190],
+             [0, 0, 366 , 6855] #41
+             
+             
+             
+             ]
 #~ =====================================================================
 #~ ====================CONVERSION TO HEXADECIMAL ==================
 #~ ================= into Little Endian ===========================
@@ -297,8 +337,8 @@ def pushDots(data,loops):
 #~===================================================================================
 #~ ==========================warehouse===============================================
         # first NewMag could enter a warehouse address for each component :")
-        # secondly searchLab() detects the Lab key which equals NewMag and inserts the dictMag value in the
-        # dictionary (Lab)
+        # secondly searchLab() detects the Buffer key which equals NewMag and inserts the dictMag value in the
+        # dictionary (Buffer)
         # Lab is indentical to the position of the section
 #~ ===================================================================================
           
@@ -330,7 +370,14 @@ def searchLab(NewMag, LabInfo, comp,Buffer):
               if comp[0] == i:
                 val = LabInfo[i]['Lab']
                 Buffer[o][1] = int(val)
-                pushLab(Buffer,composants)
+                
+                if int(Buffer[o][3])==int(ListBuffer[int(o)][3]):
+                    
+                   
+                    ListBuffer[int(o)][1]=int(val)
+                    
+                
+                
    return NewMag, LabInfo, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
@@ -341,18 +388,23 @@ def searchLab(NewMag, LabInfo, comp,Buffer):
 #~finally f.seek() go in hexAddress = 3977F
 #~ ===================================================================================
 
-def pushLab(Buffer,composants):
+def pushLab(ListBuffer):
     #print ("start pushLab()")
     bank = 'bank4P'
-    f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x60C, RELATIVE)
-    for k,v in Buffer.items():
-        writeToFloppy(v)
-    # ~ Nb lignes
-    f.seek(hexAddr[bank], ABSOLUTE)
-    f.seek(0x77F, RELATIVE)
-    writeToFloppy([len(Buffer) + addLines, len(Buffer) + addLines])
-    #print ("finish of writting warehouse")
+    
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x604, RELATIVE)
+    for n in range(1,len(ListBuffer)):
+         
+         writeToFloppy(ListBuffer[n])
+
+         print(ListBuffer)
+    #~ Nb lignes
+    f.seek(hexAddr[bank],ABSOLUTE)
+    f.seek(0x5F0,RELATIVE)
+    writeToFloppy([0,len(ListBuffer),0,0])
+    print(len(ListBuffer) )
+    print ("finish of writting warehouse")
     
 
 #~=====================================================================
@@ -383,9 +435,9 @@ def pushLab(Buffer,composants):
 
 
 def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
-    print(loops)
+    
     start=loops
-    print(start)
+    
     boucle=0
     print ("start pushComp()")
     bank = 'bank4'
@@ -407,7 +459,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
         print ("start to write component")
         
         #writeToFloppy([0, 10, 0, 0])
-        
+        #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N'
         chang=input("is change tool during this program ? [y/N] : ") or 'N'
         if chang =='y':
             
@@ -549,7 +601,6 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
     print('[0, 2, 0, 0]')
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x032, RELATIVE)
-    #writeToFloppy([len(data) + addLines, len(data) + addLines])
     print(lineCounter)
     print ("finish of writting components")
     nbrLines(lineCounter)
@@ -578,11 +629,10 @@ def Read_Creating(k,dico):
         return dico[nom],k
 
 def nbrLines(nbrLine):
-       print(nbrLine) 
+       
        bank='bank4'
        f.seek(hexAddr[bank], ABSOLUTE)
        f.seek(0x032, RELATIVE)
-       print(nbrLine)
        writeToFloppy([nbrLine])
        f.seek(hexAddr[bank], ABSOLUTE)
        f.seek(0x034, RELATIVE)
@@ -687,6 +737,7 @@ def ecriture_disquette():
        
     bank = 'bank1'
     print("before pushDots(pins)")
+    #Mod=raw_input("is change loop during this program ? [y/N] : ") or 'N'
     Mod=input("is change loop during this program ? [y/N] : ") or 'N'
     if Mod =='y':
             loops= int(input("Enter the new loop : "))
@@ -694,16 +745,14 @@ def ecriture_disquette():
             loops=1
     pushDots(pins,loops)
     print("after pushDots(pins)")
-    bank = 'bank4P'
-    #pushLab(Buffer,composants)
-    print("after pushLab(Buffer)")
-    print(Buffer)
     bank = 'bank4'
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
     pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools)
-    
+    bank = 'bank4P'
+    pushLab(ListBuffer)
+    print(ListBuffer)
     return bank
     
 #~ =========================================================================
