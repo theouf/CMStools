@@ -45,7 +45,7 @@ bank = 'bank4'
 # ~ Loops repeat X times in the same loop
 # ~ Loops premet quand a lui de repeter X fois la meme boucle
 
-loops=0
+loops=1
 
 
 # ~ time of point to drop
@@ -330,29 +330,26 @@ def Dot(submission,box):
         #return int(input('Enter the Dot for '+ box) or '400')
 
 def Rotation(comp,composants,Rot):
-    
+            
+            RotCarte=int(composants[1])
              
             print("*****************************************************")
             print("***********      HELP ROTATION    *******************")
-            print("*** ROT 360      ||Rotation :360 ou 0°  ||   ^|   ***")
+            print("*** ROT 0        ||Rotation :0°         ||   ^|   ***")
             print("*** ROT 90       ||Rotation :90°        ||   <=   ***")
             print("*** ROT 180      ||Rotation :180°       ||   =>   ***")
             print("*** ROT 270      ||Rotation :270°       ||   |    ***")
             print("*****************************************************")
             print("*****************************************************")
-            print("Rotation "+comp+" on the card :"+str(composants[1]))
+            print("Rotation "+comp+" on the card :"+str(RotCarte))
             #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0)
             RotMag = int(input('Enter a Rotation in Mag '+comp+ ' : ') or 0)
-            if RotMag==360:
-                Rot=int(composants[1])
+            
+            if RotMag<RotCarte : 
+                Rot=RotCarte-RotMag
             else:
-                Rot=RotMag-int(composants[1])
-                
-            if Rot == 0 :
-                 Rot=360
-                 composants[1]= Rot
-            else:   
-                 composants[1]= Rot
+                Rot=360-RotMag+RotCarte
+            
             print(Rot)
             return Rot
 
@@ -371,13 +368,17 @@ def Rotation(comp,composants,Rot):
 #~================================================================
 def pushDots(data,loops):
     bank = 'bank1'
-    
+    start=loops
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x208 , RELATIVE)
     for i in range(0 , 1):
     #for i in range(0 , loops):
-        writeToFloppy([0, 0, 0, 0])
+        for n in range(0, start):
+            writeToFloppy([0, 0, 0, 0])
+            print([0, 0, 0, 0])
+        
         writeToFloppy([0, 10, 0, 0])
+        print([0, 10, 0, 0])
         writeToFloppy([0, 1, loops, 0])
         print([0, 1, loops, 0])
     for n in range(0, len(data)):
