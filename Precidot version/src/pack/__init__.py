@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 08 juillet. 2014
+Created on 09 juillet. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -258,6 +258,28 @@ ListBuffer=[
              
              
              ]
+#~ ==============================GRAPHIC====================================
+#~ Imports interface with date and hours on function Welcome()
+#~ When the Writting on Floppy disk is finish the function Finish() is called
+def welcome():
+    print ('****************************************************')
+    print ('************* Precidot30 & Novar33 *****************')
+    print ('****************************************************')
+    now = time.strftime("%A %d %B %Y %H:%M:%S")
+    print ('**********' + now + '        ***')
+    print ('****************************************************')
+
+def Finish():
+    print('****************************************************')
+    print('************* Precidot30 & Novar33 *****************')
+    print('****************************************************')
+    print("*****  Thank you for using this program     ********")
+    print("*****   You can remove the Floppy Disk      ********")
+    print("*****                                       ********")
+    print("*****            FABLAB LANNION             ********")
+    print("*****                                       ********")
+    print('****************************************************')
+    print('****************************************************')
 #~ =====================================================================
 #~ ====================CONVERSION TO HEXADECIMAL ==================
 #~ ================= into Little Endian ===========================
@@ -290,38 +312,22 @@ def writeToFloppy(t):
 def Dot(submission,box):
     if box in LabInfo:
         submission=LabInfo[box]['submission']
-        
-        
-        
         return submission
     else:
-        
         nom=box
         if nom in dicoDot.keys():
-            
             if nom==box:
-                
                 submission=dicoDot[box]
-                
                 return submission
         else:
                 print('Unknown package')
-                    
                 #submission=int(input('Enter the Dot for '+ box) or '400')
                 submission=int(input('Enter the Dot for '+ box) or '400')
-            
                 dicoDot[nom]=(submission)
-                
-                
-                
         return submission
-        
-        
-
-        
         #return submission
         #return int(raw_input('Enter the Dot for '+ box) or '400')
-       # return int(input('Enter the Dot for '+ box) or '400')
+        #return int(input('Enter the Dot for '+ box) or '400')
 
 def Rotation(comp,composants,Rot):
     
@@ -334,9 +340,6 @@ def Rotation(comp,composants,Rot):
             print("*** ROT 270      ||Rotation :270°       ||   |    ***")
             print("*****************************************************")
             print("*****************************************************")
-            
-    
-           
             print("Rotation "+comp+" on the card :"+str(composants[1]))
             #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0)
             RotMag = int(input('Enter a Rotation in Mag '+comp+ ' : ') or 0)
@@ -345,8 +348,9 @@ def Rotation(comp,composants,Rot):
             else:
                 Rot=RotMag-int(composants[1])
                 
-            if Rot ==0 :
-                 composants[1]=360
+            if Rot == 0 :
+                 Rot=360
+                 composants[1]= Rot
             else:   
                  composants[1]= Rot
             print(Rot)
@@ -734,8 +738,11 @@ RELATIVE = 1
 # ~ with b authorize to translate on binary
 #~============================================================================
 try:
+    welcome()
+    print()
     print ('it\'s possible to writting data on a floppy disk')
     f = open(disk, 'rb+')
+   
 except IOError:
     print ('impossible to writting data')
 
@@ -805,15 +812,10 @@ def ecriture_disquette():
        
     bank = 'bank1'
     print("before pushDots(pins)")
-    #Mod=raw_input("is change loop during this program ? [y/N] : ") or 'N'
-    Mod=input("is there a repeat during this program ? [y/N] : ") or 'N'
+    print("**** for example 2 Electronic cards = 2 loops ******")
+    #loops= int(raw_input("How many Electronic card are you need to create ?  "))
+    loops= int(input("How many Electronic card are you need to create ?  "))
     
-    if Mod =='y':
-            print("**** for example 2 Maps = 2 loops ******")
-            #loops= int(raw_input("Enter the number Loops : "))
-            loops= int(input("Enter the number Loops : "))
-    else:
-            loops=1
     pushDots(pins,loops)
     print("after pushDots(pins)")
     bank = 'bank4'
@@ -823,21 +825,15 @@ def ecriture_disquette():
     pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools)
     bank = 'bank4P'
     pushLab(ListBuffer)
-    print(ListBuffer)
+    
+    Finish()
     return bank
     
 #~ =========================================================================
 #~ ============================ INTRODUCTION ===============================
 # ~definition of function introduction
-# ~ Imports interface with date and hours
 # ~ call to the function ectiture_disquette()
 def introduction():
-    print ('***********************************')
-    print ('*** Precidot30 & Novar33 ***')
-    print ('***********************************')
-    now = time.strftime("%A %d %B %Y %H:%M:%S")
-    print ('**' + now + '*')
-    print ('***********************************')
     ecriture_disquette()
     
 introduction() # Appel de la fonction
