@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 09 juillet. 2014
+Created on 16 juillet. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -27,9 +27,10 @@ import struct
 #~================================ VARIABLES =========================
 
 # ~ Source file for testing
-source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
+#source = 'E:\Iut\Rapport de Stage/testeur_UM.pnp' # Windows
 #~source = '../../../testeur_UM.pnp' # Linux
-
+AddressFile= 'E:\Iut\Rapport de Stage/'
+SourceFile=''
 #~ ================================================================
 
 # ~ Biscotte is the virtual support for the test
@@ -70,6 +71,7 @@ CompByTools = []
 tools=0
 toolsimport=''
 speedimport=''
+Labimport=''
 DataToolsTake =[0,12,0,0]
 DataToolsDrop =[0,12,0,1]
 dico={}
@@ -254,9 +256,7 @@ ListBuffer=[
              [0, 0, 7690 , 1190],
              [0, 0, 7690 , 1190],
              [0, 0, 366 , 6855] #41
-             
-             
-             
+                         
              ]
 #~ ==============================GRAPHIC====================================
 #~ Imports interface with date and hours on function Welcome()
@@ -280,8 +280,8 @@ def Finish():
     print("*****                                       ********")
     print('****************************************************')
     print('****************************************************')
-#~ =====================================================================
-#~ ====================CONVERSION TO HEXADECIMAL ==================
+#~ ================================================================
+#~ ==================== CONVERSION TO HEXADECIMAL =================
 #~ ================= into Little Endian ===========================
 def intToHex(i):
     ret = []
@@ -309,30 +309,85 @@ def writeToFloppy(t):
 #~ the function dot() give the value of DOT for each componant
 #~the user must enter the rotation for each component
 #~ the rotation write in composants [1]
-def Dot(submission,box):
+def Dot(submission,box, dicoComp,comp,Buffer,NewMag):
+    
+    
+    print(NewMag)
+    print(comp)
     if box in LabInfo:
         submission=LabInfo[box]['submission']
         return submission
+    
+    elif box in dicoDot:
+        print("le vent est à l'ouest")
+        print(dicoDot)
+        submission= dicoDot[box]
+        precision(dicoComp,comp,box)
+        print(submission)
+        return submission
     else:
-        nom=box
-        if nom in dicoDot.keys():
-            if nom==box:
-                submission=dicoDot[box]
-                return submission
-        else:
                 print('Unknown package')
                 #submission=int(input('Enter the Dot for '+ box) or '400')
                 submission=int(input('Enter the Dot for '+ box) or '400')
-                dicoDot[nom]=(submission)
-        return submission
-        #return submission
-        #return int(raw_input('Enter the Dot for '+ box) or '400')
-        #return int(input('Enter the Dot for '+ box) or '400')
+                dicoDot[box]=(submission)
+                precision(dicoComp,comp,box)
+                return submission
 
+def precision(dicoComp,comp,box):
+
+         print(comp)
+         if comp in dicoComp:pass 
+         else:
+                print("*******************************************")
+                print("*********************** HELP TOOLS ********")
+                print("*** TOOL 2 for box||Diameter :1.03 mm   ***")
+                print("*** TOOL 3 for box||Diameter :2.83 mm   ***")
+                print("*** TOOL 4 for box||Diameter :5.34 mm   ***")
+                print("*******************************************")
+                print("*******************************************")
+                #toolsimport=int(raw_input("Enter Tools for "+box+" :"))
+                toolsimport=int(input("Enter Tools for "+box+" :"))
+                if toolsimport not in  range(0,5):
+                    print("the manipulation is False")
+                    toolsimport=int(input("Enter Tools for "+box+" :"))
+                
+                
+                print("*************************")
+                print("***** HELP SPEED ********")
+                print("*** FAST   ||    F    ***")
+                print("*** SLOW   ||    S    ***")
+                print("*************************")
+                print("*************************")
+                #choise=raw_input("is change tool during this program ? [S/F] : ") or 'S'
+                choise=input("CHOISE THE SPEED MOVING ? [S/F] : ") or 'S'
+                if choise =='S' :
+                       speedimport = 5
+                elif choise =='s' :
+                       speedimport = 5       
+                elif choise =='F' :
+                        speedimport = 4
+                elif choise =='f':
+                        speedimport = 4
+                    
+                print([0,speedimport,0,0])                
+                
+                
+                dicoComp[comp]=(toolsimport,speedimport,box)
+                print(dicoComp)
+                return dicoComp
+
+
+
+
+
+
+
+
+
+        
 def Rotation(comp,composants,Rot):
             
             RotCarte=int(composants[1])
-             
             print("*****************************************************")
             print("***********      HELP ROTATION    *******************")
             print("*** ROT 0        ||Rotation :0°         ||   ^|   ***")
@@ -344,13 +399,11 @@ def Rotation(comp,composants,Rot):
             print("Rotation "+comp+" on the card :"+str(RotCarte))
             #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0)
             RotMag = int(input('Enter a Rotation in Mag '+comp+ ' : ') or 0)
-            
             if RotMag<RotCarte : 
                 Rot=RotCarte-RotMag
             else:
                 Rot=360-RotMag+RotCarte
             
-            print(Rot)
             return Rot
 
 #~======================================================================
@@ -367,6 +420,7 @@ def Rotation(comp,composants,Rot):
 #~ data[n][3] = yaxisdir + data[n][3] datas are reverse on Dy
 #~================================================================
 def pushDots(data,loops):
+    print(data)
     bank = 'bank1'
     start=loops
     f.seek(hexAddr[bank], ABSOLUTE)
@@ -376,13 +430,14 @@ def pushDots(data,loops):
         for n in range(0, start):
             writeToFloppy([0, 0, 0, 0])
             print([0, 0, 0, 0])
-        
         writeToFloppy([0, 10, 0, 0])
         print([0, 10, 0, 0])
         writeToFloppy([0, 1, loops, 0])
         print([0, 1, loops, 0])
     for n in range(0, len(data)):
+         
          data[n][3] = yaxisdir + data[n][3]
+         
          writeToFloppy(data[n])
     writeToFloppy([0, 2, 0, 0])
     # ~ Nb lignes
@@ -390,7 +445,6 @@ def pushDots(data,loops):
     f.seek(0x32, RELATIVE)
     writeToFloppy([len(data) + addLines, len(data) + addLines])
     print ("Finish Points !! ")
-    
     return data
 
 #~===================================================================================
@@ -408,7 +462,8 @@ def warehouse (comp,composants):
     for k in composants:
         if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
             pack2Mag[k] = NewMag
-            searchLab(NewMag, LabInfo, composants,Buffer)
+            
+            searchLab(NewMag, LabInfo, composants,Buffer,dicoComp)
         elif NewMag in range(15,20) or NewMag in range(35,40):
             print("impossible de rentrer ce magasin")
             warehouse (composants,comp)
@@ -418,25 +473,29 @@ def warehouse (comp,composants):
 #~ ==========================LAB===============================================
 
 
-def searchLab(NewMag, LabInfo, comp,Buffer):
+def searchLab(NewMag, LabInfo, comp,Buffer,dicoComp):
+   
+   
    
    keys = tuple(Buffer.keys())
    LabInfoK = tuple(LabInfo.keys())
    LabInfoI = tuple(LabInfo.items())
    for o in keys:
        if int(o) == NewMag:
+          
+          
           for i in LabInfoK:
+              
               if comp[0] == i:
+                print(comp[0])
                 val = LabInfo[i]['Lab']
                 Buffer[o][1] = int(val)
-                
                 if int(Buffer[o][3])==int(ListBuffer[int(o)][3]):
-                    
-                   
                     ListBuffer[int(o)][1]=int(val)
-                    
-                
-                
+              
+               
+       
+                     
    return NewMag, LabInfo, comp ,Buffer
 #~ ===================================================================================
 #~ ==================================== pushLab ======================================
@@ -450,18 +509,16 @@ def searchLab(NewMag, LabInfo, comp,Buffer):
 def pushLab(ListBuffer):
     #print ("start pushLab()")
     bank = 'bank4P'
-    
     f.seek(hexAddr[bank],ABSOLUTE)
-    f.seek(0x604, RELATIVE)
-    for n in range(1,len(ListBuffer)):
-         
+    f.seek(0x608, RELATIVE)
+    for n in range(0,len(ListBuffer)):
          writeToFloppy(ListBuffer[n])
-
          
     #~ Nb of Section
     f.seek(hexAddr[bank],ABSOLUTE)
     f.seek(0x5F0,RELATIVE)
-    writeToFloppy([0,len(ListBuffer),0,0])
+    writeToFloppy([len(ListBuffer) + addLines, len(ListBuffer) + addLines])
+   # writeToFloppy([0,len(ListBuffer),0,0 ])
     print(len(ListBuffer) )
     print ("finish of writting warehouse")
     
@@ -493,10 +550,9 @@ def pushLab(ListBuffer):
 #~ ===============================================================
 
 
-def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
+def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,dicoComp):
     
     start=loops
-    
     boucle=0
     print ("start pushComp()")
     bank = 'bank4'
@@ -504,7 +560,6 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
     
     f.seek(hexAddr[bank], ABSOLUTE)
     f.seek(0x208, RELATIVE)
-    
     for i in range(0,1):
     #for i in range(0, loops):
         for n in range(0, start):
@@ -514,18 +569,18 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
         writeToFloppy([0, 10, 0, 0])
         print([0, 10, 0, 0])
         lineCounter=lineCounter+1
-       
         print ("start to write component")
-        
         #writeToFloppy([0, 10, 0, 0])
         #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N'
-        chang=input("is change tool during this program ? [y/N] : ") or 'N'
-        if chang =='y':
-           
-
-          
+        #chang=input("is change tool during this program ? [y/N] : ") or 'N'
+       # if chang =='y':
+        if True:             
             for k,v in data.items():
               
+              
+              
+              if v[1]=='0':
+                  v[1]='360'
                                    
               for r in Buffer.keys():
                     if str(v[0])!=r: pass
@@ -536,24 +591,23 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
                                if str(Buffer[r][1])== Lab:
                                     tools=m['tool']
                                     speed=m['speed']
-                                    
+                           
+                                        
 #===================================================================
               if tools==0:
+                             
                         
-                        Read_Creating(k,dicoComp)
                         for key,n in dicoComp.items():
                                                 
-                                                
-                                                if k==key:
-                                                    print("trouvé")
-                                                    toolsMemory=n[0]
-                                                    print(toolsMemory)
-                                                    speedMemory=n[1]
-                                                    print(speedMemory)
-                                                    n=toolsMemory
-                                                    tools=toolsMemory
-                                                    speed=[0,speedMemory,0,0]
-                                                    
+                                                if key==k :
+                                                       
+                                                       toolsMemory= n[0]
+                                                      # print(toolsMemory)
+                                                       speedMemory= n[1]
+                                                     #  print(speedMemory)
+                                                       tools=toolsMemory
+                                                       speed=[0,speedMemory,0,0]
+                                                else:pass
  
 #=======================================================================
               if boucle==0:
@@ -665,44 +719,6 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools):
    
 
 #~ =========================================================================
-#~ Use this function when the value tool and speed aren't found
-#~ the user enter himself these datas
-def Read_Creating(k,dicoComp):
-    
-    
-    
-      
-    while 1 :
-          nom=k
-        
-          if nom in dicoComp:
-            print("find")
-            
-            item=dicoComp[nom]
-            tools,speed=item[0],item[1]
-           
-           
-                  
-          else:
-            print('Unknown package')
-                    
-            print("*******************************************")
-            print("*********************** HELP TOOLS ********")
-            print("*** TOOL 2 for box||Diameter :1.03 mm   ***")
-            print("*** TOOL 3 for box||Diameter :2.83 mm   ***")
-            print("*** TOOL 4 for box||Diameter :5.34 mm   ***")
-            print("*******************************************")
-            print("*******************************************")
-            
-            #toolsimport=int(raw_input("Enter Tools for "+k+" :"))
-            toolsimport=int(input("Enter Tools for "+k+" :"))
-            #speedimport=int(raw_input("Enter speed for "+k+" :"))
-            speedimport=int(input("Enter speed for "+k+" :"))
-            #boximport=raw_input("Enter box for "+k+" :")
-           
-            dicoComp[nom]=(toolsimport,speedimport)
-                
-          return dicoComp[nom],k
 
 def nbrLines(nbrLine):
        
@@ -743,7 +759,6 @@ try:
     print()
     print ('it\'s possible to writting data on a floppy disk')
     f = open(disk, 'rb+')
-   
 except IOError:
     print ('impossible to writting data')
 
@@ -761,10 +776,22 @@ except IOError:
 p = re.compile('^-composant-(.+)-package-(.+)-X-(.+)-Y-(.*)-rot-(.*)$')
 p2 = re.compile('^-Pin--X-(.+)-Y-(.*)$')
 
+try:
+    SourceFile=input("Enter your File Name : ")
+    
+    try:
+        File=open(SourceFile,"r")
+    except FileNotFoundError:
+        print ('impossible to search the source File')
+    
+    source = AddressFile + SourceFile
+except :
+    print ('impossible to search the source File')
+
+
 
 
 lines = [line.strip() for line in open(source)]
-
 composants = {}
 pins = []
 
@@ -778,7 +805,6 @@ for line in lines:
             composants[comp] = list(m.group(2, 5, 3, 4))
             Rotation(comp,composants[comp],Rot)
             box=m.group(2)
-            
             warehouse (comp,composants[comp])
             if (composants[comp][0] in pack2Mag.keys()):
                 composants[comp][0] = pack2Mag[composants[comp][0]]
@@ -787,15 +813,10 @@ for line in lines:
                 del(composants[comp])
         else:
             print ("Ignored line: " + line)
-             
     if "-Pin-" in line:
-       
         m = p2.match(line)
-       
-    
         if m:
-            pins.append(list((1,Dot(int(submission),box)) + m.group(1, 2)))
-            
+            pins.append(list((1,Dot(int(submission),box,dicoComp,comp,Buffer,NewMag)) + m.group(1, 2)))
         else:
             print ("Ignored line: " + line)
  
@@ -815,18 +836,17 @@ def ecriture_disquette():
     print("before pushDots(pins)")
     print("**** for example 2 Electronic cards = 2 loops ******")
     #loops= int(raw_input("How many Electronic card are you need to create ?  "))
-    loops= int(input("How many Electronic card are you need to create ?  "))
-    
+    loops= int(input("How many Electronic card are you need to create ?  ")or 1)
     pushDots(pins,loops)
     print("after pushDots(pins)")
     bank = 'bank4'
     print("change of bank")
     pp.pprint(composants) # defined indentation of components
     print("after pp.pprint(components)")
-    pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,CompByTools)
+    pushComp(composants,NewMag,Buffer,LabInfo,tools,composants,loops,dicoComp)
     bank = 'bank4P'
     pushLab(ListBuffer)
-    
+    print(ListBuffer)
     Finish()
     return bank
     
