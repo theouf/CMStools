@@ -312,30 +312,28 @@ def writeToFloppy(t):
 def Dot(submission,box, dicoComp,comp,Buffer,NewMag):
     
     
-    print(NewMag)
-    print(comp)
+    
     if box in LabInfo:
         submission=LabInfo[box]['submission']
         return submission
     
     elif box in dicoDot:
-        print("le vent est à l'ouest")
-        print(dicoDot)
+        
         submission= dicoDot[box]
         precision(dicoComp,comp,box)
         print(submission)
         return submission
     else:
                 print('Unknown package')
-                #submission=int(input('Enter the Dot for '+ box) or '400')
-                submission=int(input('Enter the Dot for '+ box) or '400')
+                #submission=int(raw_input('Enter the Dot for '+ box+" : ") or '400')
+                submission=int(input('Enter the Dot for '+ box+" : ") or '400')
                 dicoDot[box]=(submission)
                 precision(dicoComp,comp,box)
                 return submission
 
 def precision(dicoComp,comp,box):
 
-         print(comp)
+         
          if comp in dicoComp:pass 
          else:
                 print("*******************************************")
@@ -346,7 +344,7 @@ def precision(dicoComp,comp,box):
                 print("*******************************************")
                 print("*******************************************")
                 #toolsimport=int(raw_input("Enter Tools for "+box+" :"))
-                toolsimport=int(input("Enter Tools for "+box+" :"))
+                toolsimport=int(input("Enter Tools for "+box+" : "))
                 if toolsimport not in  range(0,5):
                     print("the manipulation is False")
                     toolsimport=int(input("Enter Tools for "+box+" :"))
@@ -358,7 +356,7 @@ def precision(dicoComp,comp,box):
                 print("*** SLOW   ||    S    ***")
                 print("*************************")
                 print("*************************")
-                #choise=raw_input("is change tool during this program ? [S/F] : ") or 'S'
+                #choise=raw_input("CHOISE THE SPEED MOVING ? [S/F] : ") or 'S'
                 choise=input("CHOISE THE SPEED MOVING ? [S/F] : ") or 'S'
                 if choise =='S' :
                        speedimport = 5
@@ -373,7 +371,7 @@ def precision(dicoComp,comp,box):
                 
                 
                 dicoComp[comp]=(toolsimport,speedimport,box)
-                print(dicoComp)
+                
                 return dicoComp
 
 
@@ -397,7 +395,7 @@ def Rotation(comp,composants,Rot):
             print("*****************************************************")
             print("*****************************************************")
             print("Rotation "+comp+" on the card :"+str(RotCarte))
-            #Rot = int(raw_input('Enter a Rotation for component '+comp) or 0)
+            #RotMag = int(raw_input('Enter a Rotation for component '+comp+" : ") or 0)
             RotMag = int(input('Enter a Rotation in Mag '+comp+ ' : ') or 0)
             if RotMag<RotCarte : 
                 Rot=RotCarte-RotMag
@@ -457,8 +455,8 @@ def pushDots(data,loops):
           
 def warehouse (comp,composants):
     print("Choose an address for : " + comp)
-    #NewMag = int(raw_input('Entrer an adress of Section\'s Mag for:') or 0)
-    NewMag = int(input('Entrer an adress of Mag for:') or 0)
+    #NewMag = int(raw_input('Entrer an adress Mag : ') or 0)
+    NewMag = int(input('Entrer an adress of Mag : ') or 0)
     for k in composants:
         if NewMag in range(1,14) or NewMag in range(21,34) or NewMag in range(41,46):
             pack2Mag[k] = NewMag
@@ -502,7 +500,7 @@ def searchLab(NewMag, LabInfo, comp,Buffer,dicoComp):
 #~ pushLab is the function who can take all position of the section and give the Lab of component
 #~ this is an option
 #~f.seek() go in hexAddr['bank4P] = 39000
-#~secondly f.seek() go in hexAddress = 3960C
+#~secondly f.seek() go in hexAddress = 39608
 #~finally f.seek() go in hexAddress = 3977F
 #~ ===================================================================================
 
@@ -511,17 +509,19 @@ def pushLab(ListBuffer):
     bank = 'bank4P'
     level=0
     f.seek(hexAddr[bank],ABSOLUTE)
-    f.seek(0x604, RELATIVE)
+    f.seek(0x608, RELATIVE)
     for n in range(1,len(ListBuffer)):
          writeToFloppy(ListBuffer[n])
          print(ListBuffer[n])
          level=level+1
     #~ Nb of Mag
-    f.seek(hexAddr[bank],ABSOLUTE)
-    f.seek(0x5F2,RELATIVE)
+    bank ='bank4'
+    f.seek(hexAddr[bank], ABSOLUTE)
+    f.seek(0x036, RELATIVE)
     writeToFloppy([level])
-   # writeToFloppy([len(ListBuffer) + addLines, len(ListBuffer) + addLines])
-  
+    f.seek(hexAddr[bank], ABSOLUTE)
+    f.seek(0x038, RELATIVE)
+    writeToFloppy([level])
    
     print ("finish of writting warehouse")
     
@@ -573,10 +573,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,dicoComp):
         print([0, 10, 0, 0])
         lineCounter=lineCounter+1
         print ("start to write component")
-        #writeToFloppy([0, 10, 0, 0])
-        #chang=raw_input("is change tool during this program ? [y/N] : ") or 'N'
-        #chang=input("is change tool during this program ? [y/N] : ") or 'N'
-       # if chang =='y':
+        
         if True:             
             for k,v in data.items():
               
@@ -605,9 +602,7 @@ def pushComp(data, NewMag,Buffer,LabInfo,tools,composants,loops,dicoComp):
                                                 if key==k :
                                                        
                                                        toolsMemory= n[0]
-                                                      # print(toolsMemory)
                                                        speedMemory= n[1]
-                                                     #  print(speedMemory)
                                                        tools=toolsMemory
                                                        speed=[0,speedMemory,0,0]
                                                 else:pass
@@ -780,8 +775,8 @@ p = re.compile('^-composant-(.+)-package-(.+)-X-(.+)-Y-(.*)-rot-(.*)$')
 p2 = re.compile('^-Pin--X-(.+)-Y-(.*)$')
 
 try:
+    #SourceFile=raw_input("Enter your File Name : ")
     SourceFile=input("Enter your File Name : ")
-    
     try:
         File=open(SourceFile,"r")
     except FileNotFoundError:
