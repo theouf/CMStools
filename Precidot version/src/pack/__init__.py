@@ -1,7 +1,7 @@
 #!/usr/bin/python3.4
 # coding=utf-8
 '''
-Created on 16 juillet. 2014
+Created on 17 juillet. 2014
 
 @author: L'Henoret Erwan
 version Python 2.7 and 3.4
@@ -509,17 +509,20 @@ def searchLab(NewMag, LabInfo, comp,Buffer,dicoComp):
 def pushLab(ListBuffer):
     #print ("start pushLab()")
     bank = 'bank4P'
+    level=0
     f.seek(hexAddr[bank],ABSOLUTE)
-    f.seek(0x608, RELATIVE)
-    for n in range(0,len(ListBuffer)):
+    f.seek(0x604, RELATIVE)
+    for n in range(1,len(ListBuffer)):
          writeToFloppy(ListBuffer[n])
-         
-    #~ Nb of Section
+         print(ListBuffer[n])
+         level=level+1
+    #~ Nb of Mag
     f.seek(hexAddr[bank],ABSOLUTE)
-    f.seek(0x5F0,RELATIVE)
-    writeToFloppy([len(ListBuffer) + addLines, len(ListBuffer) + addLines])
-   # writeToFloppy([0,len(ListBuffer),0,0 ])
-    print(len(ListBuffer) )
+    f.seek(0x5F2,RELATIVE)
+    writeToFloppy([level])
+   # writeToFloppy([len(ListBuffer) + addLines, len(ListBuffer) + addLines])
+  
+   
     print ("finish of writting warehouse")
     
 
