@@ -29,14 +29,17 @@ def askDefault(Question,default) :
 
 class Pin() :
 	""" the pin of a component is defined by its position : x, y and its size (small/medium/large)
-		function "calcTps" calculates the time to push the soldering paste"""
+		function "calcTps" calculates the time to push the soldering paste 1/10 mm high"""
 		
 		
-	def __init__(self,x,y) :
+	def __init__(self,x,y,temp="0") :
 		self.x=int(x)
 		self.y=-1*int(y)
-		self.size=self.getSize()
-		self.depTime=self.calcTps()
+		if temp=="0" :
+			self.size=self.getSize()
+			self.depTime=self.calcTps()
+		else :
+			self.depTime=0(temp)
 		
 	def getSize(self):
 		""" ask to user wich is the size of the footprint
@@ -55,7 +58,7 @@ class Comp() :
 		self.name=name
 		self.x=int(x)
 		self.y=-1*int(y)
-		self.rot=int(rot)
+		self.rot=int(float(rot))
 		print "component : "+self.name
 		self.pkg=Package(pkg)
 		self.calcRot()
@@ -131,7 +134,7 @@ class Package():
 		return int(tool),speed
 
 class Datas():
-	"""data to wrinte on Floppy"""
+	"""data to write on Floppy"""
 	offsets={	"machineParam":0x1042,
 				"progLines":0x1208 ,
 				"progLen":0x1032,
@@ -161,7 +164,7 @@ class Datas():
 
 		
 class Precidot(Datas) :
-	"""novar data template for novar"""
+	"""data template for precidot"""
 
 	def __init__(self):
 		Datas.__init__(self)
@@ -271,8 +274,15 @@ class Mag(Datas):
 class InPut() :
 	""" ask file name and parse it"""
 	def __init__(self):
+		self.fileName=""
 		self.inPutFile=self.getInPutFile()
-		self.comps,self.pins=self.eagleParser()
+		if re.match('.*pnp$',self.fileName) :
+			self.comps,self.pins=self.eagleParser()
+		else :
+			if re.match('.*rpt$',self.fileName) :
+				self.comps,self.pins=self.kicadParser()
+			else :
+				print ("Error file format not detected, be sure .pnp or .rpt")
 		
 	def getInPutFile(self) :
 		"""**************"""
@@ -281,12 +291,13 @@ class InPut() :
 		if len(sys.argv)>1 :
 			inPutFile=sys.argv[1]
 		else :
-			inPutFile=askDefault("Input File Name : ","testeur_UM.pnp")
+			inPutFile=askDefault("Input File Name : ","xxx.pnp (eagle) or yyy.rpt (kicad)")
+			self.fileName=inPutFile
 		try:
 			fd=open(inPutFile,"r")
-		except FileNotFoundError:
+		except :
 			print ('impossible to find the source File')
-			exit
+			exit()
 		InPutFile=fd.readlines()
 		fd.close()
 		return InPutFile
@@ -324,8 +335,114 @@ class InPut() :
 					pins.append(Pin(n.group(1),n.group(2)))
 				else :
 					print ("Ignored line: " + line)
+		
+		
 		return components,pins
 
+	def kicadParser(self) :
+
+		#~ =========================================================================
+		#~ ==================== FORMAT FOR kicad ===================================
+
+		# ~ from pcbnex view :
+		# ~ fabrication output - Footprint(.rpt) Report
+		# ~ components bettween $MODULE- $EndMODULE  if SMD : attribut smd  then pad $PAD - $EndPAD inside pos + dimension
+		# ~ for points : ^-Pin--X-(.+)-Y-(.*)$
+		# point in inch must be convert to machin unit (1U=0,0508mm=0,02inch)
+		
+
+		#~==========================================================================
+		pUnit = re.compile('unit INCH')
+		pComp = re.compile('^\$MODULE "(.*)"$')
+		pSMD = re.compile('^attribut (.*)$')
+		pValue = re.compile('^value "(.*)"$')
+		pPosition = re.compile('^position[ ]{1,2}(.*)[ ]{1,2}(.*)$')
+		pOrientation = re.compile('^orientation[ ]{1,2}(.*)$')
+		pPin = re.compile('^\$PAD "(.*)"$')
+		pSize = re.compile('^size[ ]{1,2}(.*)[ ]{1,2}(.*)$')
+		
+		unit=0.0508
+		
+		components = []
+		pins = []
+		currComp=[]
+		currPin=[]
+
+		for line in self.inPutFile:
+			
+			m = pComp.match(line)
+			if m :
+				if len(currComp)!=0 :
+					print currComp
+					print currPin
+					if currComp[2]=="smd" :
+						print "smd"
+						components.append(Comp(currComp[0],currComp[1],currComp[3],currComp[4],currComp[5]))
+						
+						if len(currPin) :
+							for pin in currPin :
+								pins.append(Pin(pin[1],pin[2],pin[3]))
+						
+					
+					currPin[:]=[]
+					currComp[:]=[]
+				currComp.append(m.group(1))
+				
+			else :
+				m = pPin.match(line)
+				if m :
+					#print m.group(1)
+					#if len(currPin) :
+					#	#print pins
+					#	pins.append(currPin)
+					#	currPin[:]=[]
+					#currPin.append(m.group(1))
+					currPin.append([m.group(1),])
+				else :
+					m = pValue.match(line)
+					
+					if m :
+						#print m.group(1)
+						currComp.append(m.group(1))
+					else :	
+						m = pSMD.match(line)
+						if m :
+							#print m.group(1)
+							currComp.append(m.group(1))
+						else :	
+							m = pPosition.match(line)
+							
+							if m :
+								print unit
+								if len(currPin)!=0 :
+									currPin[-1].append(str(int(currComp[3])+int(float(m.group(1))/unit)))
+									currPin[-1].append(str(int(currComp[4])+int(float(m.group(2))/unit)))
+								else :
+									currComp.append(str(int(float(m.group(1))/unit)))
+									currComp.append(str(int(float(m.group(2))/unit)))
+							else :	
+								m = pOrientation.match(line)
+								
+								if m :
+									#print m.group(1)
+									if len(currPin)!=0 :
+										currPin[-1].append(m.group(1))
+									else :
+										currComp.append(m.group(1))
+								else :	
+									m = pSize.match(line)
+									if m :
+										#print m.group(0)
+										"""fonction need to be define can get surface and so know how much solder paste to deposite"""
+										currPin[-1].append("0")
+									else :	
+										m = pUnit.match(line)
+										if m :
+											print "inch used beurk"
+											unit=0.02
+		print pins
+		print components							
+		return components,pins
 
 class Floppy():
 	
